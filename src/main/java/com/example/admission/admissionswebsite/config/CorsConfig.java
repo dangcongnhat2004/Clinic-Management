@@ -13,7 +13,11 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**"); //Enable CORS for all endpoints
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8080") // Nguồn gốc cụ thể
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);              ; //Enable CORS for all endpoints
             }
         };
     }

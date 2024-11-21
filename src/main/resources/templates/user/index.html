@@ -1,1624 +1,724 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
-    <meta
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-      name="viewport"
-    />
-    <link
-      rel="icon"
-      href="assets/img/kaiadmin/favicon.ico"
-      type="image/x-icon"
-    />
 
-    <!-- Fonts and icons -->
-    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-      WebFont.load({
-        google: { families: ["Public Sans:300,400,500,600,700"] },
-        custom: {
-          families: [
-            "Font Awesome 5 Solid",
-            "Font Awesome 5 Regular",
-            "Font Awesome 5 Brands",
-            "simple-line-icons",
-          ],
-          urls: ["assets/css/fonts.min.css"],
-        },
-        active: function () {
-          sessionStorage.fonts = true;
-        },
-      });
-    </script>
+<head>
+  <meta charset="utf-8">
+  <title>EduXplore - Trang web tuyển sinh</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+  <!-- Font Awesome -->
+  <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet"
+  />
+  <!-- Google Fonts -->
+  <link
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          rel="stylesheet"
+  />
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:slnt,wght@-10..0,100..900&display=swap" rel="stylesheet">
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+  <!-- Icon Font Stylesheet -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="assets/css/demo.css" />
-  </head>
-  <body>
-    <div class="wrapper">
-      <!-- Sidebar -->
-      <div class="sidebar" data-background-color="dark">
-        <div class="sidebar-logo">
-          <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
-              <img
-                src="assets/img/kaiadmin/logo_light.svg"
-                alt="navbar brand"
-                class="navbar-brand"
-                height="20"
-              />
-            </a>
-            <div class="nav-toggle">
-              <button class="btn btn-toggle toggle-sidebar">
-                <i class="gg-menu-right"></i>
-              </button>
-              <button class="btn btn-toggle sidenav-toggler">
-                <i class="gg-menu-left"></i>
-              </button>
-            </div>
-            <button class="topbar-toggler more">
-              <i class="gg-more-vertical-alt"></i>
-            </button>
+  <!-- Libraries Stylesheet -->
+  <link rel="stylesheet" href="/user/lib/animate/animate.min.css"/>
+  <link href="/user/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+  <link href="/user/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="/user/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Template Stylesheet -->
+  <link href="/user/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<!-- Spinner End -->
+
+<!-- Topbar Start -->
+<div class="container-fluid topbar px-0 px-lg-4 bg-light py-2 d-none d-lg-block">
+  <div class="container">
+    <div class="row gx-0 align-items-center">
+      <div class="col-lg-8 text-center text-lg-start mb-lg-0">
+        <div class="d-flex flex-wrap">
+          <div class="border-end border-primary pe-3">
+            <a href="#" class="text-muted small"><i class="fas fa-map-marker-alt text-primary me-2"></i>Da Nang</a>
           </div>
-          <!-- End Logo Header -->
-        </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
-          <div class="sidebar-content">
-            <ul class="nav nav-secondary">
-              <li class="nav-item active">
-                <a
-                  data-bs-toggle="collapse"
-                  href="#dashboard"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-home"></i>
-                  <p>Dashboard</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="dashboard">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="../demo1/index.html">
-                        <span class="sub-item">Dashboard 1</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-section">
-                <span class="sidebar-mini-icon">
-                  <i class="fa fa-ellipsis-h"></i>
-                </span>
-                <h4 class="text-section">Components</h4>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#base">
-                  <i class="fas fa-layer-group"></i>
-                  <p>Base</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="base">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="components/avatars.html">
-                        <span class="sub-item">Avatars</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/buttons.html">
-                        <span class="sub-item">Buttons</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/gridsystem.html">
-                        <span class="sub-item">Grid System</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/panels.html">
-                        <span class="sub-item">Panels</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/notifications.html">
-                        <span class="sub-item">Notifications</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/sweetalert.html">
-                        <span class="sub-item">Sweet Alert</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/font-awesome-icons.html">
-                        <span class="sub-item">Font Awesome Icons</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/simple-line-icons.html">
-                        <span class="sub-item">Simple Line Icons</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="components/typography.html">
-                        <span class="sub-item">Typography</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                  <i class="fas fa-th-list"></i>
-                  <p>Sidebar Layouts</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="sidebarLayouts">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="sidebar-style-2.html">
-                        <span class="sub-item">Sidebar Style 2</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="icon-menu.html">
-                        <span class="sub-item">Icon Menu</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#forms">
-                  <i class="fas fa-pen-square"></i>
-                  <p>Forms</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="forms">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="forms/forms.html">
-                        <span class="sub-item">Basic Form</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
-                  <i class="fas fa-table"></i>
-                  <p>Tables</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="tables">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="tables/tables.html">
-                        <span class="sub-item">Basic Table</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="tables/datatables.html">
-                        <span class="sub-item">Datatables</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#maps">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <p>Maps</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="maps">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="maps/googlemaps.html">
-                        <span class="sub-item">Google Maps</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="maps/jsvectormap.html">
-                        <span class="sub-item">Jsvectormap</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#charts">
-                  <i class="far fa-chart-bar"></i>
-                  <p>Charts</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="charts">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="charts/charts.html">
-                        <span class="sub-item">Chart Js</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="charts/sparkline.html">
-                        <span class="sub-item">Sparkline</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a href="widgets.html">
-                  <i class="fas fa-desktop"></i>
-                  <p>Widgets</p>
-                  <span class="badge badge-success">4</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../documentation/index.html">
-                  <i class="fas fa-file"></i>
-                  <p>Documentation</p>
-                  <span class="badge badge-secondary">1</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#submenu">
-                  <i class="fas fa-bars"></i>
-                  <p>Menu Levels</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="submenu">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a data-bs-toggle="collapse" href="#subnav1">
-                        <span class="sub-item">Level 1</span>
-                        <span class="caret"></span>
-                      </a>
-                      <div class="collapse" id="subnav1">
-                        <ul class="nav nav-collapse subnav">
-                          <li>
-                            <a href="#">
-                              <span class="sub-item">Level 2</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <span class="sub-item">Level 2</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li>
-                      <a data-bs-toggle="collapse" href="#subnav2">
-                        <span class="sub-item">Level 1</span>
-                        <span class="caret"></span>
-                      </a>
-                      <div class="collapse" id="subnav2">
-                        <ul class="nav nav-collapse subnav">
-                          <li>
-                            <a href="#">
-                              <span class="sub-item">Level 2</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span class="sub-item">Level 1</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
+          <div class="ps-3">
+            <a href="mailto:example@gmail.com" class="text-muted small"><i class="fas fa-envelope text-primary me-2"></i>Dangcongnhat2004qb@gmail.com</a>
           </div>
         </div>
       </div>
-      <!-- End Sidebar -->
-
-      <div class="main-panel">
-        <div class="main-header">
-          <div class="main-header-logo">
-            <!-- Logo Header -->
-            <div class="logo-header" data-background-color="dark">
-              <a href="index.html" class="logo">
-                <img
-                  src="assets/img/kaiadmin/logo_light.svg"
-                  alt="navbar brand"
-                  class="navbar-brand"
-                  height="20"
-                />
-              </a>
-              <div class="nav-toggle">
-                <button class="btn btn-toggle toggle-sidebar">
-                  <i class="gg-menu-right"></i>
-                </button>
-                <button class="btn btn-toggle sidenav-toggler">
-                  <i class="gg-menu-left"></i>
-                </button>
-              </div>
-              <button class="topbar-toggler more">
-                <i class="gg-more-vertical-alt"></i>
-              </button>
-            </div>
-            <!-- End Logo Header -->
+      <div class="col-lg-4 text-center text-lg-end">
+        <div class="d-flex justify-content-end">
+          <div class="d-flex border-end border-primary pe-3">
+            <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-facebook-f"></i></a>
+            <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-twitter"></i></a>
+            <a class="btn p-0 text-primary me-3" href="#"><i class="fab fa-instagram"></i></a>
+            <a class="btn p-0 text-primary me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
           </div>
-          <!-- Navbar Header -->
-          <nav
-            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-          >
-            <div class="container-fluid">
-              <nav
-                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-              >
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <button type="submit" class="btn btn-search pe-1">
-                      <i class="fa fa-search search-icon"></i>
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Search ..."
-                    class="form-control"
-                  />
-                </div>
-              </nav>
-
-              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                <li
-                  class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
-                >
-                  <a
-                    class="nav-link dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    role="button"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                  >
-                    <i class="fa fa-search"></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-search animated fadeIn">
-                    <form class="navbar-left navbar-form nav-search">
-                      <div class="input-group">
-                        <input
-                          type="text"
-                          placeholder="Search ..."
-                          class="form-control"
-                        />
-                      </div>
-                    </form>
-                  </ul>
-                </li>
-                <li class="nav-item topbar-icon dropdown hidden-caret">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="messageDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-envelope"></i>
-                  </a>
-                  <ul
-                    class="dropdown-menu messages-notif-box animated fadeIn"
-                    aria-labelledby="messageDropdown"
-                  >
-                    <li>
-                      <div
-                        class="dropdown-title d-flex justify-content-between align-items-center"
-                      >
-                        Messages
-                        <a href="#" class="small">Mark all as read</a>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="message-notif-scroll scrollbar-outer">
-                        <div class="notif-center">
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                src="assets/img/jm_denis.jpg"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Jimmy Denis</span>
-                              <span class="block"> How are you ? </span>
-                              <span class="time">5 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                src="assets/img/chadengle.jpg"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Chad</span>
-                              <span class="block"> Ok, Thanks ! </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                src="assets/img/mlane.jpg"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Jhon Doe</span>
-                              <span class="block">
-                                Ready for the meeting today...
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                src="assets/img/talha.jpg"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Talha</span>
-                              <span class="block"> Hi, Apa Kabar ? </span>
-                              <span class="time">17 minutes ago</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <a class="see-all" href="javascript:void(0);"
-                        >See all messages<i class="fa fa-angle-right"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item topbar-icon dropdown hidden-caret">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="notifDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-bell"></i>
-                    <span class="notification">4</span>
-                  </a>
-                  <ul
-                    class="dropdown-menu notif-box animated fadeIn"
-                    aria-labelledby="notifDropdown"
-                  >
-                    <li>
-                      <div class="dropdown-title">
-                        You have 4 new notification
-                      </div>
-                    </li>
-                    <li>
-                      <div class="notif-scroll scrollbar-outer">
-                        <div class="notif-center">
-                          <a href="#">
-                            <div class="notif-icon notif-primary">
-                              <i class="fa fa-user-plus"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block"> New user registered </span>
-                              <span class="time">5 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-icon notif-success">
-                              <i class="fa fa-comment"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block">
-                                Rahmad commented on Admin
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                src="assets/img/profile2.jpg"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="block">
-                                Reza send messages to you
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-icon notif-danger">
-                              <i class="fa fa-heart"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block"> Farrah liked Admin </span>
-                              <span class="time">17 minutes ago</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <a class="see-all" href="javascript:void(0);"
-                        >See all notifications<i class="fa fa-angle-right"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item topbar-icon dropdown hidden-caret">
-                  <a
-                    class="nav-link"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    aria-expanded="false"
-                  >
-                    <i class="fas fa-layer-group"></i>
-                  </a>
-                  <div class="dropdown-menu quick-actions animated fadeIn">
-                    <div class="quick-actions-header">
-                      <span class="title mb-1">Quick Actions</span>
-                      <span class="subtitle op-7">Shortcuts</span>
-                    </div>
-                    <div class="quick-actions-scroll scrollbar-outer">
-                      <div class="quick-actions-items">
-                        <div class="row m-0">
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div class="avatar-item bg-danger rounded-circle">
-                                <i class="far fa-calendar-alt"></i>
-                              </div>
-                              <span class="text">Calendar</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-warning rounded-circle"
-                              >
-                                <i class="fas fa-map"></i>
-                              </div>
-                              <span class="text">Maps</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div class="avatar-item bg-info rounded-circle">
-                                <i class="fas fa-file-excel"></i>
-                              </div>
-                              <span class="text">Reports</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-success rounded-circle"
-                              >
-                                <i class="fas fa-envelope"></i>
-                              </div>
-                              <span class="text">Emails</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-primary rounded-circle"
-                              >
-                                <i class="fas fa-file-invoice-dollar"></i>
-                              </div>
-                              <span class="text">Invoice</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-secondary rounded-circle"
-                              >
-                                <i class="fas fa-credit-card"></i>
-                              </div>
-                              <span class="text">Payments</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-
-                <li class="nav-item topbar-user dropdown hidden-caret">
-                  <a
-                    class="dropdown-toggle profile-pic"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    aria-expanded="false"
-                  >
-                    <div class="avatar-sm">
-                      <img
-                        src="assets/img/profile.jpg"
-                        alt="..."
-                        class="avatar-img rounded-circle"
-                      />
-                    </div>
-                    <span class="profile-username">
-                      <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Hizrian</span>
-                    </span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-user animated fadeIn">
-                    <div class="dropdown-user-scroll scrollbar-outer">
-                      <li>
-                        <div class="user-box">
-                          <div class="avatar-lg">
-                            <img
-                              src="assets/img/profile.jpg"
-                              alt="image profile"
-                              class="avatar-img rounded"
-                            />
-                          </div>
-                          <div class="u-text">
-                            <h4>Hizrian</h4>
-                            <p class="text-muted">hello@example.com</p>
-                            <a
-                              href="profile.html"
-                              class="btn btn-xs btn-secondary btn-sm"
-                              >View Profile</a
-                            >
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">My Profile</a>
-                        <a class="dropdown-item" href="#">My Balance</a>
-                        <a class="dropdown-item" href="#">Inbox</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Account Setting</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
-                      </li>
-                    </div>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </nav>
-          <!-- End Navbar -->
-        </div>
-
-        <div class="container">
-          <div class="page-inner">
-            <div
-              class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
-            >
-              <div>
-                <h3 class="fw-bold mb-3">Dashboard</h3>
-                <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
-              </div>
-              <div class="ms-md-auto py-2 py-md-0">
-                <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-                <a href="#" class="btn btn-primary btn-round">Add Customer</a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-icon">
-                        <div
-                          class="icon-big text-center icon-primary bubble-shadow-small"
-                        >
-                          <i class="fas fa-users"></i>
-                        </div>
-                      </div>
-                      <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
-                          <p class="card-category">Visitors</p>
-                          <h4 class="card-title">1,294</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-icon">
-                        <div
-                          class="icon-big text-center icon-info bubble-shadow-small"
-                        >
-                          <i class="fas fa-user-check"></i>
-                        </div>
-                      </div>
-                      <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
-                          <p class="card-category">Subscribers</p>
-                          <h4 class="card-title">1303</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-icon">
-                        <div
-                          class="icon-big text-center icon-success bubble-shadow-small"
-                        >
-                          <i class="fas fa-luggage-cart"></i>
-                        </div>
-                      </div>
-                      <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
-                          <p class="card-category">Sales</p>
-                          <h4 class="card-title">$ 1,345</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="card card-stats card-round">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-icon">
-                        <div
-                          class="icon-big text-center icon-secondary bubble-shadow-small"
-                        >
-                          <i class="far fa-check-circle"></i>
-                        </div>
-                      </div>
-                      <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
-                          <p class="card-category">Order</p>
-                          <h4 class="card-title">576</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-8">
-                <div class="card card-round">
-                  <div class="card-header">
-                    <div class="card-head-row">
-                      <div class="card-title">User Statistics</div>
-                      <div class="card-tools">
-                        <a
-                          href="#"
-                          class="btn btn-label-success btn-round btn-sm me-2"
-                        >
-                          <span class="btn-label">
-                            <i class="fa fa-pencil"></i>
-                          </span>
-                          Export
-                        </a>
-                        <a href="#" class="btn btn-label-info btn-round btn-sm">
-                          <span class="btn-label">
-                            <i class="fa fa-print"></i>
-                          </span>
-                          Print
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <div class="chart-container" style="min-height: 375px">
-                      <canvas id="statisticsChart"></canvas>
-                    </div>
-                    <div id="myChartLegend"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-primary card-round">
-                  <div class="card-header">
-                    <div class="card-head-row">
-                      <div class="card-title">Daily Sales</div>
-                      <div class="card-tools">
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-sm btn-label-light dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            Export
-                          </button>
-                          <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton"
-                          >
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#"
-                              >Something else here</a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-category">March 25 - April 02</div>
-                  </div>
-                  <div class="card-body pb-0">
-                    <div class="mb-4 mt-2">
-                      <h1>$4,578.58</h1>
-                    </div>
-                    <div class="pull-in">
-                      <canvas id="dailySalesChart"></canvas>
-                    </div>
-                  </div>
-                </div>
-                <div class="card card-round">
-                  <div class="card-body pb-0">
-                    <div class="h1 fw-bold float-end text-primary">+5%</div>
-                    <h2 class="mb-2">17</h2>
-                    <p class="text-muted">Users online</p>
-                    <div class="pull-in sparkline-fix">
-                      <div id="lineChart"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card card-round">
-                  <div class="card-header">
-                    <div class="card-head-row card-tools-still-right">
-                      <h4 class="card-title">Users Geolocation</h4>
-                      <div class="card-tools">
-                        <button
-                          class="btn btn-icon btn-link btn-primary btn-xs"
-                        >
-                          <span class="fa fa-angle-down"></span>
-                        </button>
-                        <button
-                          class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"
-                        >
-                          <span class="fa fa-sync-alt"></span>
-                        </button>
-                        <button
-                          class="btn btn-icon btn-link btn-primary btn-xs"
-                        >
-                          <span class="fa fa-times"></span>
-                        </button>
-                      </div>
-                    </div>
-                    <p class="card-category">
-                      Map of the distribution of users around the world
-                    </p>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="table-responsive table-hover table-sales">
-                          <table class="table">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <div class="flag">
-                                    <img
-                                      src="assets/img/flags/id.png"
-                                      alt="indonesia"
-                                    />
-                                  </div>
-                                </td>
-                                <td>Indonesia</td>
-                                <td class="text-end">2.320</td>
-                                <td class="text-end">42.18%</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="flag">
-                                    <img
-                                      src="assets/img/flags/us.png"
-                                      alt="united states"
-                                    />
-                                  </div>
-                                </td>
-                                <td>USA</td>
-                                <td class="text-end">240</td>
-                                <td class="text-end">4.36%</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="flag">
-                                    <img
-                                      src="assets/img/flags/au.png"
-                                      alt="australia"
-                                    />
-                                  </div>
-                                </td>
-                                <td>Australia</td>
-                                <td class="text-end">119</td>
-                                <td class="text-end">2.16%</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="flag">
-                                    <img
-                                      src="assets/img/flags/ru.png"
-                                      alt="russia"
-                                    />
-                                  </div>
-                                </td>
-                                <td>Russia</td>
-                                <td class="text-end">1.081</td>
-                                <td class="text-end">19.65%</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="flag">
-                                    <img
-                                      src="assets/img/flags/cn.png"
-                                      alt="china"
-                                    />
-                                  </div>
-                                </td>
-                                <td>China</td>
-                                <td class="text-end">1.100</td>
-                                <td class="text-end">20%</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="flag">
-                                    <img
-                                      src="assets/img/flags/br.png"
-                                      alt="brazil"
-                                    />
-                                  </div>
-                                </td>
-                                <td>Brasil</td>
-                                <td class="text-end">640</td>
-                                <td class="text-end">11.63%</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="mapcontainer">
-                          <div
-                            id="world-map"
-                            class="w-100"
-                            style="height: 300px"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card card-round">
-                  <div class="card-body">
-                    <div class="card-head-row card-tools-still-right">
-                      <div class="card-title">New Customers</div>
-                      <div class="card-tools">
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-icon btn-clean me-0"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="fas fa-ellipsis-h"></i>
-                          </button>
-                          <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton"
-                          >
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#"
-                              >Something else here</a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-list py-4">
-                      <div class="item-list">
-                        <div class="avatar">
-                          <img
-                            src="assets/img/jm_denis.jpg"
-                            alt="..."
-                            class="avatar-img rounded-circle"
-                          />
-                        </div>
-                        <div class="info-user ms-3">
-                          <div class="username">Jimmy Denis</div>
-                          <div class="status">Graphic Designer</div>
-                        </div>
-                        <button class="btn btn-icon btn-link op-8 me-1">
-                          <i class="far fa-envelope"></i>
-                        </button>
-                        <button class="btn btn-icon btn-link btn-danger op-8">
-                          <i class="fas fa-ban"></i>
-                        </button>
-                      </div>
-                      <div class="item-list">
-                        <div class="avatar">
-                          <span
-                            class="avatar-title rounded-circle border border-white"
-                            >CF</span
-                          >
-                        </div>
-                        <div class="info-user ms-3">
-                          <div class="username">Chandra Felix</div>
-                          <div class="status">Sales Promotion</div>
-                        </div>
-                        <button class="btn btn-icon btn-link op-8 me-1">
-                          <i class="far fa-envelope"></i>
-                        </button>
-                        <button class="btn btn-icon btn-link btn-danger op-8">
-                          <i class="fas fa-ban"></i>
-                        </button>
-                      </div>
-                      <div class="item-list">
-                        <div class="avatar">
-                          <img
-                            src="assets/img/talha.jpg"
-                            alt="..."
-                            class="avatar-img rounded-circle"
-                          />
-                        </div>
-                        <div class="info-user ms-3">
-                          <div class="username">Talha</div>
-                          <div class="status">Front End Designer</div>
-                        </div>
-                        <button class="btn btn-icon btn-link op-8 me-1">
-                          <i class="far fa-envelope"></i>
-                        </button>
-                        <button class="btn btn-icon btn-link btn-danger op-8">
-                          <i class="fas fa-ban"></i>
-                        </button>
-                      </div>
-                      <div class="item-list">
-                        <div class="avatar">
-                          <img
-                            src="assets/img/chadengle.jpg"
-                            alt="..."
-                            class="avatar-img rounded-circle"
-                          />
-                        </div>
-                        <div class="info-user ms-3">
-                          <div class="username">Chad</div>
-                          <div class="status">CEO Zeleaf</div>
-                        </div>
-                        <button class="btn btn-icon btn-link op-8 me-1">
-                          <i class="far fa-envelope"></i>
-                        </button>
-                        <button class="btn btn-icon btn-link btn-danger op-8">
-                          <i class="fas fa-ban"></i>
-                        </button>
-                      </div>
-                      <div class="item-list">
-                        <div class="avatar">
-                          <span
-                            class="avatar-title rounded-circle border border-white bg-primary"
-                            >H</span
-                          >
-                        </div>
-                        <div class="info-user ms-3">
-                          <div class="username">Hizrian</div>
-                          <div class="status">Web Designer</div>
-                        </div>
-                        <button class="btn btn-icon btn-link op-8 me-1">
-                          <i class="far fa-envelope"></i>
-                        </button>
-                        <button class="btn btn-icon btn-link btn-danger op-8">
-                          <i class="fas fa-ban"></i>
-                        </button>
-                      </div>
-                      <div class="item-list">
-                        <div class="avatar">
-                          <span
-                            class="avatar-title rounded-circle border border-white bg-secondary"
-                            >F</span
-                          >
-                        </div>
-                        <div class="info-user ms-3">
-                          <div class="username">Farrah</div>
-                          <div class="status">Marketing</div>
-                        </div>
-                        <button class="btn btn-icon btn-link op-8 me-1">
-                          <i class="far fa-envelope"></i>
-                        </button>
-                        <button class="btn btn-icon btn-link btn-danger op-8">
-                          <i class="fas fa-ban"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-8">
-                <div class="card card-round">
-                  <div class="card-header">
-                    <div class="card-head-row card-tools-still-right">
-                      <div class="card-title">Transaction History</div>
-                      <div class="card-tools">
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-icon btn-clean me-0"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="fas fa-ellipsis-h"></i>
-                          </button>
-                          <div
-                            class="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton"
-                          >
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#"
-                              >Something else here</a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body p-0">
-                    <div class="table-responsive">
-                      <!-- Projects table -->
-                      <table class="table align-items-center mb-0">
-                        <thead class="thead-light">
-                          <tr>
-                            <th scope="col">Payment Number</th>
-                            <th scope="col" class="text-end">Date & Time</th>
-                            <th scope="col" class="text-end">Amount</th>
-                            <th scope="col" class="text-end">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">
-                              <button
-                                class="btn btn-icon btn-round btn-success btn-sm me-2"
-                              >
-                                <i class="fa fa-check"></i>
-                              </button>
-                              Payment from #10231
-                            </th>
-                            <td class="text-end">Mar 19, 2020, 2.45pm</td>
-                            <td class="text-end">$250.00</td>
-                            <td class="text-end">
-                              <span class="badge badge-success">Completed</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="dropdown ms-3">
+            <a href="#" class="dropdown-toggle text-dark" data-bs-toggle="dropdown"><small><i class="fas fa-globe-europe text-primary me-2"></i> Viet Nam</small></a>
+            <div class="dropdown-menu rounded">
+              <a href="#" class="dropdown-item">Việt Nam</a>
+              <a href="#" class="dropdown-item">Bangla</a>
+              <a href="#" class="dropdown-item">French</a>
+              <a href="#" class="dropdown-item">Spanish</a>
+              <a href="#" class="dropdown-item">Arabic</a>
             </div>
           </div>
-        </div>
-
-        <footer class="footer">
-          <div class="container-fluid d-flex justify-content-between">
-            <nav class="pull-left">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="http://www.themekita.com">
-                    ThemeKita
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Help </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Licenses </a>
-                </li>
-              </ul>
-            </nav>
-            <div class="copyright">
-              2024, made with <i class="fa fa-heart heart text-danger"></i> by
-              <a href="http://www.themekita.com">ThemeKita</a>
-            </div>
-            <div>
-              Distributed by
-              <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-            </div>
-          </div>
-        </footer>
-      </div>
-
-      <!-- Custom template | don't include it in your project! -->
-      <div class="custom-template">
-        <div class="title">Settings</div>
-        <div class="custom-content">
-          <div class="switcher">
-            <div class="switch-block">
-              <h4>Logo Header</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="selected changeLogoHeaderColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="purple"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="light-blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="green"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="orange"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="red"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="white"
-                ></button>
-                <br />
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="dark2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="purple2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="light-blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="green2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="orange2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="red2"
-                ></button>
-              </div>
-            </div>
-            <div class="switch-block">
-              <h4>Navbar Header</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="purple"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="light-blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="green"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="orange"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="red"
-                ></button>
-                <button
-                  type="button"
-                  class="selected changeTopBarColor"
-                  data-color="white"
-                ></button>
-                <br />
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="dark2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="purple2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="light-blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="green2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="orange2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="red2"
-                ></button>
-              </div>
-            </div>
-            <div class="switch-block">
-              <h4>Sidebar</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="changeSideBarColor"
-                  data-color="white"
-                ></button>
-                <button
-                  type="button"
-                  class="selected changeSideBarColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeSideBarColor"
-                  data-color="dark2"
-                ></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="custom-toggle">
-          <i class="icon-settings"></i>
         </div>
       </div>
-      <!-- End Custom template -->
     </div>
-    <!--   Core JS Files   -->
-    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/core/popper.min.js"></script>
-    <script src="assets/js/core/bootstrap.min.js"></script>
+  </div>
+</div>
+<!-- Topbar End -->
 
-    <!-- jQuery Scrollbar -->
-    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- Navbar & Hero Start -->
+<div class="container-fluid nav-bar px-0 px-lg-4 py-lg-0">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a href="#" class="navbar-brand p-0">
+        <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i> EduExplorer</h1>
+        <!-- <img src="img/logo.png" alt="Logo"> -->
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="fa fa-bars"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav mx-0 mx-lg-auto">
+          <a href="home.html" class="nav-item nav-link active">Trang chủ</a>
+          <a href="/user/university" class="nav-item nav-link">Đại học</a>
+          <a href="https://devopsedu.vn/courses/devops-for-freshers/lesson/bai-10-trien-khai-du-an-java-spring/" class="nav-item nav-link">Khóa học</a>
+          <a href="/user/event" class="nav-item nav-link">Sự kiện</a>
+          <a href="/user/mapservice" class="nav-item nav-link">Dịch vụ </a>
+          <a href="/user/course" class="nav-item nav-link">Ngành</a>
 
-    <!-- Chart JS -->
-    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+          <!--          <div class="nav-item dropdown">-->
+<!--            <a href="#" class="nav-link" data-bs-toggle="dropdown">-->
+<!--              <span class="dropdown-toggle">Pages</span>-->
+<!--            </a>-->
+<!--            <div class="dropdown-menu">-->
+<!--              <a href="feature.html" class="dropdown-item">Our Features</a>-->
+<!--              <a href="team.html" class="dropdown-item">Our team</a>-->
+<!--              <a href="testimonial.html" class="dropdown-item">Testimonial</a>-->
+<!--              <a href="FAQ.html" class="dropdown-item">FAQs</a>-->
+<!--              <a href="404.html" class="dropdown-item">404 Page</a>-->
+<!--            </div>-->
+<!--          </div>-->
+          <div class="nav-btn px-3">
+            <a href="/user/search"><button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0" data-bs-toggle="modal" ><i class="fas fa-search"> </i></button></a>
+            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Đăng nhập</a>
+          </div>
+        </div>
+      </div>
+      <div class="d-none d-xl-flex flex-shrink-0 ps-4">
+        <a href="#" class="btn btn-light btn-lg-square rounded-circle position-relative wow tada" data-wow-delay=".9s">
+          <i class="fa fa-phone-alt fa-2x"></i>
+          <div class="position-absolute" style="top: 7px; right: 12px;">
+            <span><i class="fa fa-comment-dots text-secondary"></i></span>
+          </div>
+        </a>
+        <div class="d-flex flex-column ms-3">
+          <span>Liên hệ với chúng tôi</span>
+          <a href="tel:+ 0123 456 7890"><span class="text-dark">(+84) 0972 087 664</span></a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+<!-- Navbar & Hero End -->
 
-    <!-- jQuery Sparkline -->
-    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+<!-- Modal Search Start -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content rounded-0">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex align-items-center bg-primary">
+        <div class="input-group w-75 mx-auto d-flex">
+          <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+          <span id="search-icon-1" class="btn bg-light border nput-group-text p-3"><i class="fa fa-search"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Search End -->
 
-    <!-- Chart Circle -->
-    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
 
-    <!-- Datatables -->
-    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+<!-- Carousel Start -->
+<div class="header-carousel owl-carousel">
+  <div class="header-carousel-item bg-primary">
+    <div class="carousel-caption">
+      <div class="container">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-7 animated fadeInLeft">
+            <div class="text-sm-center text-md-start">
+              <h4 class="text-white text-uppercase fw-bold mb-4">Chào mừng đến với EduExplore</h4>
+              <h1 class="display-1 text-white mb-4">Cập nhật tin tức tuyển sinh</h1>
+              <p class="mb-5 fs-5">Tìm kiếm được những thông tin tuyển sinh cập nhật và nhanh chóng ...
+              </p>
+              <div class="d-flex justify-content-center justify-content-md-start flex-shrink-0 mb-4">
+                <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i> Xem video</a>
+                <a class="btn btn-dark rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem thêm</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 animated fadeInRight">
+            <div class="calrousel-img" style="object-fit: cover;">
+              <img src="/user/img/explore.png" class="img-fluid w-100" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-carousel-item bg-primary">
+    <div class="carousel-caption">
+      <div class="container">
+        <div class="row gy-4 gy-lg-0 gx-0 gx-lg-5 align-items-center">
+          <div class="col-lg-5 animated fadeInLeft">
+            <div class="calrousel-img">
+              <img src="/user/img/video.png" class="img-fluid w-100" alt="">
+            </div>
+          </div>
+          <div class="col-lg-7 animated fadeInRight">
+            <div class="text-sm-center text-md-end">
+              <h4 class="text-white text-uppercase fw-bold mb-4">Chào mừng đên với EduExplore</h4>
+              <h1 class="display-1 text-white mb-4">Trải nghiệm học thử chuyên ngành</h1>
+              <p class="mb-5 fs-5">Bạn có thể trải nghiệm các ngành học bằng các khóa học trong Website...
+              </p>
+              <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
+                <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i> Xem video</a>
+                <a class="btn btn-dark rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem thêm</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Carousel End -->
 
-    <!-- Bootstrap Notify -->
-    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<!-- Feature Start -->
+<div class="container-fluid feature bg-light py-5">
+  <div class="container py-5">
+    <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+      <h4 class="text-primary">Nhóm ngành</h4>
+      <h1 class="display-4 mb-4">Các nhóm ngành đại học</h1>
+      <p class="mb-0">Ngành đào tạo (hay Ngành học) sẽ cung cấp cho người học những kiến thức, kỹ năng chuyên môn về một lĩnh vực nghề nghiệp nhất định. Theo quy định của Bộ Giáo dục và Đào tạo, mỗi ngành được quy định một mã tuyển sinh chung trong xét tuyển Đại học, Cao đẳng.
+      </p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+        <div class="feature-item p-4 pt-0">
+          <div class="feature-icon p-4 mb-4">
+            <i class="fab fa-artstation"></i>
+          </div>
+          <h4 class="mb-4">Máy tính & CNTT</h4>
+          <p class="mb-4">Nhóm ngành Máy tính và Công nghệ thông tin bao gồm các lĩnh vực liên quan đến nghiên cứu, phát triển và ứng dụng của các hệ thống máy tính, phần mềm, phần cứng, và các giải pháp công nghệ thông tin (CNTT) để giải quyết các vấn đề trong cuộc sống và công việc...
+          </p>
+          <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
+        <div class="feature-item p-4 pt-0">
+          <div class="feature-icon p-4 mb-4">
+            <i class="fas fa-scale-balanced"></i>
+          </div>
+          <h4 class="mb-4">Pháp luật</h4>
+          <p class="mb-4">Nhóm ngành Pháp luật bao gồm các lĩnh vực liên quan đến nghiên cứu, áp dụng và thực thi luật pháp. Nhóm ngành này tập trung vào việc tìm hiểu các quy định pháp lý, quyền và nghĩa vụ của cá nhân, tổ chức, và cách giải quyết các tranh chấp pháp lý trong xã hội...
+          </p>
+          <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
+        <div class="feature-item p-4 pt-0">
+          <div class="feature-icon p-4 mb-4">
+            <i class="fas fa-school"></i>
+          </div>
+          <h4 class="mb-4">KHGD & Sư phạm</h4>
+          <p class="mb-4">Nhóm ngành Khoa học giáo dục và Đào tạo Giáo viên sư phạm bao gồm các lĩnh vực liên quan đến nghiên cứu lý thuyết và phương pháp giáo dục, cũng như đào tạo giáo viên để giảng dạy ở các cấp học. Nhóm ngành này tập trung vào việc phát triển kỹ năng sư phạm, phương pháp giảng dạy hiệu quả, và quản lý giáo dục nhằm nâng cao chất lượng giảng dạy và học tập...
+          </p>
+          <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
+        <div class="feature-item p-4 pt-0">
+          <div class="feature-icon p-4 mb-4">
+            <i class="fas fa-chart-column"></i>
+          </div>
+          <h4 class="mb-4">Toán học & Thống kê</h4>
+          <p class="mb-4">Nhóm ngành Toán học & Thống kê bao gồm các lĩnh vực liên quan đến nghiên cứu và ứng dụng các lý thuyết toán học, phương pháp tính toán và thống kê để giải quyết các vấn đề trong nhiều lĩnh vực như khoa học, kinh tế, và kỹ thuật. Toán học tập trung vào việc phát triển các khái niệm và công cụ toán học, trong khi Thống kê chuyên về thu thập, phân tích và diễn giải dữ liệu...
+          </p>
+          <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+        </div>
 
-    <!-- jQuery Vector Maps -->
-    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+      </div>
 
-    <!-- Sweet Alert -->
-    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    </div>
 
-    <!-- Kaiadmin JS -->
-    <script src="assets/js/kaiadmin.min.js"></script>
+  </div>
+  <div class="nav-btn px-3">
+    <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+  </div>
+</div>
+<!-- Feature End -->
 
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="assets/js/setting-demo.js"></script>
-    <script src="assets/js/demo.js"></script>
-    <script>
-      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#177dff",
-        fillColor: "rgba(23, 125, 255, 0.14)",
-      });
+<!-- About Start -->
+<!-- About End -->
 
-      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#f3545d",
-        fillColor: "rgba(243, 84, 93, .14)",
-      });
+<!-- Service Start -->
+<!-- Service End -->
 
-      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#ffa534",
-        fillColor: "rgba(255, 165, 52, .14)",
-      });
-    </script>
-  </body>
+<!-- FAQs Start -->
+<!-- FAQs End -->
+
+<!-- Blog Start -->
+<div class="container-fluid blog py-5">
+  <div class="container py-5">
+    <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+      <h4 class="text-primary">Tuyển sinh</h4>
+      <h1 class="display-4 mb-4">Thông tin tuyển sinh</h1>
+      <p class="mb-0">Tổng hợp các bài đăng về các thông tin tuyển sinh mới nhất của BGD hoặc các trường đại học
+      </p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+        <div class="blog-item">
+          <div class="blog-img">
+            <img src="https://virtual-vku-14cc7.web.app/img/logo-tab.jpg" class="img-fluid rounded-top w-100" alt="">
+            <div class="blog-categiry py-2 px-4">
+              <img src="https://daotao.vku.udn.vn/public/images/new.gif">
+            </div>
+          </div>
+          <div class="blog-content p-4">
+            <div class="blog-comment d-flex justify-content-between mb-3">
+              <div class="small"><span class="fa fa-user text-primary"></span> VKU</div>
+              <div class="small"><span class="fa fa-calendar text-primary"></span> 30 Jun 2025</div>
+              <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
+            </div>
+            <a href="#" class="h4 d-inline-block mb-3">Thông báo xét tuyển thẳng và ưu tiên xét tuyển theo quy định của Bộ GDĐT năm 2024 (Tuyển thẳng)</a>
+            <p class="mb-3">Trường Đại học Công nghệ thông tin và Truyền thông Việt – Hàn, Đại học Đà Nẵng thông báo tuyển sinh đào tạo trình độ đại học hệ chính quy năm 2024 theo phương thức tuyển thẳng theo quy định của Bộ Giáo dục và Đào tạo (GDĐT).</p>
+            <a href="#" class="btn p-0">Xem chi tiết  <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.4s">
+        <div class="blog-item">
+          <div class="blog-img">
+            <img src="https://haitrieu.com/wp-content/uploads/2021/10/Logo-Truong-Dai-hoc-Bach-khoa-Dai-hoc-Da-Nang-DUT-1024x1024.png" class="img-fluid rounded-top w-100" alt="">
+            <div class="blog-categiry py-2 px-4">
+              <img src="https://daotao.vku.udn.vn/public/images/new.gif">
+            </div>
+          </div>
+          <div class="blog-content p-4">
+            <div class="blog-comment d-flex justify-content-between mb-3">
+              <div class="small"><span class="fa fa-user text-primary"></span> DUT</div>
+              <div class="small"><span class="fa fa-calendar text-primary"></span> 30 Dec 2025</div>
+              <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
+            </div>
+            <a href="#" class="h4 d-inline-block mb-3">Điểm chuẩn trúng tuyển vào Trường Đại học Bách khoa, ĐHĐN theo phương thức xét kết quả thi THPT năm 2024</a>
+            <p class="mb-3">Tra cứu kết quả xét tuyển tại đây.</p>
+            <a href="#" class="btn p-0">Xem chi tiết  <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.6s">
+        <div class="blog-item">
+          <div class="blog-img">
+            <img src="https://th.bing.com/th/id/R.9f319dace32d7e5f2db8d183e1cc5391?rik=qvnKRKtqWShldQ&riu=http%3a%2f%2fstudentexchange.duytan.edu.vn%2fmedia%2f1089%2fdtu-1.gif&ehk=GSFntQsV6e3eT4jlBXjyrEpQIJ3nHySf0lyF1uSu2HE%3d&risl=&pid=ImgRaw&r=0" class="img-fluid rounded-top w-100" alt="">
+            <div class="blog-categiry py-2 px-4">
+              <img src="https://daotao.vku.udn.vn/public/images/new.gif">
+            </div>
+          </div>
+          <div class="blog-content p-4">
+            <div class="blog-comment d-flex justify-content-between mb-3">
+              <div class="small"><span class="fa fa-user text-primary"></span> DTU</div>
+              <div class="small"><span class="fa fa-calendar text-primary"></span> 30 Dec 2025</div>
+              <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
+            </div>
+            <a href="#" class="h4 d-inline-block mb-3">Đại học Duy Tân tuyển sinh năm 2025</a>
+            <p class="mb-3">Trường Đại học Duy Tân (Mã trường: DDT) là trường đại học đa ngành, đa lĩnh vực; đào tạo từ trình độ Đại học đến Tiến sĩ. Trường tổ chức đào tạo 10 ngành Tiến sĩ, 13 ngành Thạc sĩ, 55 ngành học; >100 chuyên ngành học, 13 chuyên ngành hợp tác quốc tế về đào tạo với Đại học Carnegie Mellon(CMU), Penn State (PSU), Purdue và ...</p>
+            <a href="#" class="btn p-0">Xem chi tiết  <i class="fa fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-btn px-3">
+    <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+  </div>
+</div>
+<!-- Blog End -->
+
+<!-- Team Start -->
+<div class="container-fluid team pb-5">
+  <div class="container pb-5">
+    <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+      <h4 class="text-primary">Trường đại học & cao đẳng</h4>
+      <h1 class="display-4 mb-4">Danh sách trường đại học & cao đẳng</h1>
+      <p class="mb-0">Tổng hợp tất cả các trường đại học & cao đẳng tại Đà Nẵng.
+      </p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+        <div class="team-item">
+          <div class="team-img">
+            <img src="https://inkythuatso.com/uploads/images/2021/12/logo-dai-hoc-su-pham-da-nang-inkythuatso-15-11-23-55.jpg" class="img-fluid rounded-top w-100" alt="">
+            <div class="team-icon">
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+          <div class="team-title p-4">
+            <h4 class="mb-0">Trường đại học sư phạm Đà Nẵng</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
+        <div class="team-item">
+          <div class="team-img">
+            <img src="https://upes3.edu.vn/wp-content/uploads/2021/09/Logo-truong-Dai-hoc-Su-pham-Ky-thuat-Da-Nang.jpg" class="img-fluid rounded-top w-100" alt="">
+            <div class="team-icon">
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+          <div class="team-title p-4">
+            <h4 class="mb-0">Trường đại học SPKT Đà Nẵng</h4>
+<!--            <p class="mb-0">Profession</p>-->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
+        <div class="team-item">
+          <div class="team-img">
+            <img src="https://haitrieu.com/wp-content/uploads/2022/03/Logo-DH-Kinh-te-Dai-hoc-Da-Nang-DUE.png" class="img-fluid rounded-top w-100" alt="">
+            <div class="team-icon">
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+          <div class="team-title p-4">
+            <h4 class="mb-0">Trường đại học kinh tế Đà Nẵng</h4>
+<!--            <p class="mb-0">Profession</p>-->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
+        <div class="team-item">
+          <div class="team-img">
+            <img src="https://th.bing.com/th/id/OIP.tSuiTEft0aed1S2YV58HfAHaHa?rs=1&pid=ImgDetMain" class="img-fluid rounded-top w-100" alt="">
+            <div class="team-icon">
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
+              <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+          <div class="team-title p-4">
+            <h4 class="mb-0">Đại học Đông Á  </h4>
+<!--            <p class="mb-0">Profession</p>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Team End -->
+
+<!-- Testimonial Start -->
+<div class="container-fluid testimonial pb-5">
+  <div class="container pb-5">
+    <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+      <h4 class="text-primary">Cao đẳng</h4>
+
+      </p>
+    </div>
+    <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.2s">
+      <div class="testimonial-item bg-light rounded">
+        <div class="row g-0">
+          <div class="col-4  col-lg-4 col-xl-3">
+            <div class="h-100">
+              <img src="https://th.bing.com/th/id/OIP.PqxOY4NR5XOjmFM48F9xvgAAAA?rs=1&pid=ImgDetMain" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
+            </div>
+          </div>
+          <div class="col-8 col-lg-8 col-xl-9">
+            <div class="d-flex flex-column my-auto text-start p-4">
+              <h4 class="text-dark mb-0">FPT Polytechnic</h4>
+<!--              <p class="mb-3">Profession</p>-->
+
+              <p class="mb-0">FPT Polytechnic là cái tên nổi bật nhất trong danh sách này, bởi vậy nó xứng đáng nằm ở vị trí top 2 mà Top10DaNang giới thiệu. Trường Cao đẳng FPT Polytechnic được thành lập năm 2010. tới mục tiêu cung cấp kỹ năng nghề nghiệp chất lượng cao cho người học. Đảm bảo được tính cạnh tranh trong môi trường phát triển ngày càng cao.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-item bg-light rounded">
+        <div class="row g-0">
+          <div class="col-4  col-lg-4 col-xl-3">
+            <div class="h-100">
+              <img src="https://cdn.haitrieu.com/wp-content/uploads/2023/06/Logo-Truong-Cao-dang-Du-lich-Da-Nang-DVTC-1021x1024.png" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
+            </div>
+          </div>
+          <div class="col-8 col-lg-8 col-xl-9">
+            <div class="d-flex flex-column my-auto text-start p-4">
+              <h4 class="text-dark mb-0">Cao đẳng du lịch Đà Nẵng</h4>
+
+              <p class="mb-0">Hiện nay du lịch đang được rất nhiều người quan tâm. Vì thế chuyên ngành này cũng được nhiều bạn trẻ theo đuổi. Cao đẳng du lịch Đà Nẵng là một trong những ngôi trường chất lượng mà bạn nên tham khảo khi có ý định theo ngành này. Đây là trường cao đẳng ở Đà Nẵng công lập được thành lập ngày 16/10/2009 của Bộ Lao động – Thương binh và Xã hội.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-item bg-light rounded">
+        <div class="row g-0">
+          <div class="col-4  col-lg-4 col-xl-3">
+            <div class="h-100">
+              <img src="https://th.bing.com/th/id/OIP.uJ9jeklo5mFu2C3VzFiE8wHaHY?rs=1&pid=ImgDetMain" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
+            </div>
+          </div>
+          <div class="col-8 col-lg-8 col-xl-9">
+            <div class="d-flex flex-column my-auto text-start p-4">
+              <h4 class="text-dark mb-0">Trường Cao đẳng Bách Khoa Đà Nẵng</h4>
+
+              <p class="mb-0">Cao đẳng Bách Khoa Đà Nẵng là cái tên không còn xa lạ với nhiều bạn trẻ. Nơi đây đào tạo đa dạng ngành nghề cho sinh viên lựa chọn. Trường được thành lập năm năm 2008. Với chiến lược phát triển bằng những bước đột phá trong lĩnh vực giáo dục đào tạo. Trở thành một cơ sở  có uy tín mang lại lợi ích thiết thực cho người học và cho xã hội.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Testimonial End -->
+
+
+<!-- Footer Start -->
+<div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+  <div class="container py-5">
+    <div class="row g-5">
+      <div class="col-xl-9">
+        <div class="mb-5">
+          <div class="row g-4">
+            <div class="col-md-6 col-lg-6 col-xl-5">
+              <div class="footer-item">
+                <a href="home.html" class="p-0">
+                  <h3 class="text-white"><i class="fab fa-slack me-3"></i> EduExplore</h3>
+                  <!-- <img src="img/logo.png" alt="Logo"> -->
+                </a>
+                <p class="text-white mb-4">Tương lai của các bạn,nhiệm vụ của chúng tôi...</p>
+                <div class="footer-btn d-flex">
+                  <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-facebook-f"></i></a>
+                  <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-twitter"></i></a>
+                  <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-instagram"></i></a>
+                  <a class="btn btn-md-square rounded-circle me-0" href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3">
+              <div class="footer-item">
+                <h4 class="text-white mb-4">Dịch vụ</h4>
+                <a href="#"><i class="fas fa-angle-right me-2"></i> Giới thiệu</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i> Đại học</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i> Cao đẳng</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i> Sự kiện</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i> Tuyển sinh</a>
+                <a href="#"><i class="fas fa-angle-right me-2"></i> Học thử</a>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-4">
+              <div class="footer-item">
+                <h4 class="mb-4 text-white">Instagram</h4>
+                <div class="row g-3">
+                  <div class="col-4">
+                    <div class="footer-instagram rounded">
+                      <img src="/user/img/instagram-footer-1.jpg" class="img-fluid w-100" alt="">
+                      <div class="footer-search-icon">
+                        <a href="/user/img/instagram-footer-1.jpg" data-lightbox="footerInstagram-1" class="my-auto"><i class="fas fa-link text-white"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="footer-instagram rounded">
+                      <img src="/user/img/instagram-footer-2.jpg" class="img-fluid w-100" alt="">
+                      <div class="footer-search-icon">
+                        <a href="/user/img/instagram-footer-2.jpg" data-lightbox="footerInstagram-2" class="my-auto"><i class="fas fa-link text-white"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="footer-instagram rounded">
+                      <img src="/user/img/instagram-footer-3.jpg" class="img-fluid w-100" alt="">
+                      <div class="footer-search-icon">
+                        <a href="/user/img/instagram-footer-3.jpg" data-lightbox="footerInstagram-3" class="my-auto"><i class="fas fa-link text-white"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="footer-instagram rounded">
+                      <img src="/user/img/instagram-footer-4.jpg" class="img-fluid w-100" alt="">
+                      <div class="footer-search-icon">
+                        <a href="/user/img/instagram-footer-4.jpg" data-lightbox="footerInstagram-4" class="my-auto"><i class="fas fa-link text-white"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="footer-instagram rounded">
+                      <img src="/user/img/instagram-footer-5.jpg" class="img-fluid w-100" alt="">
+                      <div class="footer-search-icon">
+                        <a href="/user/img/instagram-footer-5.jpg" data-lightbox="footerInstagram-5" class="my-auto"><i class="fas fa-link text-white"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="footer-instagram rounded">
+                      <img src="/user/img/instagram-footer-6.jpg" class="img-fluid w-100" alt="">
+                      <div class="footer-search-icon">
+                        <a href="/user/img/instagram-footer-6.jpg" data-lightbox="footerInstagram-6" class="my-auto"><i class="fas fa-link text-white"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pt-5" style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
+          <div class="row g-0">
+            <div class="col-12">
+              <div class="row g-4">
+                <div class="col-lg-6 col-xl-4">
+                  <div class="d-flex">
+                    <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                      <i class="fas fa-map-marker-alt fa-2x"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-white">Địa chỉ</h4>
+                      <p class="mb-0">Đà Nẵng</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                  <div class="d-flex">
+                    <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                      <i class="fas fa-envelope fa-2x"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-white">Email</h4>
+                      <p class="mb-0">dangcongnhat2004qb@gmail.com</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+
+                  <div class="d-flex">             
+                    <div class="btn-xl-square bg-primary text-white rounded p-4 me-4">
+                      <i class="fa fa-phone-alt fa-2x"></i>
+                    </div>
+                     
+                    <div>
+                      <h4 class="text-white">Điện thoại</h4>
+                      <p class="mb-0">(+84) 0972 087 664</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3">
+        <div class="footer-item">
+          <h4 class="text-white mb-4">Trải nghiệm học thử</h4>
+          <p class="text-white mb-3">Trai nghiệm trước các ngành học đại học.</p>
+          <div class="position-relative rounded-pill mb-4">
+            <input class="form-control rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Enter your email">
+            <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 mt-2 me-2">Đăng ký</button>
+          </div>
+          <div class="d-flex flex-shrink-0">
+            <div class="footer-btn">
+              <a href="#" class="btn btn-lg-square rounded-circle position-relative wow tada" data-wow-delay=".9s">
+                <i class="fa fa-phone-alt fa-2x"></i>
+                <div class="position-absolute" style="top: 2px; right: 12px;">
+                  <span><i class="fa fa-comment-dots text-secondary"></i></span>
+                </div>
+              </a>
+            </div>
+            <div class="d-flex flex-column ms-3 flex-shrink-0">
+              <span>Liên hệ với chúng tôi</span>
+              <a href="SDT: (+84) 0972 087 664"><span class="text-white">SDT: (+84) 0972 087 664</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Footer End -->
+
+<!-- Copyright Start -->
+<div class="container-fluid copyright py-4">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-md-6 text-center text-md-end mb-md-0">
+        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>EduExplore</a>, All right reserved.</span>
+      </div>
+      <div class="col-md-6 text-center text-md-start text-body">
+        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+<!--        Designed By <a class="border-bottom text-white" href="https://htmlcodex.com">Nhat</a> Distributed By <a class="border-bottom text-white" href="https://themewagon.com">ThemeWagon</a>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Copyright End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/user/lib/wow/wow.min.js"></script>
+<script src="/user/lib/easing/easing.min.js"></script>
+<script src="/user/lib/waypoints/waypoints.min.js"></script>
+<script src="/user/lib/counterup/counterup.min.js"></script>
+<script src="/user/lib/lightbox/js/lightbox.min.js"></script>
+<script src="/user/lib/owlcarousel/owl.carousel.min.js"></script>
+
+
+<!-- Template Javascript -->
+<script src="/user/js/main.js"></script>
+</body>
+
 </html>

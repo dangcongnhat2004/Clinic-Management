@@ -1,14 +1,27 @@
 package com.example.admission.admissionswebsite.Controller;
 
+import com.example.admission.admissionswebsite.Model.Users;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
-@RestController
+@Controller
 public class UserController {
-    @GetMapping("/user")
-    public String homeuser() {
-        return "user/index";
+    @GetMapping("/auth/signup")
+    public String showSignUpForm(Model model) {
+        model.addAttribute("user", new Users());
+
+        return "/home/register";
+    }
+    @GetMapping("/auth/login")
+    public String loginPage(@ModelAttribute("successMessage") String successMessage, Model model) {
+        model.addAttribute("successMessage", successMessage);
+        return "/home/login"; // This will render login.html
+    }
+    @GetMapping("/")
+    public String homePage() {
+        return "/user/home";
     }
     @GetMapping("/user/course")
     public String course() {

@@ -1,7 +1,13 @@
 package com.example.admission.admissionswebsite.repository;
 
+
 import com.example.admission.admissionswebsite.Model.Users;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepo extends JpaRepository<Users,Integer> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<Users,Integer> {
+    Optional<Users> findByEmail(String email);
+
 }

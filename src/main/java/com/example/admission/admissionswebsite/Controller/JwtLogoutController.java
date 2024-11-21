@@ -1,6 +1,6 @@
-package com.example.be.controller;
+package com.example.admission.admissionswebsite.Controller;
 
-import com.example.be.service.JwtBlacklistService;
+import com.example.admission.admissionswebsite.service.JwtBlacklistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

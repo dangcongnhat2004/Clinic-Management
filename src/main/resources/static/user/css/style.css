@@ -376,6 +376,7 @@
 
 .feature .feature-item .feature-icon {
     position: relative;
+    font-size: 50px;
     width: 100px;
     display: inline-flex;
     align-items: center;
@@ -450,6 +451,9 @@
 
 .service .service-item .service-img img {
     transition: 0.5s;
+}
+.team-img {
+    cursor: pointer;
 }
 
 .service .service-item:hover .service-img img {
@@ -887,3 +891,106 @@
 /*** copyright end ***/
 
 
+/* Tùy chỉnh giao diện tìm kiếm */
+.select {
+
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    cursor: pointer;
+    position: relative; /* Định vị tương đối cho các phần tử con */
+    transition: 300ms; /* Thêm hiệu ứng chuyển tiếp cho các thuộc tính */
+    color: white; /* Màu chữ */
+}
+
+.selected {
+    background-color: #ffffff; /* Màu nền cho phần được chọn */
+    padding: 10px 20px; /* Đệm cho phần được chọn */
+    margin-right: 10px; /* Khoảng cách bên phải giữa các phần tử */
+    border-radius: 5px; /* Bo tròn góc */
+    position: relative; /* Định vị tương đối cho phần tử */
+    z-index: 1000; /* Đặt độ ưu tiên hiển thị */
+    font-size: 16px; /* Kích thước chữ */
+    display: flex; /* Sử dụng flexbox để sắp xếp nội dung */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: space-between; /* Tạo không gian giữa các phần tử */
+    min-width: 200px; /* Đặt chiều rộng tối thiểu */
+}
+
+
+.arrow {
+    height: 10px; /* Chiều cao của mũi tên */
+    transform: rotate(-90deg); /* Xoay mũi tên */
+    width: 25px; /* Chiều rộng của mũi tên */
+    fill: white; /* Màu mũi tên */
+    z-index: 1000; /* Đặt độ ưu tiên hiển thị */
+    transition: 300ms; /* Thêm hiệu ứng chuyển tiếp cho các thuộc tính */
+}
+
+.options {
+
+    justify-content: space-between;
+    flex-direction: column; /* Sắp xếp theo chiều dọc */
+    border-radius: 5px; /* Bo tròn góc */
+    padding: 5px; /* Đệm cho danh sách lựa chọn */
+    background-color: #343a40; /* Màu nền cho danh sách lựa chọn */
+    position: absolute; /* Định vị tuyệt đối */
+    top: 50px; /* Đặt vị trí phía trên */
+    left: 0; /* Đặt vị trí bên trái */
+    opacity: 0; /* Ẩn danh sách lựa chọn */
+    transition: 300ms; /* Thêm hiệu ứng chuyển tiếp cho các thuộc tính */
+    min-width: 200px; /* Đặt chiều rộng tối thiểu cho danh sách lựa chọn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng cho danh sách lựa chọn */
+}
+
+.select:hover > .options {
+    opacity: 1; /* Hiện danh sách lựa chọn khi di chuột vào phần chọn */
+    top: 50px; /* Đặt lại vị trí phía trên */
+}
+
+.select:hover > .selected .arrow {
+    transform: rotate(0deg); /* Đổi chiều mũi tên khi di chuột vào */
+}
+
+.option {
+    border-radius: 5px; /* Bo tròn góc cho mỗi lựa chọn */
+    padding: 10px 20px; /* Đệm cho mỗi lựa chọn */
+    transition: 300ms; /* Thêm hiệu ứng chuyển tiếp cho các thuộc tính */
+    background-color: #6c757d; /* Màu nền cho mỗi lựa chọn */
+    font-size: 15px; /* Kích thước chữ */
+    min-width: 200px; /* Đặt chiều rộng tối thiểu cho mỗi lựa chọn */
+}
+
+.option:hover {
+    background-color: #495057; /* Màu nền khi di chuột vào lựa chọn */
+}
+
+.options input[type="radio"] {
+    display: none; /* Ẩn các nút radio */
+}
+
+.options label {
+    display: inline-block; /* Hiển thị label */
+}
+
+.options label::before {
+    content: attr(data-txt); /* Hiển thị nội dung tùy chọn */
+}
+
+.options input[type="radio"]:checked + label {
+    display: none; /* Ẩn label khi lựa chọn */
+}
+
+.select:has(.options input[type="radio"]#all:checked) .selected::before {
+    content: attr(data-default); /* Hiển thị mặc định khi chọn tất cả */
+}
+.select:has(.options input[type="radio"]#option-1:checked) .selected::before {
+    content: attr(data-one); /* Hiển thị tùy chọn 1 */
+}
+.select:has(.options input[type="radio"]#option-2:checked) .selected::before {
+    content: attr(data-two); /* Hiển thị tùy chọn 2 */
+}
+.select:has(.options input[type="radio"]#option-3:checked) .selected::before {
+    content: attr(data-three); /* Hiển thị tùy chọn 3 */
+}

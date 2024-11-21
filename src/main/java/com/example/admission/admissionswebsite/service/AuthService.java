@@ -1,15 +1,18 @@
-package com.example.be.service;
+package com.example.admission.admissionswebsite.service;
 
 
-import com.example.be.Dto.ReqRes;
-import com.example.be.entity.Users;
-import com.example.be.repository.OurUserRepo;
+
+import com.example.admission.admissionswebsite.Dto.UserDto;
+import com.example.admission.admissionswebsite.Model.Users;
+import com.example.admission.admissionswebsite.repository.OurUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 
 @Service
@@ -24,53 +27,74 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public ReqRes signUp(ReqRes registrationRequest){
-        ReqRes resp = new ReqRes();
+    public UserDto signUp(UserDto registrationRequest){
+        UserDto resp = new UserDto();
+        if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
+            resp.setStatusCode(400);
+            resp.setMessage("Email already registered");
+            return resp;
+        }
+
         try {
             Users ourUsers = new Users();
             ourUsers.setEmail(registrationRequest.getEmail());
             ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            ourUsers.setRoles(Users.Role.valueOf(registrationRequest.getRole()));
+            ourUsers.setRoles("STUDENT");
+            ourUsers.setAddress(registrationRequest.getAddress());
+            ourUsers.setFullName(registrationRequest.getFullName());
+            ourUsers.setBirthDate(registrationRequest.getBirthDate());
+            ourUsers.setGender(registrationRequest.getGender());
+            ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
+            ourUsers.setHighSchoolName(registrationRequest.getHighSchoolName());
             Users ourUserResult = ourUserRepo.save(ourUsers);
+
             if (ourUserResult != null && ourUserResult.getId()>0) {
                 resp.setOurUsers(ourUserResult);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
             }
-        }catch (Exception e){
+        }catch (Exception e) {
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setError("Error during user registration: " + e.getMessage());
         }
+
         return resp;
     }
 
-    public ReqRes signIn(ReqRes signinRequest){
-        ReqRes response = new ReqRes();
-
+    public UserDto signIn(UserDto signinRequest) {
+        UserDto response = new UserDto();
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),signinRequest.getPassword()));
+            // Xác thực
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(), signinRequest.getPassword()));
+
+            // Lấy thông tin người dùng từ database
             var user = ourUserRepo.findByEmail(signinRequest.getEmail()).orElseThrow();
-            System.out.println("USER IS: "+ user);
             var jwt = jwtUtils.generateToken(user);
             var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+
+            // Thiết lập giá trị cho response
             response.setStatusCode(200);
             response.setToken(jwt);
             response.setRefreshToken(refreshToken);
-            response.setExpirationTime("24Hr");
             response.setMessage("Successfully Signed In");
-        }catch (Exception e){
+            response.setRoles(user.getRoles());  // Đảm bảo `roles` không null
+
+            System.out.println("dang nhap thanh cong ");
+        } catch (Exception e) {
             response.setStatusCode(500);
             response.setError(e.getMessage());
         }
         return response;
     }
 
-    public ReqRes refreshToken(ReqRes refreshTokenReqiest){
-        ReqRes response = new ReqRes();
+
+
+    public UserDto refreshToken(UserDto refreshTokenReqiest){
+        UserDto response = new UserDto();
         String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
         Users users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
-        if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), users)) {
-            var jwt = jwtUtils.generateToken(users);
+        if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), (UserDetails) users)) {
+            var jwt = jwtUtils.generateToken((UserDetails) users);
             response.setStatusCode(200);
             response.setToken(jwt);
             response.setRefreshToken(refreshTokenReqiest.getToken());

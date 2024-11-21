@@ -93,7 +93,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <a href="#" class="navbar-brand p-0">
-                <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i> EduExplore</h1>
+                <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i> EduExplorer</h1>
                 <!-- <img src="img/logo.png" alt="Logo"> -->
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -103,9 +103,9 @@
                 <div class="navbar-nav mx-0 mx-lg-auto">
                     <a href="index.html" class="nav-item nav-link active">Trang chủ</a>
                     <a href="/user/university" class="nav-item nav-link">Đại học</a>
-                    <a href="/user/college" class="nav-item nav-link">Cao đẳng</a>
+                    <a href="https://devopsedu.vn/courses/devops-for-freshers/lesson/bai-10-trien-khai-du-an-java-spring/" class="nav-item nav-link">Khóa học</a>
                     <a href="/user/event" class="nav-item nav-link">Sự kiện</a>
-                    <a href="/user/news" class="nav-item nav-link">Tuyển sinh </a>
+                    <a href="/user/mapservice" class="nav-item nav-link">Dịch vụ </a>
                     <a href="/user/course" class="nav-item nav-link">Ngành</a>
 
                     <!--          <div class="nav-item dropdown">-->
@@ -121,7 +121,7 @@
                     <!--            </div>-->
                     <!--          </div>-->
                     <div class="nav-btn px-3">
-                        <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
+                        <a href="/user/search"><button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0" data-bs-toggle="modal" ><i class="fas fa-search"> </i></button></a>
                         <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Đăng nhập</a>
                     </div>
                 </div>
@@ -163,14 +163,220 @@
 <!-- Modal Search End -->
 
 
+<!-- Carousel Start -->
+<div class="header-carousel owl-carousel">
+    <div class="header-carousel-item bg-primary">
+        <div class="carousel-caption">
+            <div class="container">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-7 animated fadeInLeft">
+                        <div class="text-sm-center text-md-start">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Chào mừng đến với EduExplore</h4>
+                            <h1 class="display-1 text-white mb-4">Cập nhật tin tức tuyển sinh</h1>
+                            <p class="mb-5 fs-5">Tìm kiếm được những thông tin tuyển sinh cập nhật và nhanh chóng ...
+                            </p>
+                            <div class="d-flex justify-content-center justify-content-md-start flex-shrink-0 mb-4">
+                                <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i> Xem video</a>
+                                <a class="btn btn-dark rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 animated fadeInRight">
+                        <div class="calrousel-img" style="object-fit: cover;">
+                            <img src="/user/img/explore.png" class="img-fluid w-100" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-carousel-item bg-primary">
+        <div class="carousel-caption">
+            <div class="container">
+                <div class="row gy-4 gy-lg-0 gx-0 gx-lg-5 align-items-center">
+                    <div class="col-lg-5 animated fadeInLeft">
+                        <div class="calrousel-img">
+                            <img src="/user/img/video.png" class="img-fluid w-100" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-7 animated fadeInRight">
+                        <div class="text-sm-center text-md-end">
+                            <h4 class="text-white text-uppercase fw-bold mb-4">Chào mừng đên với EduExplore</h4>
+                            <h1 class="display-1 text-white mb-4">Trải nghiệm học thử chuyên ngành</h1>
+                            <p class="mb-5 fs-5">Bạn có thể trải nghiệm các ngành học bằng các khóa học trong Website...
+                            </p>
+                            <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
+                                <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i> Xem video</a>
+                                <a class="btn btn-dark rounded-pill py-3 px-4 px-md-5 ms-2" href="#">Xem thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Carousel End -->
+
+<!-- Feature Start -->
+<div class="container-fluid feature bg-light py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">Nhóm ngành</h4>
+            <h1 class="display-4 mb-4">Các nhóm ngành đại học</h1>
+            <p class="mb-0">Ngành đào tạo (hay Ngành học) sẽ cung cấp cho người học những kiến thức, kỹ năng chuyên môn về một lĩnh vực nghề nghiệp nhất định. Theo quy định của Bộ Giáo dục và Đào tạo, mỗi ngành được quy định một mã tuyển sinh chung trong xét tuyển Đại học, Cao đẳng.
+            </p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="fab fa-artstation"></i>
+                    </div>
+                    <h4 class="mb-4">Máy tính & CNTT</h4>
+                    <p class="mb-4">Nhóm ngành Máy tính và Công nghệ thông tin bao gồm các lĩnh vực liên quan đến nghiên cứu, phát triển và ứng dụng của các hệ thống máy tính, phần mềm, phần cứng, và các giải pháp công nghệ thông tin (CNTT) để giải quyết các vấn đề trong cuộc sống và công việc...
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="fas fa-scale-balanced"></i>
+                    </div>
+                    <h4 class="mb-4">Pháp luật</h4>
+                    <p class="mb-4">Nhóm ngành Pháp luật bao gồm các lĩnh vực liên quan đến nghiên cứu, áp dụng và thực thi luật pháp. Nhóm ngành này tập trung vào việc tìm hiểu các quy định pháp lý, quyền và nghĩa vụ của cá nhân, tổ chức, và cách giải quyết các tranh chấp pháp lý trong xã hội...
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <h4 class="mb-4">KHGD & Sư phạm</h4>
+                    <p class="mb-4">Nhóm ngành Khoa học giáo dục và Đào tạo Giáo viên sư phạm bao gồm các lĩnh vực liên quan đến nghiên cứu lý thuyết và phương pháp giáo dục, cũng như đào tạo giáo viên để giảng dạy ở các cấp học. Nhóm ngành này tập trung vào việc phát triển kỹ năng sư phạm, phương pháp giảng dạy hiệu quả, và quản lý giáo dục nhằm nâng cao chất lượng giảng dạy và học tập...
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
+                <div class="feature-item p-4 pt-0">
+                    <div class="feature-icon p-4 mb-4">
+                        <i class="fas fa-chart-column"></i>
+                    </div>
+                    <h4 class="mb-4">Toán học & Thống kê</h4>
+                    <p class="mb-4">Nhóm ngành Toán học & Thống kê bao gồm các lĩnh vực liên quan đến nghiên cứu và ứng dụng các lý thuyết toán học, phương pháp tính toán và thống kê để giải quyết các vấn đề trong nhiều lĩnh vực như khoa học, kinh tế, và kỹ thuật. Toán học tập trung vào việc phát triển các khái niệm và công cụ toán học, trong khi Thống kê chuyên về thu thập, phân tích và diễn giải dữ liệu...
+                    </p>
+                    <a class="btn btn-primary rounded-pill py-2 px-4" href="#">Xem chi tiết</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="nav-btn px-3">
+        <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+    </div>
+</div>
+<!-- Feature End -->
+
+<!-- About Start -->
+<!-- About End -->
+
+<!-- Service Start -->
+<!-- Service End -->
+
+<!-- FAQs Start -->
+<!-- FAQs End -->
+
+<!-- Blog Start -->
+<div class="container-fluid blog py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">Tuyển sinh</h4>
+            <h1 class="display-4 mb-4">Thông tin tuyển sinh</h1>
+            <p class="mb-0">Tổng hợp các bài đăng về các thông tin tuyển sinh mới nhất của BGD hoặc các trường đại học
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="blog-item">
+                    <div class="blog-img">
+                        <img src="https://virtual-vku-14cc7.web.app/img/logo-tab.jpg" class="img-fluid rounded-top w-100" alt="">
+                        <div class="blog-categiry py-2 px-4">
+                            <img src="https://daotao.vku.udn.vn/public/images/new.gif">
+                        </div>
+                    </div>
+                    <div class="blog-content p-4">
+                        <div class="blog-comment d-flex justify-content-between mb-3">
+                            <div class="small"><span class="fa fa-user text-primary"></span> VKU</div>
+                            <div class="small"><span class="fa fa-calendar text-primary"></span> 30 Jun 2025</div>
+                            <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
+                        </div>
+                        <a href="#" class="h4 d-inline-block mb-3">Thông báo xét tuyển thẳng và ưu tiên xét tuyển theo quy định của Bộ GDĐT năm 2024 (Tuyển thẳng)</a>
+                        <p class="mb-3">Trường Đại học Công nghệ thông tin và Truyền thông Việt – Hàn, Đại học Đà Nẵng thông báo tuyển sinh đào tạo trình độ đại học hệ chính quy năm 2024 theo phương thức tuyển thẳng theo quy định của Bộ Giáo dục và Đào tạo (GDĐT).</p>
+                        <a href="#" class="btn p-0">Xem chi tiết  <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="blog-item">
+                    <div class="blog-img">
+                        <img src="https://haitrieu.com/wp-content/uploads/2021/10/Logo-Truong-Dai-hoc-Bach-khoa-Dai-hoc-Da-Nang-DUT-1024x1024.png" class="img-fluid rounded-top w-100" alt="">
+                        <div class="blog-categiry py-2 px-4">
+                            <img src="https://daotao.vku.udn.vn/public/images/new.gif">
+                        </div>
+                    </div>
+                    <div class="blog-content p-4">
+                        <div class="blog-comment d-flex justify-content-between mb-3">
+                            <div class="small"><span class="fa fa-user text-primary"></span> DUT</div>
+                            <div class="small"><span class="fa fa-calendar text-primary"></span> 30 Dec 2025</div>
+                            <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
+                        </div>
+                        <a href="#" class="h4 d-inline-block mb-3">Điểm chuẩn trúng tuyển vào Trường Đại học Bách khoa, ĐHĐN theo phương thức xét kết quả thi THPT năm 2024</a>
+                        <p class="mb-3">Tra cứu kết quả xét tuyển tại đây.</p>
+                        <a href="#" class="btn p-0">Xem chi tiết  <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.6s">
+                <div class="blog-item">
+                    <div class="blog-img">
+                        <img src="https://th.bing.com/th/id/R.9f319dace32d7e5f2db8d183e1cc5391?rik=qvnKRKtqWShldQ&riu=http%3a%2f%2fstudentexchange.duytan.edu.vn%2fmedia%2f1089%2fdtu-1.gif&ehk=GSFntQsV6e3eT4jlBXjyrEpQIJ3nHySf0lyF1uSu2HE%3d&risl=&pid=ImgRaw&r=0" class="img-fluid rounded-top w-100" alt="">
+                        <div class="blog-categiry py-2 px-4">
+                            <img src="https://daotao.vku.udn.vn/public/images/new.gif">
+                        </div>
+                    </div>
+                    <div class="blog-content p-4">
+                        <div class="blog-comment d-flex justify-content-between mb-3">
+                            <div class="small"><span class="fa fa-user text-primary"></span> DTU</div>
+                            <div class="small"><span class="fa fa-calendar text-primary"></span> 30 Dec 2025</div>
+                            <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
+                        </div>
+                        <a href="#" class="h4 d-inline-block mb-3">Đại học Duy Tân tuyển sinh năm 2025</a>
+                        <p class="mb-3">Trường Đại học Duy Tân (Mã trường: DDT) là trường đại học đa ngành, đa lĩnh vực; đào tạo từ trình độ Đại học đến Tiến sĩ. Trường tổ chức đào tạo 10 ngành Tiến sĩ, 13 ngành Thạc sĩ, 55 ngành học; >100 chuyên ngành học, 13 chuyên ngành hợp tác quốc tế về đào tạo với Đại học Carnegie Mellon(CMU), Penn State (PSU), Purdue và ...</p>
+                        <a href="#" class="btn p-0">Xem chi tiết  <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-btn px-3">
+        <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+    </div>
+</div>
+<!-- Blog End -->
 
 <!-- Team Start -->
 <div class="container-fluid team pb-5">
     <div class="container pb-5">
         <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">Trường đại học </h4>
-            <h1 class="display-4 mb-4">Danh sách trường đại học </h1>
-            <p class="mb-0">Tổng hợp tất cả các trường đại học tại Đà Nẵng.
+            <h4 class="text-primary">Trường đại học & cao đẳng</h4>
+            <h1 class="display-4 mb-4">Danh sách trường đại học & cao đẳng</h1>
+            <p class="mb-0">Tổng hợp tất cả các trường đại học & cao đẳng tại Đà Nẵng.
             </p>
         </div>
         <div class="row g-4">
@@ -193,10 +399,7 @@
             <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
                 <div class="team-item">
                     <div class="team-img">
-                            <img src="https://upes3.edu.vn/wp-content/uploads/2021/09/Logo-truong-Dai-hoc-Su-pham-Ky-thuat-Da-Nang.jpg"
-                                 class="img-fluid rounded-top w-100"
-                                 alt="">
-
+                        <img src="https://upes3.edu.vn/wp-content/uploads/2021/09/Logo-truong-Dai-hoc-Su-pham-Ky-thuat-Da-Nang.jpg" class="img-fluid rounded-top w-100" alt="">
                         <div class="team-icon">
                             <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
                             <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
@@ -205,11 +408,8 @@
                         </div>
                     </div>
                     <div class="team-title p-4">
-                        <a href="/user/list-major">
-
                         <h4 class="mb-0">Trường đại học SPKT Đà Nẵng</h4>
                         <!--            <p class="mb-0">Profession</p>-->
-                        </a>
                     </div>
                 </div>
             </div>
@@ -252,24 +452,72 @@
 </div>
 <!-- Team End -->
 
+<!-- Testimonial Start -->
+<div class="container-fluid testimonial pb-5">
+    <div class="container pb-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+            <h4 class="text-primary">Cao đẳng</h4>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+            </p>
+        </div>
+        <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.2s">
+            <div class="testimonial-item bg-light rounded">
+                <div class="row g-0">
+                    <div class="col-4  col-lg-4 col-xl-3">
+                        <div class="h-100">
+                            <img src="https://th.bing.com/th/id/OIP.PqxOY4NR5XOjmFM48F9xvgAAAA?rs=1&pid=ImgDetMain" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
+                        </div>
+                    </div>
+                    <div class="col-8 col-lg-8 col-xl-9">
+                        <div class="d-flex flex-column my-auto text-start p-4">
+                            <h4 class="text-dark mb-0">FPT Polytechnic</h4>
+                            <!--              <p class="mb-3">Profession</p>-->
+
+                            <p class="mb-0">FPT Polytechnic là cái tên nổi bật nhất trong danh sách này, bởi vậy nó xứng đáng nằm ở vị trí top 2 mà Top10DaNang giới thiệu. Trường Cao đẳng FPT Polytechnic được thành lập năm 2010. tới mục tiêu cung cấp kỹ năng nghề nghiệp chất lượng cao cho người học. Đảm bảo được tính cạnh tranh trong môi trường phát triển ngày càng cao.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded">
+                <div class="row g-0">
+                    <div class="col-4  col-lg-4 col-xl-3">
+                        <div class="h-100">
+                            <img src="https://cdn.haitrieu.com/wp-content/uploads/2023/06/Logo-Truong-Cao-dang-Du-lich-Da-Nang-DVTC-1021x1024.png" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
+                        </div>
+                    </div>
+                    <div class="col-8 col-lg-8 col-xl-9">
+                        <div class="d-flex flex-column my-auto text-start p-4">
+                            <h4 class="text-dark mb-0">Cao đẳng du lịch Đà Nẵng</h4>
+
+                            <p class="mb-0">Hiện nay du lịch đang được rất nhiều người quan tâm. Vì thế chuyên ngành này cũng được nhiều bạn trẻ theo đuổi. Cao đẳng du lịch Đà Nẵng là một trong những ngôi trường chất lượng mà bạn nên tham khảo khi có ý định theo ngành này. Đây là trường cao đẳng ở Đà Nẵng công lập được thành lập ngày 16/10/2009 của Bộ Lao động – Thương binh và Xã hội.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded">
+                <div class="row g-0">
+                    <div class="col-4  col-lg-4 col-xl-3">
+                        <div class="h-100">
+                            <img src="https://th.bing.com/th/id/OIP.uJ9jeklo5mFu2C3VzFiE8wHaHY?rs=1&pid=ImgDetMain" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
+                        </div>
+                    </div>
+                    <div class="col-8 col-lg-8 col-xl-9">
+                        <div class="d-flex flex-column my-auto text-start p-4">
+                            <h4 class="text-dark mb-0">Trường Cao đẳng Bách Khoa Đà Nẵng</h4>
+
+                            <p class="mb-0">Cao đẳng Bách Khoa Đà Nẵng là cái tên không còn xa lạ với nhiều bạn trẻ. Nơi đây đào tạo đa dạng ngành nghề cho sinh viên lựa chọn. Trường được thành lập năm năm 2008. Với chiến lược phát triển bằng những bước đột phá trong lĩnh vực giáo dục đào tạo. Trở thành một cơ sở  có uy tín mang lại lợi ích thiết thực cho người học và cho xã hội.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Testimonial End -->
+
 
 <!-- Footer Start -->
 <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">

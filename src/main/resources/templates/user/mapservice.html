@@ -1,10 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Map Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        select {
+            width: 70%;
+        }
+
+        button {
+            width: 25%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #map {
+            width: 80%;
+            max-width: 600px;
+            height: 400px;
+        }
+    </style>
 </head>
 <body>
-$END$
+
+<div id="container">
+    <div id="controls">
+        <select id="universitySelect">
+            <option value="">Chọn trường đại học</option>
+            <option value="16.073871,108.149480">Đại học Bách Khoa</option>
+            <option value="16.062437,108.162850">Đại học Kinh Tế</option>
+            <option value="16.067726,108.215775">Đại học Sư Phạm Kỹ Thuật</option>
+            <option value="16.070405,108.214271">Đại học Công nghệ Thông tin và Truyền thông Việt - Hàn</option>
+            <option value="16.073278,108.169967">Đại học Sư Phạm</option>
+        </select>
+        <button id="searchBtn">Tìm kiếm</button>
+    </div>
+
+    <div id="map"></div>
+</div>
+
+<script>
+    function initMap() {
+        const defaultLocation = { lat: 16.047079, lng: 108.206230 }; // Đà Nẵng center
+
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: defaultLocation,
+        });
+
+        document.getElementById('searchBtn').addEventListener('click', function () {
+            const selectedValue = document.getElementById('universitySelect').value;
+            if (selectedValue) {
+                const coordinates = selectedValue.split(',');
+                const location = { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) };
+                map.setCenter(location);
+                new google.maps.Marker({
+                    position: location,
+                    map: map,
+                });
+            }
+        });
+    }
+</script>
+
+<!-- Add your Google Maps API Key in the script URL below -->
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
+
 </body>
 </html>
