@@ -54,7 +54,7 @@ public JWTUtils(){
 //        return extractClaims(token, Claims::getSubject);
 //    }
 public String extractUsername(String token) {
-    System.out.println("Received token: " + token); // Log giá trị của token
+//    System.out.println("Received token: " + token); // Log giá trị của token
     if (token == null || !token.contains(".")) {
         throw new MalformedJwtException("Invalid token format");
     }

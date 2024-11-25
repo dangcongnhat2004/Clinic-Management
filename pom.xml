@@ -114,6 +114,12 @@
 <!--?            <version>0.9.1</version>-->
 <!--?        </dependency>-->
         <!-- Jakarta Servlet API (for WebRequest) -->
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
 
 
     </dependencies>

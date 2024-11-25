@@ -2,8 +2,10 @@ package com.example.admission.admissionswebsite.config;
 
 import com.example.admission.admissionswebsite.service.JWTUtils;
 import com.example.admission.admissionswebsite.service.OurUserDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Component
-public class JWTAuthFIlter  extends OncePerRequestFilter {
+public class JWTAuthFIlter extends OncePerRequestFilter {
 
     @Autowired
     private JWTUtils jwtUtils;
@@ -29,56 +33,69 @@ public class JWTAuthFIlter  extends OncePerRequestFilter {
 
     private static final Logger logger = Logger.getLogger(JWTAuthFIlter.class.getName());
 
+    private static final List<String> PUBLIC_URLS = Arrays.asList(
+            "/", "/signup", "/auth/**", "/public/**", "/user/**","/Admin/**"
+    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwtToken;
-        final String userEmail;
+        String requestURI = request.getRequestURI();
 
-        // Kiểm tra xem header có chứa Bearer token không
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        // Bỏ qua JWT kiểm tra cho các URL public
+        if (isPublicURL(requestURI)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Lấy JWT token từ header Authorization
-        jwtToken = authHeader.substring(7); // Lấy phần token sau "Bearer "
-        userEmail = jwtUtils.extractUsername(jwtToken);
+        final String authHeader = request.getHeader("Authorization");
+        String jwtToken = null;
 
-        // Kiểm tra xem người dùng đã xác thực hay chưa
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Tải thông tin người dùng từ DB
-            UserDetails userDetails = ourUserDetailsService.loadUserByUsername(userEmail);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwtToken = authHeader.substring(7);
+        } else {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("jwtToken".equals(cookie.getName())) {
+                        jwtToken = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+        }
 
-            // Kiểm tra token hợp lệ
-            if (jwtUtils.isTokenValid(jwtToken, userDetails)) {
-                // Tạo token xác thực
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        if (jwtToken != null) {
+            try {
+                String userEmail = jwtUtils.extractUsername(jwtToken);
 
-                // Ghi log thông tin quyền của người dùng
-                logger.info("User authorities: " + userDetails.getAuthorities());
-                System.out.println("User authorities from JWTAuthFilter: " + userDetails.getAuthorities());
+                if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = ourUserDetailsService.loadUserByUsername(userEmail);
 
-                // Đặt thông tin xác thực vào SecurityContext
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                // Kiểm tra quyền trong filter
-                System.out.println("Authentication set in filter: " + SecurityContextHolder.getContext().getAuthentication());
-                System.out.println("Authorities in filter: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-            } else {
-                // Nếu token không hợp lệ hoặc đã hết hạn, ghi log và trả về lỗi
-                logger.warning("Token không hợp lệ hoặc đã hết hạn.");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Mã lỗi 401
-                response.getWriter().write("Token không hợp lệ hoặc đã hết hạn.");
+                    if (jwtUtils.isTokenValid(jwtToken, userDetails)) {
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
+                }
+            } catch (ExpiredJwtException e) {
+//                logger.warning("Token đã hết hạn.");
+                response.sendRedirect("/auth/login");
+                return;
+            } catch (Exception e) {
+//                logger.warning("Token không hợp lệ.");
+                response.sendRedirect("/auth/login");
                 return;
             }
         }
 
-        // Tiến hành lọc request tiếp theo trong chuỗi filter
         filterChain.doFilter(request, response);
     }
 
+    private boolean isPublicURL(String requestURI) {
+        return PUBLIC_URLS.stream().anyMatch(publicUrl -> requestURI.matches(publicUrl.replace("**", ".*")));
+    }
 }

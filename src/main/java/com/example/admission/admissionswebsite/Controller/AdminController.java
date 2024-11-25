@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -12,9 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController {
     @GetMapping("/admin")
     public String homeadmin() {
-        // Kiểm tra Authentication khi xử lý yêu cầu trong controller
-        System.out.println("Current Authentication: " + SecurityContextHolder.getContext().getAuthentication());
-        System.out.println("Authorities: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 
         return "admin/index";
     }

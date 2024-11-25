@@ -49,8 +49,6 @@ public class AuthController {
         UserDto signInRequest = new UserDto(email, password);
         UserDto response = authService.signIn(signInRequest);
 
-        System.out.println("Response Status Code: " + response.getStatusCode());
-        System.out.println("Response Roles: " + response.getRoles());
 
         if (response.getStatusCode() == 200) {
             String role = response.getRoles();

@@ -5,6 +5,7 @@ package com.example.admission.admissionswebsite.service;
 import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.repository.OurUserRepo;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -89,19 +90,40 @@ public class AuthService {
 
 
 
-    public UserDto refreshToken(UserDto refreshTokenReqiest){
-        UserDto response = new UserDto();
-        String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
-        Users users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
-        if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), (UserDetails) users)) {
-            var jwt = jwtUtils.generateToken((UserDetails) users);
+//    public UserDto refreshToken(UserDto refreshTokenReqiest){
+//        UserDto response = new UserDto();
+//        String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
+//        Users users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
+//        if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), (UserDetails) users)) {
+//            var jwt = jwtUtils.generateToken((UserDetails) users);
+//            response.setStatusCode(200);
+//            response.setToken(jwt);
+//            response.setRefreshToken(refreshTokenReqiest.getToken());
+//            response.setExpirationTime("24Hr");
+//            response.setMessage("Successfully Refreshed Token");
+//        }
+//        response.setStatusCode(500);
+//        return response;
+//    }
+public UserDto refreshToken(UserDto refreshTokenRequest) {
+    UserDto response = new UserDto();
+    try {
+        String email = jwtUtils.extractUsername(refreshTokenRequest.getToken());
+        Users user = ourUserRepo.findByEmail(email).orElseThrow();
+
+        if (jwtUtils.isTokenValid(refreshTokenRequest.getToken(), user)) {
+            String newJwt = jwtUtils.generateToken(user);
             response.setStatusCode(200);
-            response.setToken(jwt);
-            response.setRefreshToken(refreshTokenReqiest.getToken());
+            response.setToken(newJwt);
+            response.setRefreshToken(refreshTokenRequest.getToken());
             response.setExpirationTime("24Hr");
-            response.setMessage("Successfully Refreshed Token");
+            response.setMessage("Token refreshed successfully");
         }
-        response.setStatusCode(500);
-        return response;
+    } catch (ExpiredJwtException e) {
+        response.setStatusCode(401);
+        response.setError("Token expired. Please log in again.");
     }
+    return response;
+}
+
 }

@@ -36,12 +36,10 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/auth/**") // Bỏ qua CSRF cho các endpoint trong /auth/**
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/user/**").permitAll()
+                        .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/user/**","/Admin/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/student/**").hasAuthority("STUDENT")
-                        .requestMatchers("/university/**").hasAuthority("UNIVERSITY")
-                        .requestMatchers("/adminuser/**").hasAnyAuthority("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
