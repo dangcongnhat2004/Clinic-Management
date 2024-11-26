@@ -2,7 +2,6 @@ package com.example.admission.admissionswebsite.repository;
 
 
 import com.example.admission.admissionswebsite.Model.Users;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

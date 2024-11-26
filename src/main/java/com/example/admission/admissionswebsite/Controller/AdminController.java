@@ -1,7 +1,10 @@
 package com.example.admission.admissionswebsite.Controller;
 
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.admission.admissionswebsite.Model.University;
+import com.example.admission.admissionswebsite.Model.Users;
+import com.example.admission.admissionswebsite.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -9,11 +12,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 public class AdminController {
-    @GetMapping("/admin")
-    public String homeadmin() {
+     @Autowired
+     private UserRepository userRepository;
 
+    @GetMapping("/admin")
+    public String homeadmin(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("email", authentication.getName());
+        } else {
+            model.addAttribute("email", "hello@example.com");
+        }
         return "admin/index";
     }
 
@@ -31,23 +44,28 @@ public class AdminController {
 
     @GetMapping("/admin/danh-sach-nganh")
     public String danhsachnganh() {
+
+
         return "admin/danhsachnganh";
     }
     @GetMapping("/admin/danh-sach-su-kien")
     public String danhsachsukien() {
+
+
         return "admin/danhsachsukien";
     }
     @GetMapping("/admin/danh-sach-bai-dang")
     public String danhsachbaidang() {
+
         return "admin/danhsachbaidang";
     }
 
-    @GetMapping("admin/danh-sach-truong-dai-hoc")
-    public String danhsachtruongdaihoc() {
-        return "admin/danhsachtruongdaihoc";
-    }
+
+
+
     @GetMapping("admin/them-nganh")
     public String themnganh() {
+
         return "admin/themnganh";
     }
 }
