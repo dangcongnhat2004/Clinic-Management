@@ -78,7 +78,6 @@ public class AuthService {
             response.setMessage("Successfully Signed In");
             response.setRoles(user.getRoles());  // Đảm bảo `roles` không null
 
-            System.out.println("dang nhap thanh cong ");
         } catch (Exception e) {
             response.setStatusCode(500);
             response.setError(e.getMessage());

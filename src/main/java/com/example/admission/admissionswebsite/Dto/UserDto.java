@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,7 +31,7 @@ public class UserDto {
     private String highSchoolName;
     private String gender;
     private String roles;  // Lưu vai trò dưới dạng chuỗi    // Getter và Setter cho roles
-
+    private Integer id;
     //    private BigDecimal frequentScore1;
 //    private BigDecimal frequentScore2;
 //    private BigDecimal frequentScore3;
@@ -38,11 +40,13 @@ public class UserDto {
 //    private BigDecimal midtermScore;
 //    private BigDecimal finalScore;
 //    private BigDecimal comments;
-    private Users ourUser;
+    private List<UserDto> ourUser; // Chứa danh sách UserDto thay vì một User đơn
     // Constructor mặc định nếu cần
     public UserDto() {
     }
 
+
+    // Constructor khi truyền vào id và email
 
 
     // Constructor cho việc tạo đối tượng từ email và password
@@ -50,6 +54,18 @@ public class UserDto {
         this.email = email;
         this.password = password;
     }
+
+
+    public UserDto(Integer id, String fullName, String email) {
+        this.id = id;
+        this.email = email;
+        this.fullName = fullName;
+    }
+
+//    public UserDto(String id, String email, String fullName) {
+//    }
+//    public UserDto(Long id) {
+//    }
 
     // Getter và Setter nếu cần
     public String getEmail() {

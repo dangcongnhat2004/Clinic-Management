@@ -9,13 +9,15 @@
 
     <!-- Main Content -->
         <h2 class="text-center my-4">Thêm trường đại học</h2>
-
+    <!-- Hiển thị thông báo lỗi nếu có -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
         <div class="main-panel">
             <div class="container d-flex justify-content-center">
                 <div class="page-inner w-50 p-4" style="background-color: #f8f9fa; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
                     <!-- Cập nhật URL trong `th:action` để trỏ đúng controller -->
                     <form th:action="@{/admin/them-truong-dai-hoc}" method="post" enctype="multipart/form-data">
-                        <!-- Tên trường -->
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                         <div class="form-outline mb-4">
@@ -43,13 +45,18 @@
 
                         <!-- Dropdown chọn ID người dùng -->
                         <div class="form-outline mb-4">
-                            <label class="form-label" for="usersId">Chọn ID người dùng</label>
                             <select id="usersId" name="usersId" class="form-select">
                                 <option value="" disabled selected>Chọn người dùng</option>
                                 <option th:each="user : ${usersList}"
                                         th:value="${user.id}"
-                                        th:text="${user.id + ' - ' + user.username}">1 - User1</option>
+                                        th:text="${user.id + ' - ' + user.fullName + ' - ' + user.email}">
+                                </option>
                             </select>
+                            <div th:if="${usersList == null || usersList.isEmpty()}" class="alert alert-warning">
+                                Không có người dùng nào được tìm thấy.
+                            </div>
+
+
                         </div>
 
 
