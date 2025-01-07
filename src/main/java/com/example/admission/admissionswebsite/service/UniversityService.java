@@ -34,7 +34,7 @@ public class UniversityService {
         try {
             System.out.println("Start: addUniversity method");
 
-            // Lấy thông tin người dùng liên kết
+            // Retrieve the user linked to the university
             Users user = userRepository.findById(universityDto.getUserId()).orElse(null);
             if (user == null) {
                 System.out.println("User not found");
@@ -45,7 +45,7 @@ public class UniversityService {
 
             System.out.println("User found: " + user.getUsername());
 
-            // Tạo đối tượng University từ UniversityDto
+            // Create University object from UniversityDto
             University university = new University();
             university.setNameSchool(universityDto.getNameSchool());
             university.setAddress(universityDto.getAddress());
@@ -53,27 +53,26 @@ public class UniversityService {
 
             System.out.println("University details set");
 
-            // Lưu file logo vào folder trong project và set vào university
+            // Save the logo file to the project folder and set it in the university
             if (file != null && !file.isEmpty()) {
                 System.out.println("File uploaded: " + file.getOriginalFilename());
                 String fileName = file.getOriginalFilename();
-                String uploadDir = "uploads/";
-                Path uploadPath = Paths.get(uploadDir);
+                Path uploadDirPath = Paths.get(uploadPath);
 
-                // Tạo thư mục nếu chưa tồn tại
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                    System.out.println("Directory created: " + uploadPath.toAbsolutePath());
+                // Create directory if it doesn't exist
+                if (!Files.exists(uploadDirPath)) {
+                    Files.createDirectories(uploadDirPath);
+                    System.out.println("Directory created: " + uploadDirPath.toAbsolutePath());
                 }
 
-                // Lưu file lên server
-                Path filePath = uploadPath.resolve(fileName);
+                // Save file to server
+                Path filePath = uploadDirPath.resolve(fileName);
                 Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-                // In log kiểm tra
+                // Log for checking
                 System.out.println("File saved at: " + filePath.toAbsolutePath());
 
-                // Gán đường dẫn file vào database
+                // Set file path in database
                 university.setUniversityLogo(fileName);
             } else {
                 System.out.println("No file uploaded");
@@ -81,12 +80,12 @@ public class UniversityService {
 
             university.setUsers(user);
 
-            // Lưu vào cơ sở dữ liệu
+            // Save to database
             University savedUniversity = universityRepository.save(university);
 
             System.out.println("University saved with ID: " + savedUniversity.getId());
 
-            // Thiết lập thông tin phản hồi
+            // Set response details
             response.setStatusCode(200);
             response.setMessage("University added successfully");
             response.setId(savedUniversity.getId());
@@ -105,9 +104,9 @@ public class UniversityService {
 
 
 
-    public List<UniversityDto> getAllUniversities() {
-        return universityRepository.findAll().stream()
-                .map(UniversityDto::new)
-                .collect(Collectors.toList());
-    }
+//    public List<UniversityDto> getAllUniversities() {
+//        return universityRepository.findAll().stream()
+//                .map(UniversityDto::new)
+//                .collect(Collectors.toList());
+//    }
 }

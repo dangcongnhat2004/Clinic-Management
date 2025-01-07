@@ -1,12 +1,9 @@
 package com.example.admission.admissionswebsite.Dto;
 
 import com.example.admission.admissionswebsite.Model.University;
-import com.example.admission.admissionswebsite.Model.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-
-import java.util.Arrays;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -29,7 +26,7 @@ public class UniversityDto {
         this.nameSchool = university.getNameSchool();
         this.address = university.getAddress();
         this.description = university.getDescription();
-        this.universityLogo =university.getUniversityLogo(); // Giữ nguyên byte[]
+        this.universityLogo = university.getUniversityLogo(); // Giữ nguyên byte[]
         this.userId = university.getUsers() != null ? Math.toIntExact(university.getUsers().getId()) : null;
     }
 

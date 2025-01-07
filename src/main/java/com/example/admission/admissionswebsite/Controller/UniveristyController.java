@@ -60,28 +60,31 @@ public class UniveristyController {
     @PostMapping("/admin/them-truong-dai-hoc")
     public String addUniversity(@ModelAttribute UniversityDto universityDto,
                                 @RequestParam("universityLogo") MultipartFile file,
+                                @RequestParam("usersId") Integer userId,
                                 Model model) {
         System.out.println("API addUniversity called");
 
         try {
-            // Gọi phương thức từ service với `universityDto` và `file`
+            // Set the user ID in the DTO
+            universityDto.setUserId(userId);
+
+            // Call the service method with `universityDto` and `file`
             UniversityDto response = universityService.addUniversity(universityDto, file);
 
             if (response.getStatusCode() == 200) {
-                // Nếu thêm trường thành công, điều hướng tới trang danh sách trường
+                // If adding the university is successful, redirect to the list page
                 return "redirect:/admin/danh-sach-truong-dai-hoc";
             } else {
-                // Nếu có lỗi, hiển thị thông báo lỗi trên giao diện
+                // If there's an error, display the error message on the interface
                 model.addAttribute("errorMessage", response.getMessage());
                 return "admin/them-truong-dai-hoc";
             }
         } catch (Exception e) {
-            // Xử lý ngoại lệ nếu có lỗi trong quá trình thêm trường
-            model.addAttribute("errorMessage", "Lỗi xảy ra khi thêm trường đại học. Vui lòng thử lại.");
+            // Handle exceptions if there's an error during the process
+            model.addAttribute("errorMessage", "An error occurred while adding the university. Please try again.");
             return "admin/404";
         }
     }
-
 
 
 
