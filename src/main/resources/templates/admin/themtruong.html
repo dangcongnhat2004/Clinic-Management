@@ -10,8 +10,12 @@
     <!-- Main Content -->
         <h2 class="text-center my-4">Thêm trường đại học</h2>
     <!-- Hiển thị thông báo lỗi nếu có -->
-    <div th:if="${errorMessage}" class="alert alert-danger">
+    <div th:if="${errorMessage}" class="alert alert-danger text-center">
         <p th:text="${errorMessage}"></p>
+    </div>
+    <!-- Hiển thị thông báo thành công nếu có -->
+    <div th:if="${successMessage}" class="alert alert-success text-center">
+        <p th:text="${successMessage}"></p>
     </div>
         <div class="main-panel">
             <div class="container d-flex justify-content-center">
@@ -24,26 +28,25 @@
                             <input type="text" id="nameSchool" name="nameSchool" class="form-control" placeholder="Tên trường" required />
                             <label class="form-label" for="nameSchool">Tên trường</label>
                         </div>
-
-                        <!-- Địa chỉ -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="uniCode" name="uniCode" class="form-control" placeholder="Mã Trường" required />
+                            <label class="form-label" for="nameSchool">Mã Trường</label>
+                        </div>
                         <div class="form-outline mb-4">
                             <input type="text" id="address" name="address" class="form-control" placeholder="Địa chỉ" required />
                             <label class="form-label" for="address">Địa chỉ</label>
                         </div>
 
-                        <!-- Mô tả -->
                         <div class="form-outline mb-4">
                             <textarea class="form-control" id="description" name="description" rows="3" placeholder="Mô tả về trường"></textarea>
                             <label class="form-label" for="description">Mô tả</label>
                         </div>
 
-                        <!-- Logo trường -->
                         <div class="form-outline mb-4">
-                            <input type="file" id="universityLogo" name="universityLogo" class="form-control" accept="image/*" />
+                            <input type="file" id="universityLogo" name="universityLogo" class="form-control" accept="image/*" required />
                             <label class="form-label" for="universityLogo">Logo trường</label>
                         </div>
 
-                        <!-- Dropdown chọn ID người dùng -->
                         <div class="form-outline mb-4">
                             <select id="usersId" name="usersId" class="form-select">
                                 <option value="" disabled selected>Chọn người dùng</option>
@@ -55,12 +58,8 @@
                             <div th:if="${usersList == null || usersList.isEmpty()}" class="alert alert-warning">
                                 Không có người dùng nào được tìm thấy.
                             </div>
-
-
                         </div>
 
-
-                        <!-- Submit button -->
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Thêm trường</button>
                         </div>

@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080") // Nguồn gốc cụ thể
+                        .allowedOrigins("http://localhost:8080","http://localhost:3000") // Nguồn gốc cụ thể
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);              ; //Enable CORS for all endpoints

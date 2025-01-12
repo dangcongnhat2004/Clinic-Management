@@ -9,10 +9,12 @@ import com.example.admission.admissionswebsite.repository.UserRepository;
 import com.example.admission.admissionswebsite.service.AdminService;
 import com.example.admission.admissionswebsite.service.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class UniveristyController {
     private UniversityService universityService;
     @Autowired
     private AdminService adminService;
+    @Value("${upload.path}")
+    private String uploadPath;
     // Hiển thị form thêm trường đại học
 //    @GetMapping("/them-truong-dai-hoc")
 //    public String themtruongdaihoc(Model model) {
@@ -36,61 +40,70 @@ public class UniveristyController {
     @GetMapping("/admin/them-truong-dai-hoc")
     public String getUserIds(Model model) {
 
-        // Gọi phương thức getUserIdsByUniversityRole từ Service
         UserDto response = adminService.getUserIdsByUniversityRole();
         if (response.getStatusCode() == 200) {
-            // Nếu mã trạng thái là 200, thêm danh sách userDtos vào model
-            model.addAttribute("usersList", response.getOurUser()); // usersList là List<UserDto>
-            return "admin/themtruong";  // Trả về view danh sách người dùng
+            model.addAttribute("usersList", response.getOurUser());
+            return "admin/themtruong";
         } else {
-            // Nếu có lỗi, thêm thông báo lỗi vào model
             model.addAttribute("errorMessage", response.getMessage());
-            return "404";  // Trả về trang lỗi (hoặc trang chính có thông báo lỗi)
+            return "404";
         }
     }
 
-
-    @GetMapping("/test")
-    public String test() {
-        System.out.println("API Test called");
-        return "Test OK";
-    }
 
 
     @PostMapping("/admin/them-truong-dai-hoc")
     public String addUniversity(@ModelAttribute UniversityDto universityDto,
-                                @RequestParam("universityLogo") MultipartFile file,
                                 @RequestParam("usersId") Integer userId,
+                                RedirectAttributes redirectAttributes,
                                 Model model) {
-        System.out.println("API addUniversity called");
-
         try {
-            // Set the user ID in the DTO
             universityDto.setUserId(userId);
-
-            // Call the service method with `universityDto` and `file`
-            UniversityDto response = universityService.addUniversity(universityDto, file);
+            UniversityDto response = universityService.addUniversity(universityDto, universityDto.getUniversityLogo());
 
             if (response.getStatusCode() == 200) {
-                // If adding the university is successful, redirect to the list page
-                return "redirect:/admin/danh-sach-truong-dai-hoc";
+                redirectAttributes.addFlashAttribute("successMessage", "Thêm trường thành công!");
+                return "redirect:/admin/them-truong-dai-hoc";
             } else {
-                // If there's an error, display the error message on the interface
                 model.addAttribute("errorMessage", response.getMessage());
-                return "admin/them-truong-dai-hoc";
+                return "admin/themtruong";
             }
         } catch (Exception e) {
-            // Handle exceptions if there's an error during the process
-            model.addAttribute("errorMessage", "An error occurred while adding the university. Please try again.");
-            return "admin/404";
+            model.addAttribute("errorMessage", "Đã xảy ra lỗi khi thêm trường. Vui lòng thử lại.");
+            return "admin/themtruong";
         }
     }
+
 
 
 
     // Hiển thị danh sách các trường đại học
     @GetMapping("/admin/danh-sach-truong-dai-hoc")
     public String getAllUniversities(Model model) {
-        return "admin/danhsachtruongdaihoc"; // Thymeleaf sẽ render file templates/university/list.html
+        List<University> universities = universityService.getAllUniversities();
+        model.addAttribute("universities", universities);
+        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
+        return "admin/danhsachtruongdaihoc"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
     }
+
+
+    // Phương thức để xóa trường đại học
+
+    @PostMapping("/admin/xoa-truong-dai-hoc/{id}")
+    public String deleteUniversity(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            UniversityDto response = universityService.deleteUniversity(id);
+            if (response.getStatusCode() == 200) {
+                redirectAttributes.addFlashAttribute("successMessage", "Xóa trường đại học thành công!");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", response.getMessage());
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Đã xảy ra lỗi khi xóa trường đại học.");
+        }
+        return "redirect:/admin/danh-sach-truong-dai-hoc";
+    }
+
+
+
 }

@@ -21,6 +21,7 @@ public class University {
     private String address;
     private String description;
     private String universityLogo;
+    private String uniCode;
     @ManyToOne
     @JoinColumn(name = "users_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "users_university_fk"))
     private Users users;
