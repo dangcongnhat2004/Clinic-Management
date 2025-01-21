@@ -26,6 +26,19 @@
 
                                 <!-- Form chỉnh sửa -->
 
+<!--                                <div class="mb-3">-->
+<!--                                    <label class="form-label">Ảnh bài đăng hiện tại</label>-->
+<!--                                    <div>-->
+<!--                                        &lt;!&ndash; Hiển thị ảnh mà không có thay đổi nào &ndash;&gt;-->
+<!--                                        <img th:src="@{/uploads/{image}(image=${post.image})}" alt="Ảnh bài đăng" class="img-thumbnail" style="max-width: 300px; height: auto;">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+                                <!-- Không có input nào liên quan đến ảnh -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" value="Ảnh không thể chỉnh sửa." disabled />
+                                </div>
+
                                 <form th:action="@{/admin/cap-nhat-bai-dang}" th:object="${post}" method="post">
                                     <input type="hidden" th:field="*{id}" />
 
@@ -44,7 +57,6 @@
                                         <textarea id="content" th:field="*{content}" class="form-control" rows="5" required></textarea>
                                     </div>
 
-                                    <!-- Không bao gồm trường chỉnh sửa ảnh -->
 
                                     <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </form>

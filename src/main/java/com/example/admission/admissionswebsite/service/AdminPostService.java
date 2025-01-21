@@ -168,6 +168,7 @@ public class AdminPostService {
             }
 
             AdminPost post = optionalPost.get();
+
             // Cập nhật các trường cần thiết (ngoại trừ ảnh)
             post.setTitle(postDto.getTitle());
             post.setDescription(postDto.getDescription());
@@ -188,6 +189,27 @@ public class AdminPostService {
             response.setMessage("Đã xảy ra lỗi khi cập nhật bài đăng: " + e.getMessage());
         }
         return response;
+    }
+
+
+    private String saveImage(MultipartFile imageFile) throws IOException {
+        // Đường dẫn thư mục lưu trữ ảnh
+        String uploadDir = "uploads/";
+
+        // Tạo thư mục nếu chưa tồn tại
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        // Lấy tên ảnh
+        String imageName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+        String filePath = uploadDir + imageName;
+
+        // Lưu ảnh vào thư mục
+        Files.copy(imageFile.getInputStream(), Paths.get(filePath));
+
+        return filePath;  // Trả về đường dẫn lưu ảnh
     }
 
 }
