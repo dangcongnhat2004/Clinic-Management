@@ -108,11 +108,7 @@
                                         <span class="sub-item">Thêm ngành</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="/admin/them-nganh">
-                                        <span class="sub-item">Chỉnh sửa ngành</span>
-                                    </a>
-                                </li>
+
 
                             </ul>
                         </div>
@@ -135,11 +131,7 @@
                                         <span class="sub-item">Thêm sự kiện</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="icon-menu.html">
-                                        <span class="sub-item">Sửa sự kiện</span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </div>
                     </li>
@@ -157,15 +149,11 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/Admin/components/gridsystem.html">
+                                    <a href="/admin/them-bai-dang">
                                         <span class="sub-item">Tạo bài đăng</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="/Admin/components/gridsystem.html">
-                                        <span class="sub-item">Sửa bài đăng</span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </div>
                     </li>
@@ -187,11 +175,7 @@
                                         <span class="sub-item">Thêm trường mới</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="/Admin/tables/datatables.html">
-                                        <span class="sub-item">Chỉnh sửa trường</span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </div>
                     </li>
@@ -339,6 +323,23 @@
     });
 
 </script>
-
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const userSelect = document.getElementById('usersId');
+        if (userSelect.value === "") {
+            e.preventDefault(); // Ngăn việc submit
+            alert("Vui lòng chọn một người dùng.");
+        }
+    });
+</script>
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const titleInput = document.getElementById('title');
+        if (titleInput.value.trim() === "") {
+            e.preventDefault(); // Ngăn việc submit
+            alert("Vui lòng nhập tiêu đề bài đăng.");
+        }
+    });
+</script>
 </body>
 </html>

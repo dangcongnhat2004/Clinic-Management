@@ -57,6 +57,7 @@ public class UniveristyController {
                                 @RequestParam("usersId") Integer userId,
                                 RedirectAttributes redirectAttributes,
                                 Model model) {
+
         try {
             universityDto.setUserId(userId);
             UniversityDto response = universityService.addUniversity(universityDto, universityDto.getUniversityLogo());
@@ -104,6 +105,34 @@ public class UniveristyController {
         return "redirect:/admin/danh-sach-truong-dai-hoc";
     }
 
+//    @PostMapping("/admin/chinh-sua-truong-dai-hoc/{id}")
+//    public String updateUniversity(@PathVariable Integer id, @ModelAttribute UniversityDto universityDto,
+//                                 @RequestParam("usersId") Integer userId,
+//                                 RedirectAttributes redirectAttributes,
+//                                 Model model) {
+//
+//    }
+
+    @GetMapping("/admin/chinh-sua-truong-dai-hoc/{id}")
+    public String hienThiFormChinhSua(@PathVariable Integer id, Model model) {
+        University university = universityService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy trường với ID: " + id));
+        model.addAttribute("university", university);
+        return "admin/chinhsuatruongdaihoc";
+    }
+    @PostMapping("/admin/cap-nhat-truong-dai-hoc")
+    public String updateUniversity(@ModelAttribute UniversityDto universityDto, Model model) {
+        UniversityDto response = universityService.updateUniversity(universityDto);
+
+        if (response.getStatusCode() == 200) {
+            model.addAttribute("successMessage", response.getMessage());
+        } else {
+            model.addAttribute("errorMessage", response.getMessage());
+        }
+
+        // Trả về trang admin/update-university sau khi xử lý
+        return "redirect:/admin/danh-sach-truong-dai-hoc";
+    }
 
 
 }

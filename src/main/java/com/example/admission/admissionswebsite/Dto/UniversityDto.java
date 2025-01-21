@@ -21,11 +21,13 @@ public class UniversityDto {
     private String message;
     private String error;
     private String uniCode;
+    private String universityLogoPath;   // Dùng cho lưu trữ đường dẫn file
+
 
     // Constructor từ `University` entity sang `UniversityDto`
 
 
-    public UniversityDto(int id, String nameSchool, String address, String description, MultipartFile universityLogo, Integer userId, int statusCode, University ourUniversity, String message, String error, String uniCode) {
+    public UniversityDto(int id, String nameSchool, String address, String description, MultipartFile universityLogo, Integer userId, int statusCode, University ourUniversity, String message, String error, String uniCode, String universityLogoPath) {
         this.id = id;
         this.nameSchool = nameSchool;
         this.address = address;
@@ -37,6 +39,7 @@ public class UniversityDto {
         this.message = message;
         this.error = error;
         this.uniCode = uniCode;
+        this.universityLogoPath = universityLogoPath;
     }
 
     // Constructor mặc định

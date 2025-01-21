@@ -70,6 +70,13 @@
     <!-- End Main Content -->
 </div>
 </main>
-<!-- JS phần JS như đã cung cấp -->
-</body>
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const userSelect = document.getElementById('usersId');
+        if (userSelect.value === "") {
+            e.preventDefault(); // Ngăn việc submit
+            alert("Vui lòng chọn một người dùng.");
+        }
+    });
+</script></body>
 </html>

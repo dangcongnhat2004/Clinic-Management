@@ -55,18 +55,10 @@ public class AdminController {
 
         return "admin/danhsachsukien";
     }
-    @GetMapping("/admin/danh-sach-bai-dang")
-    public String danhsachbaidang() {
-
-        return "admin/danhsachbaidang";
-    }
 
 
 
 
-    @GetMapping("admin/them-nganh")
-    public String themnganh() {
 
-        return "admin/themnganh";
-    }
+
 }
