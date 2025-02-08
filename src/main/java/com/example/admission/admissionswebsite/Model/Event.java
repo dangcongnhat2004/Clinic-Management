@@ -17,8 +17,7 @@ public class Event {
     private String nameEvent;
     private String description;
     private String moduleCourse;
-    @Lob
-    private byte[] imageEvent;
+    private String imageEvent;
     private String dateEvent;
     private String ownerName;
     @ManyToOne

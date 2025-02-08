@@ -34,31 +34,53 @@
                                                 <th>Hành động</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr th:each="post : ${posts}">
-                                                <td th:text="${post.id + 1}"></td>
+                                            <tbody th:if="${posts != null and not #lists.isEmpty(posts)}">
+                                            <tr th:each="post, stat : ${posts}">
+                                                <td th:text="${stat.index + 1 + (currentPage * 10)}"></td>
                                                 <td th:text="${post.title}"></td>
                                                 <td th:text="${post.description}"></td>
                                                 <td th:text="${#dates.format(post.postDate, 'dd-MM-yyyy')}"></td>
                                                 <td>
-                                                    <div class="form-button-action">
-<!--                                                        &lt;!&ndash; Nút xem chi tiết &ndash;&gt;-->
-<!--                                                        <a th:href="@{/admin/bai-dang/{id}(id=${post.id})}" class="btn btn-primary" style="margin-right: 5px;">Xem</a>-->
-                                                        <!-- Nút chỉnh sửa -->
-                                                        <a th:href="@{/admin/chinh-sua-bai-dang/{id}(id=${post.id})}" class="btn btn-warning" style="margin-right: 5px;">Chỉnh sửa</a>
-                                                        <!-- Nút xóa -->
-                                                        <form th:action="@{/admin/xoa-bai-dang/{id}(id=${post.id})}" method="post" style="display: inline;">
-                                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                                            <input type="hidden" name="_method" value="delete" />
-                                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa bài đăng này không?')">Xóa</button>
-                                                        </form>
-                                                    </div>
+                                                    <a th:href="@{/admin/chinh-sua-bai-dang/{id}(id=${post.id})}" class="btn btn-warning">Chỉnh sửa</a>
+                                                    <form th:action="@{/admin/xoa-bai-dang/{id}(id=${post.id})}" method="post" style="display: inline;">
+                                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Xóa</button>
+                                                    </form>
                                                 </td>
+                                            </tr>
+                                            </tbody>
+                                            <tbody th:if="${posts == null or #lists.isEmpty(posts)}">
+                                            <tr>
+                                                <td colspan="5" class="text-center">Không có bài đăng nào.</td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        <!-- Nút Previous -->
+                                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                            <a class="page-link" th:href="@{/admin/danh-sach-bai-dang(page=${currentPage - 1})}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+
+                                        <!-- Hiển thị số trang -->
+                                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                            th:classappend="${i == currentPage} ? 'active'">
+                                            <a class="page-link" th:href="@{/admin/danh-sach-bai-dang(page=${i})}" th:text="${i + 1}"></a>
+                                        </li>
+
+                                        <!-- Nút Next -->
+                                        <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                                            <a class="page-link" th:href="@{/admin/danh-sach-bai-dang(page=${currentPage + 1})}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
                             </div>
                         </div>
                     </div>

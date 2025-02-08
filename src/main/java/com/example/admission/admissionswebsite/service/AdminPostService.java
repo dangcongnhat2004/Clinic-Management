@@ -9,7 +9,9 @@ import com.example.admission.admissionswebsite.repository.AdminPostRepository;
 import com.example.admission.admissionswebsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -20,7 +22,9 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 @Service
 public class AdminPostService {
     @Autowired
@@ -35,14 +39,12 @@ public class AdminPostService {
     public AdminPostDto addAdminPost(AdminPostDto adminPostDto, MultipartFile file) {
         AdminPostDto response = new AdminPostDto();
         try {
-            // Validate adminPostDto
             if (adminPostDto == null) {
                 response.setStatusCode(400);
                 response.setMessage("Post data is required");
                 return response;
             }
 
-            // Validate required fields
             if (adminPostDto.getTitle() == null || adminPostDto.getTitle().isEmpty()) {
                 response.setStatusCode(400);
                 response.setMessage("Vui lòng nhập tiêu đề bài đăng");
@@ -101,8 +103,10 @@ public class AdminPostService {
         return response;
     }
 
-    public List<AdminPost> getAllAdminPosts() {
-        return adminPostRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<AdminPost> getAllAdminPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return adminPostRepository.findAll(pageable);
     }
     public AdminPostDto deletePosts(Integer id) {
         AdminPostDto response = new AdminPostDto();

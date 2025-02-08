@@ -10,6 +10,7 @@ import com.example.admission.admissionswebsite.service.AdminService;
 import com.example.admission.admissionswebsite.service.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,10 +56,26 @@ public class PostsController {
     }
 
     @GetMapping("/admin/danh-sach-bai-dang")
-    public String getListPosts(Model model) {
-        List<AdminPost> posts = adminPostService.getAllAdminPosts();
-        model.addAttribute("posts", posts);
-        return "posts/danhsachbaidang"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    public String getListPosts(Model model,
+                               @RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size) {
+
+        try {
+            // Đảm bảo page không bị âm
+            if (page < 0) {
+                page = 0;
+            }
+            Page<AdminPost> postPage = adminPostService.getAllAdminPosts(page, size);
+
+            model.addAttribute("posts", postPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", postPage.getTotalPages());
+            System.out.println("Danh sách bài đăng: " + postPage.getContent());
+
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Lỗi khi lấy danh sách bài đăng: " + e.getMessage());
+        }
+        return "posts/danhsachbaidang";
     }
 
     @PostMapping("/admin/xoa-bai-dang/{id}")
