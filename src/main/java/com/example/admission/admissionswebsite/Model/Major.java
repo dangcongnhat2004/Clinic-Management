@@ -14,9 +14,8 @@ public class Major {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String courseName;
-    @Lob
-    private byte[] majorImageUrl;
+    private String majorGroupName;
+    private String majorImage;
     private String description;
     @ManyToOne
     @JoinColumn(name = "university_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "university_major_fk"))
