@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<main layout:fragment="content">
+    <div class="main-panel">
+        <div class="container-fluid"> <!-- Đổi từ container -> container-fluid -->
+            <div class="page-inner">
+                <div class="card card-round">
+                    <div class="card-header">
+                        <div class="card-head-row">
+                            <div class="card-title">Quản lý người dùng</div>
+                            <div class="card-tools">
+                                <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
+                                    <span class="btn-label"><i class="fa fa-pencil"></i></span> Export
+                                </a>
+                                <a href="#" class="btn btn-label-info btn-round btn-sm">
+                                    <span class="btn-label"><i class="fa fa-print"></i></span> Print
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="multi-filter-select" class="display table table-striped table-hover" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Năm sinh</th>
+                                    <th>Trường THPT</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Số điện thoại</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="user : ${usersList}">
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.address}"></td>
+                                    <td th:text="${user.birthDate}"></td>
+                                    <td th:text="${user.fullName}"></td>
+                                    <td th:text="${user.phoneNumber}"></td>
+                                    <td th:text="${user.highSchoolName}"></td>
+
+                                </tr>
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Năm sinh</th>
+                                    <th>Trường THPT</th>
+                                    <th>Số điện thoại</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <div th:if="${usersList == null || usersList.isEmpty()}" class="alert alert-warning">
+                                Không có người dùng nào được tìm thấy.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

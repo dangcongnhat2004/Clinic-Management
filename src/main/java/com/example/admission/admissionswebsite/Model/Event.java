@@ -16,11 +16,10 @@ public class Event {
     private int id;
     private String nameEvent;
     private String description;
-    private String moduleCourse;
     private String imageEvent;
     private String dateEvent;
     private String ownerName;
     @ManyToOne
-    @JoinColumn(name = "university_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "university_event_fk"))
-    private University university;
+    @JoinColumn(name = "users_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "users_event_fk"))
+    private Users users;
 }

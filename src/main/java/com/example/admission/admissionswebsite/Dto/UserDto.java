@@ -62,7 +62,19 @@ public class UserDto {
         this.fullName = fullName;
     }
 
-//    public UserDto(String id, String email, String fullName) {
+    public UserDto(Integer id,String email, String address, String phoneNumber, String birthDate, String fullName, String highSchoolName) {
+        this.id = id;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.birthDate = birthDate;
+        this.fullName = fullName;
+        this.highSchoolName = highSchoolName;
+    }
+
+//    public UserDto(int intExact, String fullName, String email, String address, String birthDate, String highSchoolName, String phoneNumber) {
+//    }
+    //    public UserDto(String id, String email, String fullName) {
 //    }
 //    public UserDto(Long id) {
 //    }
@@ -82,5 +94,45 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getHighSchoolName() {
+        return highSchoolName;
+    }
+
+    public void setHighSchoolName(String highSchoolName) {
+        this.highSchoolName = highSchoolName;
     }
 }

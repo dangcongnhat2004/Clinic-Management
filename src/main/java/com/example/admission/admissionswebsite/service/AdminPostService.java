@@ -1,10 +1,8 @@
 package com.example.admission.admissionswebsite.service;
 
 import com.example.admission.admissionswebsite.Dto.AdminPostDto;
-import com.example.admission.admissionswebsite.Dto.UniversityDto;
 import com.example.admission.admissionswebsite.Model.AdminPost;
-import com.example.admission.admissionswebsite.Model.University;
-import com.example.admission.admissionswebsite.Model.Users;
+
 import com.example.admission.admissionswebsite.repository.AdminPostRepository;
 import com.example.admission.admissionswebsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 @Service

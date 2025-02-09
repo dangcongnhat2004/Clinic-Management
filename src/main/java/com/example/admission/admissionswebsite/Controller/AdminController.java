@@ -1,9 +1,11 @@
 package com.example.admission.admissionswebsite.Controller;
 
 
+import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.University;
 import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.repository.UserRepository;
+import com.example.admission.admissionswebsite.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,8 @@ import java.util.List;
 public class AdminController {
      @Autowired
      private UserRepository userRepository;
+     @Autowired
+     private AdminService adminService;
 
     @GetMapping("/admin")
     public String homeadmin(Model model) {
@@ -43,18 +47,19 @@ public class AdminController {
     }
 
 
-    @GetMapping("/admin/danh-sach-nganh")
-    public String danhsachnganh() {
+    @GetMapping("/admin/danh-sach-nguoi-dung")
+    public String getAllUsers(Model model) {
+        UserDto response = adminService.getUserIdsByUsersRole();
+        if (response.getStatusCode() == 200) {
+            model.addAttribute("usersList", response.getOurUser());
+            return "admin/danhsachnguoidung";
+        } else {
+            model.addAttribute("errorMessage", response.getMessage());
+            return "admin/danhsacnguoidung";
+        }
 
-
-        return "admin/danhsachnganh";
     }
-    @GetMapping("/admin/danh-sach-su-kien")
-    public String danhsachsukien() {
 
-
-        return "admin/danhsachsukien";
-    }
 
 
 

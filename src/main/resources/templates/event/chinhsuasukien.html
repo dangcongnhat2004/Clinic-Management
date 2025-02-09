@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+
+<main layout:fragment="content">
+    <div class="wrapper">
+        <div class="main-panel">
+            <div class="container">
+                <div class="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="card-title">Chỉnh sửa sự kiện</h4>
+                                    </div>
+                                </div>
+
+                                <!-- Hiển thị thông báo thành công hoặc lỗi -->
+                                <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                                    <span th:text="${successMessage}"></span>
+                                </div>
+                                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                                    <span th:text="${errorMessage}"></span>
+                                </div>
+
+                                <!-- Form chỉnh sửa sự kiện -->
+                                <form th:action="@{/admin/cap-nhat-su-kien}" th:object="${event}" method="post"  >
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <input type="hidden" th:field="*{id}" />
+
+                                    <div class="form-group">
+                                        <label for="nameEvent">Tên sự kiện</label>
+                                        <input type="text" id="nameEvent" th:field="*{nameEvent}" class="form-control" required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description">Mô tả</label>
+                                        <textarea id="description" th:field="*{description}" class="form-control" required></textarea>
+                                    </div>
+
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="dateEvent">Ngày diễn ra</label>-->
+<!--                                        <input type="date" id="dateEvent" th:field="*{dateEvent}" class="form-control" required />-->
+<!--                                    </div>-->
+
+                                    <div class="form-group">
+                                        <label for="ownerName">Chủ sở hữu</label>
+                                        <input type="text" id="ownerName" th:field="*{ownerName}" class="form-control" required />
+                                    </div>
+
+<!--                                     Hiển thị ảnh hiện tại-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <label class="form-label">Ảnh hiện tại</label>-->
+<!--                                        <div th:if="*{imageEvent}">-->
+<!--                                            <img th:src="@{/Events/{image}(image=*{imageEvent})}" alt="Ảnh sự kiện" class="img-thumbnail" style="max-width: 300px; height: auto;">-->
+<!--                                        </div>-->
+<!--                                        <input type="file" name="file" class="form-control mt-2" />-->
+<!--                                    </div>-->
+
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</html>
