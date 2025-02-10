@@ -14,11 +14,15 @@ public class Major {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(nullable = false)  // Đảm bảo không null
     private String majorGroupName;
+    @Column(nullable = false)  // Đảm bảo không null
     private String majorImage;
+    @Column(nullable = false)  // Đảm bảo không null
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "university_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "university_major_fk"))
-    private University university;
+//    @ManyToOne
+//    @JoinColumn(name = "university_id", referencedColumnName = "id", nullable = true, foreignKey = @ForeignKey(name = "university_major_fk"))
+//    private University university;
+
 
 }
