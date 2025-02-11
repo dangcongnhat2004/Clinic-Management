@@ -15,6 +15,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nameEvent;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String imageEvent;
     private String dateEvent;

@@ -1,10 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<main layout:fragment="content">
+    <div class="wrapper">
+        <div class="main-panel">
+            <div class="container">
+                <div class="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="card-title">Danh sách ngành học</h4>
+                                    </div>
+                                    <!-- Hiển thị thông báo lỗi -->
+                                    <div th:if="${errorMessage}" class="alert alert-danger text-center">
+                                        <p th:text="${errorMessage}"></p>
+                                    </div>
+                                    <!-- Hiển thị thông báo thành công -->
+                                    <div th:if="${successMessage}" class="alert alert-success text-center">
+                                        <p th:text="${successMessage}"></p>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tên nhóm ngành</th>
+                                                <th>Mô tả</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody th:if="${majors != null and not #lists.isEmpty(majors)}">
+                                            <tr th:each="major, stat : ${majors}">
+                                                <td th:text="${stat.index + 1 + (currentPage * 10)}"></td>
+                                                <td th:text="${major.majorGroupName}"></td>
+                                                <td th:text="${major.description}"></td>
+<!--                                                <td th:text="${major.universityName}"></td>-->
+<!--                                                <td>-->
+<!--                                                    <img th:src="@{'/uploads/' + ${major.majorImage}}" alt="Major Image"-->
+<!--                                                         width="50" height="50">-->
+<!--                                                </td>-->
+                                                <td>
+                                                    <div class="d-flex gap-2">
+                                                        <a th:href="@{/admin/chinh-sua-nhom-nganh/{id}(id=${major.id})}" class="btn btn-warning">Sửa</a>
+                                                        <form th:action="@{/admin/xoa-nhom-nganh/{id}(id=${major.id})}" method="post">
+                                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                                            <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Xóa</button>
+                                                        </form>
+                                                    </div>
+                                                </td>
 
-</body>
+                                            </tr>
+                                            </tbody>
+                                            <tbody th:if="${majors == null or #lists.isEmpty(majors)}">
+                                            <tr>
+                                                <td colspan="6" class="text-center">Không có ngành học nào.</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Phân trang -->
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        <!-- Nút Previous -->
+                                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{/admin/danh-sach-nganh-hoc(page=${currentPage - 1})}"
+                                               aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <!-- Hiển thị số trang -->
+                                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                            th:classappend="${i == currentPage} ? 'active'">
+                                            <a class="page-link"
+                                               th:href="@{/admin/danh-sach-nganh-hoc(page=${i})}"
+                                               th:text="${i + 1}"></a>
+                                        </li>
+                                        <!-- Nút Next -->
+                                        <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{/admin/danh-sach-nganh-hoc(page=${currentPage + 1})}"
+                                               aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function confirmDelete() {
+            return confirm('Bạn có chắc chắn muốn xóa ngành học này không?');
+        }
+    </script>
+</main>
 </html>

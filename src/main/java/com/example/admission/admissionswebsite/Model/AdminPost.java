@@ -17,8 +17,10 @@ public class AdminPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String image;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private Date postDate;
     //tên nguoi quan li bai dang

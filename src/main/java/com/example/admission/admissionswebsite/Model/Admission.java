@@ -18,9 +18,12 @@ public class Admission {
     private int id;
 
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String image;
+    @Column(columnDefinition = "TEXT")
     private String content;
+    @Column(columnDefinition = "TEXT")
     private String comment;
     private Date postDate;
     @ManyToOne

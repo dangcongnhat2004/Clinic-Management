@@ -1,13 +1,16 @@
 package com.example.admission.admissionswebsite.service;
 
 import com.example.admission.admissionswebsite.Dto.MajorDto;
+import com.example.admission.admissionswebsite.Model.AdminPost;
 import com.example.admission.admissionswebsite.Model.Major;
-import com.example.admission.admissionswebsite.Model.University;
 import com.example.admission.admissionswebsite.repository.MajorRepository;
 import com.example.admission.admissionswebsite.repository.UniversityRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -96,4 +99,85 @@ public class MajorService {
 
         return response;
     }
+
+    @Transactional(readOnly = true)
+    public Page<Major> getAllMajors(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return majorRepository.findAll(pageable);
+    }
+
+    public MajorDto deleteMajorGroup(Integer id) {
+        MajorDto response = new MajorDto();
+        try {
+            // Tìm nhóm ngành theo ID
+            Major majorGroup = majorRepository.findById(id).orElse(null);
+            if (majorGroup == null) {
+                response.setStatusCode(404);
+                response.setMessage("Nhóm ngành không tồn tại.");
+                return response;
+            }
+
+            // Xóa bản ghi nhóm ngành
+            majorRepository.delete(majorGroup);
+            response.setStatusCode(200);
+            response.setMessage("Xóa nhóm ngành thành công.");
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Đã xảy ra lỗi khi xóa nhóm ngành: " + e.getMessage());
+        }
+        return response;
+    }
+    public Optional<Major> findById(Integer id) {
+        return majorRepository.findById(id);
+    }
+    public MajorDto updateMajorGroup(MajorDto majorGroupDto) {
+        MajorDto response = new MajorDto();
+        try {
+            // Validate dữ liệu
+            if (majorGroupDto == null) {
+                response.setStatusCode(400);
+                response.setMessage("Dữ liệu nhóm ngành không được để trống");
+                return response;
+            }
+            if (majorGroupDto.getMajorGroupName() == null || majorGroupDto.getMajorGroupName().isEmpty()) {
+                response.setStatusCode(400);
+                response.setMessage("Vui lòng nhập tên nhóm ngành");
+                return response;
+            }
+            if (majorGroupDto.getDescription() == null || majorGroupDto.getDescription().isEmpty()) {
+                response.setStatusCode(400);
+                response.setMessage("Vui lòng nhập mô tả");
+                return response;
+            }
+
+            // Tìm nhóm ngành theo ID
+            Optional<Major> optionalMajorGroup = majorRepository.findById(majorGroupDto.getId());
+            if (!optionalMajorGroup.isPresent()) {
+                response.setStatusCode(404);
+                response.setMessage("Nhóm ngành không tồn tại");
+                return response;
+            }
+
+            Major majorGroup = optionalMajorGroup.get();
+
+            // Cập nhật các trường cần thiết
+            majorGroup.setMajorGroupName(majorGroupDto.getMajorGroupName());
+            majorGroup.setDescription(majorGroupDto.getDescription());
+
+            // Lưu nhóm ngành đã cập nhật
+            Major updatedMajorGroup = majorRepository.save(majorGroup);
+
+            // Trả về response
+            response.setStatusCode(200);
+            response.setMessage("Cập nhật nhóm ngành thành công");
+            response.setId(updatedMajorGroup.getId());
+            response.setMajorGroupName(updatedMajorGroup.getMajorGroupName());
+            response.setDescription(updatedMajorGroup.getDescription());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Đã xảy ra lỗi khi cập nhật nhóm ngành: " + e.getMessage());
+        }
+        return response;
+    }
+
 }

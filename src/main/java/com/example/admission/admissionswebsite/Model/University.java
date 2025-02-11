@@ -19,6 +19,7 @@ public class University {
 
     private String nameSchool;
     private String address;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String universityLogo;
     private String uniCode;

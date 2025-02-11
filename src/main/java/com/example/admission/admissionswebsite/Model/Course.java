@@ -16,6 +16,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nameCourse;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String moduleCourse;
     @Lob
