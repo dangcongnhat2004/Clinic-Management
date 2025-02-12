@@ -3,6 +3,8 @@ package com.example.admission.admissionswebsite.Dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +25,8 @@ public class AdminPostDto {
     private String content;      // Nội dung bài đăng
     private MultipartFile image; // Ảnh bài đăng
     private String category;     // Danh mục bài đăng
+    private String ownerName;     // Danh mục bài đăng
+
     private String status;       // Trạng thái (Ví dụ: "Published", "Draft")
     private String description;
     // Trạng thái (Ví dụ: "Published", "Draft")
@@ -84,7 +88,14 @@ public class AdminPostDto {
         this.publishDate = publishDate;
     }
 
-    public AdminPostDto(int id, String title, int statusCode, String message, String error, String content, MultipartFile image, String category, String status, String description, Date postDate, LocalDateTime publishDate) {
+    public String getOwnerName() {
+        return ownerName;
+    }
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public AdminPostDto(int id, String title, int statusCode, String message, String error, String content, MultipartFile image, String category, String ownerName, String status, String description, Date postDate, LocalDateTime publishDate) {
         this.id = id;
         this.title = title;
         this.statusCode = statusCode;
@@ -93,6 +104,7 @@ public class AdminPostDto {
         this.content = content;
         this.image = image;
         this.category = category;
+        this.ownerName = ownerName;
         this.status = status;
         this.description = description;
         this.postDate = postDate;

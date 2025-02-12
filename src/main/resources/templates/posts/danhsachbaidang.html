@@ -30,6 +30,8 @@
                                                 <th>STT</th>
                                                 <th>Tiêu đề</th>
                                                 <th>Mô tả</th>
+                                                <th>Nội dung</th>
+                                                <th>Mã trường</th>
                                                 <th>Ngày đăng</th>
                                                 <th>Hành động</th>
                                             </tr>
@@ -39,6 +41,8 @@
                                                 <td th:text="${stat.index + 1 + (currentPage * 10)}"></td>
                                                 <td th:text="${post.title}"></td>
                                                 <td th:text="${post.description}"></td>
+                                                <td th:text="${post.content}"></td>
+                                                <td th:text="${post.ownerName}"></td>
                                                 <td th:text="${#dates.format(post.postDate, 'dd-MM-yyyy')}"></td>
                                                 <td>
                                                     <a th:href="@{/admin/chinh-sua-bai-dang/{id}(id=${post.id})}" class="btn btn-warning">Chỉnh sửa</a>

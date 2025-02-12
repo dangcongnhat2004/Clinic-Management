@@ -57,7 +57,11 @@ public class AdminPostService {
                 response.setMessage("Vui lòng nhập nội dung bài đăng");
                 return response;
             }
-
+            if (adminPostDto.getOwnerName() == null || adminPostDto.getOwnerName().isEmpty()) {
+                response.setStatusCode(400);
+                response.setMessage("Vui lòng nhập mã trường của bài đăng");
+                return response;
+            }
             // Validate file
             if (file == null || file.isEmpty()) {
                 response.setStatusCode(400);
@@ -79,6 +83,7 @@ public class AdminPostService {
             adminPost.setTitle(adminPostDto.getTitle());
             adminPost.setDescription(adminPostDto.getDescription());
             adminPost.setContent(adminPostDto.getContent());
+            adminPost.setOwnerName(adminPostDto.getOwnerName());
             adminPost.setImage(fileName); // Save file name in the database
             adminPost.setPostDate(new Date());
             AdminPost savedAdminPost = adminPostRepository.save(adminPost);
@@ -159,7 +164,16 @@ public class AdminPostService {
                 response.setMessage("Vui lòng nhập mô tả");
                 return response;
             }
-
+            if (postDto.getContent() == null || postDto.getContent().isEmpty()) {
+                response.setStatusCode(400);
+                response.setMessage("Vui lòng nhập nội dung");
+                return response;
+            }
+            if (postDto.getOwnerName() == null || postDto.getOwnerName().isEmpty()) {
+                response.setStatusCode(400);
+                response.setMessage("Vui lòng nhập mã trường của bài đăng");
+                return response;
+            }
             // Tìm bài đăng theo ID
             Optional<AdminPost> optionalPost = adminPostRepository.findById(postDto.getId());
             if (!optionalPost.isPresent()) {
@@ -172,6 +186,7 @@ public class AdminPostService {
 
             // Cập nhật các trường cần thiết (ngoại trừ ảnh)
             post.setTitle(postDto.getTitle());
+            post.setOwnerName(postDto.getOwnerName());
             post.setDescription(postDto.getDescription());
             post.setContent(postDto.getContent());
 
