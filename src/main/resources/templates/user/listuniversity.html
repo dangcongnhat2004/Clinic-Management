@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+
+<main layout:fragment="content">
+
+
+    <!-- Feature Start -->
+    <div class="container-fluid team pb-5">
+        <div class="container pb-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Trường đại học </h4>
+                <h1 class="display-4 mb-4">Danh sách trường đại học & cao đẳng</h1>
+                <p class="mb-0">Tổng hợp tất cả các trường đại học & cao đẳng tại Đà Nẵng.
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="row g-4 justify-content-center">
+                    <div class="row g-4">
+                        <!-- Lặp qua danh sách các trường đại học -->
+                        <th:block th:each="university : ${universities}">
+                            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+                                <div class="team-item">
+                                    <div class="team-img">
+                                        <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}" class="img-fluid rounded-top w-100" alt="Logo trường">
+                                    </div>
+                                    <div class="team-title p-4">
+                                        <h4 class="mb-0" th:text="${university.nameSchool}">Tên trường</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+
+                    </div>
+                    <br>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${currentPage - 1})}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                                <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${i})}" th:text="${i + 1}"></a>
+                            </li>
+                            <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                                <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${currentPage + 1})}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Feature End -->
+
+</main>
+</body>
+</html>

@@ -3,10 +3,12 @@ package com.example.admission.admissionswebsite.Controller;
 import com.example.admission.admissionswebsite.Model.*;
 import com.example.admission.admissionswebsite.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -43,6 +45,59 @@ public class UserController {
 
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/home"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
+    @GetMapping("/danh-sach-nhom-nganh")
+    public String listMajors(Model model,@RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "8") int size) {
+        try {
+            if (page < 0) {
+                page = 0;
+            }
+            Page<Major> majorPage = enduserService.getAllMajors(page, size);
+            model.addAttribute("majors", majorPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", majorPage.getTotalPages());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Lỗi khi lấy danh sách ngành học: " + e.getMessage());
+        }
+//        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
+        return "/user/listmajor"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
+
+    @GetMapping("/danh-sach-truong-dai-hoc")
+    public String listUniversity(Model model,@RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "8") int size) {
+        try {
+            if (page < 0) {
+                page = 0;
+            }
+            Page<University> universityPage = enduserService.getAllUniversity(page, size);
+            model.addAttribute("universities", universityPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", universityPage.getTotalPages());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Lỗi khi lấy danh sách ngành học: " + e.getMessage());
+        }
+//        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
+        return "/user/listuniversity"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
+
+    @GetMapping("/danh-sach-bai-dang-tuyen-sinh")
+    public String listAdmissionPost(Model model,@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "6") int size) {
+        try {
+            if (page < 0) {
+                page = 0;
+            }
+            Page<AdminPost> admissionPage = enduserService.getAllAdmissionPost(page, size);
+            model.addAttribute("admission", admissionPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", admissionPage.getTotalPages());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Lỗi khi lấy danh sách ngành học: " + e.getMessage());
+        }
+//        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
+        return "/user/listadmissionpost"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
     }
     @GetMapping("/user/course")
     public String course() {

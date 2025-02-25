@@ -94,7 +94,7 @@
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
                     <div class="feature-item p-4 pt-0 h-100 d-flex flex-column">
                         <div class="feature-icon p-4 mb-4">
-                            <i class="fab fa-artstation"></i> <!-- Có thể thay icon theo dữ liệu -->
+                            <i class="fab fa-slack me-2"></i> <!-- Có thể thay icon theo dữ liệu -->
                         </div>
                         <h4 class="mb-3 text-center" th:text="${major.majorGroupName}">Tên Ngành</h4>
 
@@ -120,7 +120,7 @@
 
     </div>
     <div class="nav-btn px-3">
-        <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+        <center><a href="/danh-sach-nhom-nganh" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
     </div>
 </div>
 <!-- Feature End -->
@@ -157,10 +157,10 @@
                             </div>
                             <div class="blog-content p-4 flex-grow-1">
                                 <div class="blog-comment d-flex justify-content-between mb-3">
-                                    <div class="small"><span class="fa fa-user text-primary"></span> VKU</div>
+                                    <div class="small"><span class="fa fa-user text-primary"></span> </div>
                                     <div class="small">
                                         <span class="fa fa-calendar text-primary"></span>
-<!--                                        <span th:text="${post.createdAt}"></span> &lt;!&ndash; Hiển thị ngày trực tiếp &ndash;&gt;-->
+                                        <span th:text="${#dates.format(post.postDate, 'dd-MM-yyyy')}"></span> <!-- Hiển thị ngày trực tiếp -->
                                     </div>
                                     <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
                                 </div>
@@ -184,7 +184,7 @@
 
     </div>
     <div class="nav-btn px-3">
-        <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+        <center><a href="/danh-sach-tin-tuyen-sinh" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
     </div>
 </div>
 <!-- Blog End -->
@@ -193,148 +193,92 @@
 <div class="container-fluid team pb-5">
     <div class="container pb-5">
         <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">Trường đại học & cao đẳng</h4>
+            <h4 class="text-primary">Trường đại học </h4>
             <h1 class="display-4 mb-4">Danh sách trường đại học & cao đẳng</h1>
             <p class="mb-0">Tổng hợp tất cả các trường đại học & cao đẳng tại Đà Nẵng.
             </p>
         </div>
         <div class="row g-4">
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="https://inkythuatso.com/uploads/images/2021/12/logo-dai-hoc-su-pham-da-nang-inkythuatso-15-11-23-55.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
+            <div class="row g-4 justify-content-center">
+                <div class="row g-4">
+                    <!-- Lặp qua danh sách các trường đại học -->
+                    <th:block th:each="university : ${universities}">
+                        <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+                            <div class="team-item">
+                                <div class="team-img">
+                                    <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}" class="img-fluid rounded-top w-100" alt="Logo trường">
+                                </div>
+                                <div class="team-title p-4">
+                                    <h4 class="mb-0" th:text="${university.nameSchool}">Tên trường</h4>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">Trường đại học sư phạm Đà Nẵng</h4>
-                    </div>
+                    </th:block>
+
+                </div>
+                <div class="nav-btn px-3">
+                    <center><a href="/danh-sach-truong-dai-hoc" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="https://upes3.edu.vn/wp-content/uploads/2021/09/Logo-truong-Dai-hoc-Su-pham-Ky-thuat-Da-Nang.jpg" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">Trường đại học SPKT Đà Nẵng</h4>
-                        <!--            <p class="mb-0">Profession</p>-->
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="https://haitrieu.com/wp-content/uploads/2022/03/Logo-DH-Kinh-te-Dai-hoc-Da-Nang-DUE.png" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">Trường đại học kinh tế Đà Nẵng</h4>
-                        <!--            <p class="mb-0">Profession</p>-->
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="https://th.bing.com/th/id/OIP.tSuiTEft0aed1S2YV58HfAHaHa?rs=1&pid=ImgDetMain" class="img-fluid rounded-top w-100" alt="">
-                        <div class="team-icon">
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-sm-square rounded-pill mb-0" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-title p-4">
-                        <h4 class="mb-0">Đại học Đông Á  </h4>
-                        <!--            <p class="mb-0">Profession</p>-->
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
 <!-- Team End -->
+    <div class="container-fluid blog py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Sự kiện</h4>
+                <h1 class="display-4 mb-4">Thông tin sự kiện của các trường</h1>
+                <p class="mb-0">Tổng hợp các bài đăng về các sự kiện mới nhất của các trường đại học
+                </p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="row g-4">
+                    <!-- Lặp qua danh sách bài đăng -->
+                    <th:block th:each="event : ${events}">
+                        <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                            <div class="blog-item h-100 d-flex flex-column">
+                                <div class="blog-img">
+                                    <img th:src="@{/Events/{imageEvent}(imageEvent=${event.imageEvent})}" class="img-fluid rounded-top w-100" alt="Bài đăng">
+                                    <div class="blog-categiry py-2 px-4">
+                                        <img src="https://daotao.vku.udn.vn/public/images/new.gif">
+                                    </div>
+                                </div>
+                                <div class="blog-content p-4 flex-grow-1">
+                                    <div class="blog-comment d-flex justify-content-between mb-3">
+                                        <div class="small"><span class="fa fa-user text-primary"></span> VKU</div>
+                                        <div class="small">
+                                            <span class="fa fa-calendar text-primary"></span>
+                                            <span th:text="${event.dateEvent}"></span> <!-- Hiển thị ngày trực tiếp -->
+                                        </div>
+                                        <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
+                                    </div>
 
-<!-- Testimonial Start -->
-<div class="container-fluid testimonial pb-5">
-    <div class="container pb-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-            <h4 class="text-primary">Cao đẳng</h4>
+                                    <a th:href="@{'/post/' + ${event.id}}" class="h4 d-inline-block mb-3" th:text="${event.nameEvent}">Tiêu đề bài đăng</a>
 
-            </p>
+                                    <!-- Giới hạn mô tả hiển thị tối đa 8 dòng -->
+                                    <p class="mb-3 overflow-hidden text-wrap"
+                                       style="max-height: 12em; line-height: 1.5em;"
+                                       th:text="${event.description}">
+                                        Nội dung bài đăng...
+                                    </p>
+
+                                    <a th:href="@{'/post/' + ${event.id}}" class="btn p-0">Xem chi tiết <i class="fa fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+
         </div>
-        <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.2s">
-            <div class="testimonial-item bg-light rounded">
-                <div class="row g-0">
-                    <div class="col-4  col-lg-4 col-xl-3">
-                        <div class="h-100">
-                            <img src="https://th.bing.com/th/id/OIP.PqxOY4NR5XOjmFM48F9xvgAAAA?rs=1&pid=ImgDetMain" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
-                        </div>
-                    </div>
-                    <div class="col-8 col-lg-8 col-xl-9">
-                        <div class="d-flex flex-column my-auto text-start p-4">
-                            <h4 class="text-dark mb-0">FPT Polytechnic</h4>
-                            <!--              <p class="mb-3">Profession</p>-->
-
-                            <p class="mb-0">FPT Polytechnic là cái tên nổi bật nhất trong danh sách này, bởi vậy nó xứng đáng nằm ở vị trí top 2 mà Top10DaNang giới thiệu. Trường Cao đẳng FPT Polytechnic được thành lập năm 2010. tới mục tiêu cung cấp kỹ năng nghề nghiệp chất lượng cao cho người học. Đảm bảo được tính cạnh tranh trong môi trường phát triển ngày càng cao.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-item bg-light rounded">
-                <div class="row g-0">
-                    <div class="col-4  col-lg-4 col-xl-3">
-                        <div class="h-100">
-                            <img src="https://cdn.haitrieu.com/wp-content/uploads/2023/06/Logo-Truong-Cao-dang-Du-lich-Da-Nang-DVTC-1021x1024.png" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
-                        </div>
-                    </div>
-                    <div class="col-8 col-lg-8 col-xl-9">
-                        <div class="d-flex flex-column my-auto text-start p-4">
-                            <h4 class="text-dark mb-0">Cao đẳng du lịch Đà Nẵng</h4>
-
-                            <p class="mb-0">Hiện nay du lịch đang được rất nhiều người quan tâm. Vì thế chuyên ngành này cũng được nhiều bạn trẻ theo đuổi. Cao đẳng du lịch Đà Nẵng là một trong những ngôi trường chất lượng mà bạn nên tham khảo khi có ý định theo ngành này. Đây là trường cao đẳng ở Đà Nẵng công lập được thành lập ngày 16/10/2009 của Bộ Lao động – Thương binh và Xã hội.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-item bg-light rounded">
-                <div class="row g-0">
-                    <div class="col-4  col-lg-4 col-xl-3">
-                        <div class="h-100">
-                            <img src="https://th.bing.com/th/id/OIP.uJ9jeklo5mFu2C3VzFiE8wHaHY?rs=1&pid=ImgDetMain" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="">
-                        </div>
-                    </div>
-                    <div class="col-8 col-lg-8 col-xl-9">
-                        <div class="d-flex flex-column my-auto text-start p-4">
-                            <h4 class="text-dark mb-0">Trường Cao đẳng Bách Khoa Đà Nẵng</h4>
-
-                            <p class="mb-0">Cao đẳng Bách Khoa Đà Nẵng là cái tên không còn xa lạ với nhiều bạn trẻ. Nơi đây đào tạo đa dạng ngành nghề cho sinh viên lựa chọn. Trường được thành lập năm năm 2008. Với chiến lược phát triển bằng những bước đột phá trong lĩnh vực giáo dục đào tạo. Trở thành một cơ sở  có uy tín mang lại lợi ích thiết thực cho người học và cho xã hội.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="nav-btn px-3">
+            <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
         </div>
     </div>
-</div>
+
+<!-- Testimonial Start -->
 <!-- Testimonial End -->
 </main>
 </body>

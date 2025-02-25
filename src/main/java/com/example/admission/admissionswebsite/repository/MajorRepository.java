@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface MajorRepository extends JpaRepository<Major,Integer> {
     List<Major> findTop4ByOrderByIdDesc(); // Giả sử ID tăng dần theo thời gian, lấy 3 bản ghi mới nhất
+    List<Major> findAll(); // Giả sử ID tăng dần theo thời gian, lấy 3 bản ghi mới nhất
 
 }

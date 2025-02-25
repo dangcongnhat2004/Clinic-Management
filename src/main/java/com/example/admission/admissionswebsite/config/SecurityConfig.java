@@ -29,26 +29,36 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-
         httpSecurity
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/auth/**") // Bỏ qua CSRF cho các endpoint trong /auth/**
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/user/**","/Admin/**","/favicon.ico").permitAll()
+                        .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/user/**", "/Admin/**", "/favicon.ico").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/student/**").hasAuthority("STUDENT")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Đặt session ở chế độ stateless khi dùng JWT
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Sử dụng session khi cần
+                        .invalidSessionUrl("/login?expired=true") // Chuyển hướng khi session hết hạn
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/auth/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/auth/login") // Trang lỗi khi không có quyền truy cập
                 )
                 .authenticationProvider(authenticationProvider()) // Cài đặt Provider cho xác thực
                 .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class); // Thêm JWTAuthFilter trước UsernamePasswordAuthenticationFilter
 
         return httpSecurity.build();
     }
+
 
 
 

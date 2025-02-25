@@ -34,10 +34,10 @@
 <!--                                    </div>-->
 <!--                                </div>-->
 
-                                <!-- Không có input nào liên quan đến ảnh -->
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" value="Ảnh không thể chỉnh sửa." disabled />
-                                </div>
+<!--                                &lt;!&ndash; Không có input nào liên quan đến ảnh &ndash;&gt;-->
+<!--                                <div class="mb-3">-->
+<!--                                    <input type="text" class="form-control" value="Ảnh không thể chỉnh sửa." disabled />-->
+<!--                                </div>-->
 
                                 <form th:action="@{/admin/cap-nhat-bai-dang}" th:object="${post}" method="post">
                                     <input type="hidden" th:field="*{id}" />

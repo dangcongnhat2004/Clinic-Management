@@ -13,7 +13,9 @@
     opacity: 1;
 }
 /*** Spinner End ***/
-
+.team{
+    background-color: #f2f5f9;
+}
 .back-to-top {
     position: fixed;
     right: 30px;
