@@ -4,6 +4,12 @@
       layout:decorate="~{user/layout}">
 <main layout:fragment="content">
   <div class="container py-5">
+    <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+      <h4 class="text-primary">Tin tức tuyển sinh </h4>
+<!--      <h1 class="display-4 mb-4">Cập nhật tin tuyển sinh</h1>-->
+<!--      <p class="mb-0">Tổng hợp tất cả các trường đại học & cao đẳng tại Đà Nẵng.-->
+      </p>
+    </div>
     <div class="row">
       <div class="col-lg-8 mx-auto">
         <div class="row g-4">
@@ -18,7 +24,7 @@
               <!-- Nội dung trường đại học -->
               <div class="flex-grow-1">
                 <h4>
-                  <a th:href="@{/danh-sach-truong-dai-hoc/{id}(id=${admissions.id})}"
+                  <a th:href="@{/chi-tiet-tin-tuc/{id}(id=${admissions.id})}"
                      class="text-dark text-decoration-none">
                     <span th:text="${admissions.title}">Tên trường</span>
                   </a>
@@ -26,7 +32,7 @@
                 <p class="text-muted mb-1" th:text="${admissions.description}">Mô tả trường</p>
                 <ul class="list-unstyled mb-0">
                   <li>📍 <span th:text="${#dates.format(admissions.postDate, 'dd-MM-yyyy')}">Địa chỉ</span></li>
-                  <li>🌐 <a th:href="${admissions.website}" th:text="${admissions.website}" target="_blank"></a></li>
+                  <li>🌐 <a th:href="${admissions.title}" th:text="${admissions.title}" target="_blank"></a></li>
                 </ul>
               </div>
             </div>
@@ -37,16 +43,16 @@
         <nav aria-label="Page navigation" class="mt-4">
           <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-              <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${currentPage - 1})}" aria-label="Previous">
+              <a class="page-link" th:href="@{/danh-sach-bai-dang-tuyen-sinh(page=${currentPage - 1})}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                 th:classappend="${i == currentPage} ? 'active'">
-              <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${i})}" th:text="${i + 1}"></a>
+              <a class="page-link" th:href="@{/danh-sach-bai-dang-tuyen-sinh(page=${i})}" th:text="${i + 1}"></a>
             </li>
             <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
-              <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${currentPage + 1})}" aria-label="Next">
+              <a class="page-link" th:href="@{/danh-sach-bai-dang-tuyen-sinh(page=${currentPage + 1})}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>

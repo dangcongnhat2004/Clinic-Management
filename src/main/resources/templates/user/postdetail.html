@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<main layout:fragment="content">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <!-- Tiêu đề -->
+                        <h2 class="text-primary mb-3" th:text="${adminPost.title}">Tiêu đề bài viết</h2>
+
+                        <!-- Ngày đăng -->
+                        <p class="text-muted">📅 Ngày đăng: <span th:text="${#dates.format(adminPost.postDate, 'dd-MM-yyyy')}"></span></p>
+
+                        <!-- Hình ảnh -->
+                        <div class="text-center mb-4">
+                            <img th:src="@{/uploads/{image}(image=${adminPost.image})}"
+                                 class="img-fluid rounded"
+                                 alt="Hình ảnh bài viết" style="max-width: 100%; height: auto;">
+                        </div>
+
+                        <!-- Mô tả ngắn -->
+                        <p class="lead" th:text="${adminPost.description}">Mô tả ngắn về bài viết</p>
+
+                        <!-- Nội dung bài viết -->
+                        <div class="mb-4">
+                            <p th:text="${adminPost.content}">Nội dung chi tiết của bài viết...</p>
+                        </div>
+
+                        <!-- Đường dẫn liên kết -->
+<!--                        <p>🔗 Thông tin chi tiết:-->
+<!--                            <a th:href="${adminPost.link}" th:text="${adminPost.link}" target="_blank"></a>-->
+<!--                        </p>-->
+
+                        <!-- Nút quay lại -->
+                        <div class="text-center mt-4">
+                            <a th:href="@{/danh-sach-bai-dang-tuyen-sinh}" class="btn btn-secondary">⬅ Quay lại danh sách</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -8,13 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
 public class UserController {
-
+    @Autowired
+    private AdminPostService adminPostService;
     @Autowired
     private EnduserService enduserService;
     @GetMapping("/auth/signup")
@@ -98,6 +100,14 @@ public class UserController {
         }
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/listadmissionpost"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
+
+    @GetMapping("/chi-tiet-tin-tuc/{id}")
+    public String showNewDetails(@PathVariable Integer id, Model model) {
+        AdminPost adminPost = adminPostService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sự kiện với ID: " + id));
+        model.addAttribute("adminPost", adminPost);
+        return "/user/postdetail";
     }
     @GetMapping("/user/course")
     public String course() {

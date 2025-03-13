@@ -3,6 +3,7 @@ package com.example.admission.admissionswebsite.service;
 import com.example.admission.admissionswebsite.Dto.AdminPostDto;
 import com.example.admission.admissionswebsite.Model.AdminPost;
 
+import com.example.admission.admissionswebsite.Model.Event;
 import com.example.admission.admissionswebsite.repository.AdminPostRepository;
 import com.example.admission.admissionswebsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,7 @@ public class AdminPostService {
         }
         return response;
     }
+
 
     @Transactional(readOnly = true)
     public Page<AdminPost> getAllAdminPosts(int page, int size) {

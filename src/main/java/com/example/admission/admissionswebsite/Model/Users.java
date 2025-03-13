@@ -28,7 +28,6 @@ public class Users implements UserDetails {
     private String highSchoolName;
     private String email;
     private String gender;
-
     @JsonIgnore
     private String password;
 
