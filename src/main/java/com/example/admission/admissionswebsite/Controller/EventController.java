@@ -3,6 +3,7 @@ package com.example.admission.admissionswebsite.Controller;
 
 import com.example.admission.admissionswebsite.Dto.EventDto;
 import com.example.admission.admissionswebsite.Dto.UserDto;
+import com.example.admission.admissionswebsite.Model.AdminPost;
 import com.example.admission.admissionswebsite.Model.Event;
 import com.example.admission.admissionswebsite.service.AdminService;
 import com.example.admission.admissionswebsite.service.EventService;
@@ -104,7 +105,13 @@ public class EventController {
         return "redirect:/admin/danh-sach-su-kien";
     }
 
-
+    @GetMapping("/chi-tiet-su-kien/{id}")
+    public String showEventDetails(@PathVariable Integer id, Model model) {
+        Event event = eventService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sự kiện với ID: " + id));
+        model.addAttribute("event", event);
+        return "/user/eventdetail";
+    }
 
 
 

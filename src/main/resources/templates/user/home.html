@@ -107,7 +107,7 @@
 
                         <div>
                             <a class="btn btn-primary rounded-pill py-2 px-4 w-100"
-                               th:href="@{'/major/' + ${major.id}}">
+                               th:href="@{'/chi-tiet-nganh-hoc/' + ${major.id}}">
                                 Xem chi tiết
                             </a>
                         </div>
@@ -165,7 +165,7 @@
                                     <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
                                 </div>
 
-                                <a th:href="@{'/post/' + ${post.id}}" class="h4 d-inline-block mb-3" th:text="${post.title}">Tiêu đề bài đăng</a>
+                                <a th:href="@{'/chi-tiet-tin-tuc/' + ${post.id}}" class="h4 d-inline-block mb-3" th:text="${post.title}">Tiêu đề bài đăng</a>
 
                                 <!-- Giới hạn mô tả hiển thị tối đa 8 dòng -->
                                 <p class="mb-3 overflow-hidden text-wrap"
@@ -174,7 +174,7 @@
                                     Nội dung bài đăng...
                                 </p>
 
-                                <a th:href="@{'/post/' + ${post.id}}" class="btn p-0">Xem chi tiết <i class="fa fa-arrow-right"></i></a>
+                                <a th:href="@{'/chi-tiet-tin-tuc/' + ${post.id}}" class="btn p-0">Xem chi tiết <i class="fa fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -206,21 +206,31 @@
                         <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
                             <div class="team-item">
                                 <div class="team-img">
-                                    <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}" class="img-fluid rounded-top w-100" alt="Logo trường">
+                                    <a th:href="@{'/chi-tiet-truong-dai-hoc/' + ${university.id}}">
+                                        <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}"
+                                             class="img-fluid rounded-top w-100" alt="Logo trường">
+                                    </a>
                                 </div>
                                 <div class="team-title p-4">
-                                    <h4 class="mb-0" th:text="${university.nameSchool}">Tên trường</h4>
+                                    <h4 class="mb-0">
+                                        <a th:href="@{'/chi-tiet-truong-dai-hoc/' + ${university.id}}" th:text="${university.nameSchool}" style="color: inherit; text-decoration: none;">
+                                            Tên trường
+                                        </a>
+                                    </h4>
+
                                 </div>
                             </div>
                         </div>
                     </th:block>
-
                 </div>
                 <div class="nav-btn px-3">
-                    <center><a href="/danh-sach-truong-dai-hoc" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+                    <center>
+                        <a href="/danh-sach-truong-dai-hoc" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0">
+                            Xem tất cả
+                        </a>
+                    </center>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -255,7 +265,7 @@
                                         <div class="small"><span class="fa fa-comment-alt text-primary"></span> 6 Bình luận</div>
                                     </div>
 
-                                    <a th:href="@{'/post/' + ${event.id}}" class="h4 d-inline-block mb-3" th:text="${event.nameEvent}">Tiêu đề bài đăng</a>
+                                    <a th:href="@{'/chi-tiet-su-kien/' + ${event.id}}" class="h4 d-inline-block mb-3" th:text="${event.nameEvent}">Tiêu đề bài đăng</a>
 
                                     <!-- Giới hạn mô tả hiển thị tối đa 8 dòng -->
                                     <p class="mb-3 overflow-hidden text-wrap"
@@ -264,7 +274,7 @@
                                         Nội dung bài đăng...
                                     </p>
 
-                                    <a th:href="@{'/post/' + ${event.id}}" class="btn p-0">Xem chi tiết <i class="fa fa-arrow-right"></i></a>
+                                    <a th:href="@{'/chi-tiet-su-kien/' + ${event.id}}" class="btn p-0">Xem chi tiết <i class="fa fa-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -274,7 +284,7 @@
 
         </div>
         <div class="nav-btn px-3">
-            <center><a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
+            <center><a href="/danh-sach-su-kien" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Xem tất cả</a></center>
         </div>
     </div>
 

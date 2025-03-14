@@ -19,6 +19,8 @@ public class UserController {
     private AdminPostService adminPostService;
     @Autowired
     private EnduserService enduserService;
+    @Autowired
+    private EventService eventService;
     @GetMapping("/auth/signup")
     public String showSignUpForm(Model model) {
         model.addAttribute("user", new Users());
@@ -83,7 +85,23 @@ public class UserController {
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/listuniversity"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
     }
-
+    @GetMapping("/danh-sach-su-kien")
+    public String listEvent(Model model,@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "8") int size) {
+        try {
+            if (page < 0) {
+                page = 0;
+            }
+            Page<Event> events = eventService.getAllEvents(page, size);
+            model.addAttribute("events", events.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", events.getTotalPages());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Lỗi khi lấy danh sách ngành học: " + e.getMessage());
+        }
+//        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
+        return "/user/listevent"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
     @GetMapping("/danh-sach-bai-dang-tuyen-sinh")
     public String listAdmissionPost(Model model,@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "6") int size) {
@@ -123,9 +141,9 @@ public class UserController {
         return "user/";
     }
 
-    @GetMapping("/user/university")
-    public String university() {
-        return "user/university";
+    @GetMapping("/tai-lieu")
+    public String tailieu() {
+        return "user/tailieu";
     }
 
     @GetMapping("/user/college")
@@ -134,7 +152,7 @@ public class UserController {
     }
     @GetMapping("/user/event")
     public String event() {
-        return "user/event";
+        return "eventdetail";
     }
 
     @GetMapping("/user/search")

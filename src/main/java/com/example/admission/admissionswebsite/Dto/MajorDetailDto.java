@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Data
 @Getter
 @Setter
@@ -16,4 +18,5 @@ public class MajorDetailDto {
     private String majorGroupName; // Tên nhóm ngành
     private int statusCode;
     private String message;
+    private List<MajorDto> ourMajor;
 }

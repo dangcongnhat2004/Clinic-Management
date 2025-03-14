@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<main layout:fragment="content">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}"
+                                 class="img-fluid rounded" alt="Logo trường"
+                                 style="max-width: 150px; height: auto;">
+                        </div>
+
+                        <h2 class="text-center text-primary" th:text="${university.nameSchool}">Tên Trường</h2>
+                        <p class="text-center text-muted" th:text="'Mã Trường: ' + ${university.uniCode}"></p>
+                        <hr>
+                        <h5 class="text-primary">Địa chỉ</h5>
+                        <p th:text="${university.address}"></p>
+                        <h5 class="text-primary">Giới thiệu</h5>
+                        <p th:text="${university.description}"></p>
+                        <div class="text-center mt-4">
+                            <a href="/danh-sach-truong-dai-hoc" class="btn btn-primary">Quay lại danh sách</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

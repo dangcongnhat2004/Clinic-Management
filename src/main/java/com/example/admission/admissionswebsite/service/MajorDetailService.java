@@ -23,6 +23,12 @@ public class MajorDetailService {
 
        @Autowired
        private MajorDetailRepository majorDetailRepository;
+
+
+
+    public List<MajorDetails> getMajorDetailsByMajorId(int majorId) {
+        return majorDetailRepository.findByMajorId(majorId);
+    }
        @Autowired
        private MajorRepository majorRepository;
 

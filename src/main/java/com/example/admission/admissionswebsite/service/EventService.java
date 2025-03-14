@@ -117,6 +117,11 @@ public class EventService {
         Pageable pageable = PageRequest.of(page, size);
         return eventRepository.findAll(pageable);
     }
+    @Transactional(readOnly = true)
+    public Page<Event> getAllEventlist(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return eventRepository.findAll(pageable);
+    }
 
     public EventDto deleteEvent(Integer id) {
         EventDto response = new EventDto();

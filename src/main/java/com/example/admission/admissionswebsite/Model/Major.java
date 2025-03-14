@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -23,5 +25,7 @@ public class Major {
     @JoinColumn(name = "university_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "university_major_fk"))
     private University university;
 
-
+    // Thêm danh sách MajorDetails
+    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MajorDetails> majorDetailsList;
 }

@@ -3,6 +3,7 @@ package com.example.admission.admissionswebsite.Controller;
 
 import com.example.admission.admissionswebsite.Dto.UniversityDto;
 import com.example.admission.admissionswebsite.Dto.UserDto;
+import com.example.admission.admissionswebsite.Model.AdminPost;
 import com.example.admission.admissionswebsite.Model.University;
 import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.repository.UserRepository;
@@ -50,7 +51,13 @@ public class UniveristyController {
         }
     }
 
-
+    @GetMapping("/chi-tiet-truong-dai-hoc/{id}")
+    public String showUniversityDetail(@PathVariable Integer id, Model model) {
+        University university = universityService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sự kiện với ID: " + id));
+        model.addAttribute("university", university);
+        return "/user/universitydetail";
+    }
 
     @PostMapping("/admin/them-truong-dai-hoc")
     public String addUniversity(@ModelAttribute UniversityDto universityDto,

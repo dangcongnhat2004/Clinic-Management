@@ -4,62 +4,68 @@
       layout:decorate="~{user/layout}">
 <main layout:fragment="content">
     <div class="container py-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+        <div class="text-center mx-auto pb-4" style="max-width: 800px;">
             <h4 class="text-primary">Sự kiện cập nhật</h4>
-            <!--      <h1 class="display-4 mb-4">Cập nhật tin tuyển sinh</h1>-->
-            <!--      <p class="mb-0">Tổng hợp tất cả các trường đại học & cao đẳng tại Đà Nẵng.-->
-            </p>
+            <h1 class="display-6 mb-3">Thông tin sự kiện mới nhất</h1>
         </div>
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="row g-4">
-                    <!-- Lặp qua danh sách các trường đại học -->
-                    <th:block th:each="admissions : ${admission}">
-                        <div class="col-12 d-flex align-items-center border-bottom pb-3">
-                            <!-- Hình ảnh trường đại học -->
-                            <div class="flex-shrink-0 me-3" style="width: 200px;">
-                                <img th:src="@{/uploads/{image}(image=${admissions.image})}"
-                                     class="img-fluid rounded w-100" alt="Logo trường">
-                            </div>
-                            <!-- Nội dung trường đại học -->
-                            <div class="flex-grow-1">
-                                <h4>
-                                    <a th:href="@{/danh-sach-truong-dai-hoc/{id}(id=${admissions.id})}"
-                                       class="text-dark text-decoration-none">
-                                        <span th:text="${admissions.title}">Tên trường</span>
-                                    </a>
-                                </h4>
-                                <p class="text-muted mb-1" th:text="${admissions.description}">Mô tả trường</p>
-                                <ul class="list-unstyled mb-0">
-                                    <li>📍 <span th:text="${#dates.format(admissions.postDate, 'dd-MM-yyyy')}">Địa chỉ</span></li>
-                                    <li>🌐 <a th:href="${admissions.title}" th:text="${admissions.title}" target="_blank"></a></li>
-                                </ul>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="list-group">
+                    <!-- Lặp qua danh sách sự kiện -->
+                    <th:block th:each="event : ${events}">
+                        <div class="list-group-item py-4 border rounded mb-3">
+                            <div class="d-flex align-items-start">
+                                <!-- Hình ảnh sự kiện -->
+                                <img th:src="@{/Events/{imageEvent}(imageEvent=${event.imageEvent})}"
+                                     class="img-fluid rounded" style="width: 150px; height: 100px; object-fit: cover;"
+                                     alt="Hình ảnh sự kiện">
+
+                                <div class="ms-3 flex-grow-1">
+                                    <!-- Tiêu đề sự kiện -->
+                                    <h5 class="mb-2">
+                                        <a th:href="@{'/post/' + ${event.id}}" th:text="${event.nameEvent}"></a>
+                                    </h5>
+
+                                    <!-- Ngày tổ chức -->
+                                    <p class="mb-1 small text-muted">
+                                        <i class="fa fa-calendar text-primary"></i>
+                                        <span th:text="${event.dateEvent}"></span>
+                                    </p>
+
+                                    <!-- Mô tả ngắn gọn -->
+                                    <p class="mb-2 text-truncate" style="max-width: 600px;" th:text="${event.description}"></p>
+
+                                    <a th:href="@{'/chi-tiet-su-kien/' + ${event.id}}" class="btn btn-sm btn-primary">Xem chi tiết</a>
+                                </div>
                             </div>
                         </div>
                     </th:block>
                 </div>
-
-                <!-- Phân trang -->
-                <nav aria-label="Page navigation" class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                            <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${currentPage - 1})}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                            th:classappend="${i == currentPage} ? 'active'">
-                            <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${i})}" th:text="${i + 1}"></a>
-                        </li>
-                        <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
-                            <a class="page-link" th:href="@{/danh-sach-truong-dai-hoc(page=${currentPage + 1})}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
+
+
+
+        <!-- Phân trang -->
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/danh-sach-su-kien(page=${currentPage - 1})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/danh-sach-su-kien(page=${i})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/danh-sach-su-kien(page=${currentPage + 1})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </main>
 </body>

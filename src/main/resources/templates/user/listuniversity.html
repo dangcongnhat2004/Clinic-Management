@@ -23,11 +23,17 @@
                             <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
                                 <div class="team-item">
                                     <div class="team-img">
-                                        <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}" class="img-fluid rounded-top w-100" alt="Logo trường">
+                                        <a th:href="@{'/chi-tiet-truong-dai-hoc/' + ${university.id}}">
+                                            <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}"
+                                                 class="img-fluid rounded-top w-100" alt="Logo trường">
+                                        </a>
                                     </div>
                                     <div class="team-title p-4">
-                                        <h4 class="mb-0" th:text="${university.nameSchool}">Tên trường</h4>
-                                    </div>
+                                        <h4 class="mb-0">
+                                            <a th:href="@{'/chi-tiet-truong-dai-hoc/' + ${university.id}}" th:text="${university.nameSchool}" style="color: inherit; text-decoration: none;">
+                                                Tên trường
+                                            </a>
+                                        </h4>                                    </div>
                                 </div>
                             </div>
                         </th:block>

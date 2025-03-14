@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<main layout:fragment="content">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-4" style="max-width: 800px;">
+            <h4 class="text-primary">Chi tiết sự kiện</h4>
+            <h1 class="display-5" th:text="${event.nameEvent}"></h1>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <img th:src="@{/Events/{imageEvent}(imageEvent=${event.imageEvent})}" class="card-img-top" alt="Hình ảnh sự kiện">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary" th:text="${event.nameEvent}"></h5>
+                        <p class="text-muted">
+                            <i class="fa fa-calendar"></i>
+                            <span th:text="${event.dateEvent}"></span>
+                        </p>
+                        <p class="card-text" th:text="${event.description}"></p>
+                        <a href="/danh-sach-su-kien" class="btn btn-secondary mt-3">Quay lại danh sách</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

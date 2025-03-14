@@ -2,6 +2,7 @@ package com.example.admission.admissionswebsite.Controller;
 
 import com.example.admission.admissionswebsite.Dto.MajorDetailDto;
 import com.example.admission.admissionswebsite.Dto.MajorDto;
+import com.example.admission.admissionswebsite.Model.AdminPost;
 import com.example.admission.admissionswebsite.Model.Event;
 import com.example.admission.admissionswebsite.Model.Major;
 import com.example.admission.admissionswebsite.Model.MajorDetails;

@@ -59,7 +59,14 @@ public class MajorController {
         return "major/danhsachnhomnganh";
     }
 
+    @GetMapping("/chi-tiet-nganh-hoc/{id}")
+    public String showMajordetail(@PathVariable Integer id, Model model) {
+        Major major = majorService.getMajorById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy nhóm ngành với ID: " + id));
 
+        model.addAttribute("major", major);
+        return "/user/majordetail";
+    }
 
     @PostMapping("/admin/xoa-nhom-nganh/{id}")
     public String deleteMajor(@PathVariable Integer id, RedirectAttributes redirectAttributes) {

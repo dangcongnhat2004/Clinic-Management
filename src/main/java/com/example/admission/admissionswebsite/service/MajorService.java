@@ -30,6 +30,13 @@ public class MajorService {
     @Autowired
     private UniversityRepository universityRepository;
 
+    public MajorService(MajorRepository majorRepository) {
+        this.majorRepository = majorRepository;
+    }
+
+    public Optional<Major> getMajorById(int id) {
+        return majorRepository.findById(id);
+    }
     @Value("${upload.major}")
     private String uploadPath;
 
