@@ -2,6 +2,7 @@ package com.clinicmanagement.Dto;
 
 import com.clinicmanagement.Model.OurUsers;
 import com.clinicmanagement.Model.Product;
+import com.clinicmanagement.Model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -22,8 +23,8 @@ public class ReqRes {
     private String expirationTime;
     private String name;
     private String email;
-    private String role;
+    private String roles;
     private String password;
     private List<Product> products;
-    private OurUsers ourUsers;
+    private User ourUsers;
 }
