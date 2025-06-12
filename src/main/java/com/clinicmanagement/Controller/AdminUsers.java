@@ -3,7 +3,9 @@ package com.clinicmanagement.Controller;
 
 import com.clinicmanagement.Dto.ReqRes;
 import com.clinicmanagement.Model.Product;
+import com.clinicmanagement.Model.User;
 import com.clinicmanagement.repository.ProductRepo;
+import com.clinicmanagement.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,11 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class AdminUsers {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @GetMapping("/public/product")
     public ResponseEntity<Object> getAllProducts(){
@@ -50,5 +58,23 @@ public class AdminUsers {
         System.out.println(authentication.getDetails()); // get remote ip
         System.out.println(authentication.getName()); //returns the email because the email is the unique identifier
         return authentication.getName(); // returns the email
+    }
+
+    @GetMapping("/api/user/info")
+    public ResponseEntity<?> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("email", user.getEmail());
+        userInfo.put("fullName", user.getFullName());
+        userInfo.put("roles", user.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .toList());
+        
+        return ResponseEntity.ok(userInfo);
     }
 }

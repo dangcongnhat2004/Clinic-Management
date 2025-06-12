@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="container text-center">
+        <h1 id="dashboard-message">Checking authentication...</h1>
+        <div id="debug-info" style="margin-top:20px; color: #888; font-size: 14px;"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const token = localStorage.getItem('token');
+            // $('#debug-info').append('<div><b>Token in localStorage:</b> ' + (token ? token : 'NO TOKEN') + '</div>');
+            if (!token) {
+                $('#dashboard-message').text('No token found. Redirecting to login...');
+                setTimeout(function() { window.location.href = '/login'; }, 1500);
+                return;
+            }
+            $.ajax({
+                url: '/api/user/info',
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                success: function(data) {
+                    $('#dashboard-message').text('Login success');
+                    // $('#debug-info').append('<div><b>API /api/user/info response:</b> ' + JSON.stringify(data) + '</div>');
+                },
+                error: function(xhr, status, error) {
+                    // $('#dashboard-message').text('Token invalid or expired. Redirecting to login...');
+                    // $('#debug-info').append('<div><b>API /api/user/info error:</b> ' + xhr.status + ' - ' + xhr.responseText + '</div>');
+                    localStorage.removeItem('token');
+                    setTimeout(function() { window.location.href = '/login'; }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
