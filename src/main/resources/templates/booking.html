@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lịch khám - Clinic Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body { background-color: #f0f2f5; }
+        .sidebar { width: 260px; height: 100vh; position: fixed; top: 0; left: 0; background-color: #ffffff; border-right: 1px solid #dee2e6; padding-top: 20px; }
+        .sidebar .nav-link { color: #495057; font-weight: 500; padding: 12px 20px; }
+        .sidebar .nav-link.active, .sidebar .nav-link:hover { background-color: #e9ecef; color: #0d6efd; border-radius: 0.375rem; }
+        .sidebar .nav-link .fa-fw { margin-right: 10px; }
+        .main-content { margin-left: 260px; padding: 20px; }
+        .booking-container { max-width: 900px; margin: auto; background: #fff; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+        .progress-steps { display: flex; justify-content: space-between; margin-bottom: 2rem; counter-reset: step; }
+        .progress-steps .step-item { position: relative; text-align: center; width: 33.33%; color: #adb5bd;}
+        .progress-steps .step-item::before { content: counter(step); counter-increment: step; width: 30px; height: 30px; line-height: 28px; border: 2px solid #e0e0e0; display: block; margin: 0 auto 10px auto; border-radius: 50%; background-color: white; color: #adb5bd; }
+        .progress-steps .step-item::after { content: ''; position: absolute; width: 100%; height: 2px; background-color: #e0e0e0; top: 15px; left: -50%; z-index: -1; }
+        .progress-steps .step-item:first-child::after { content: none; }
+        .progress-steps .step-item.active { font-weight: bold; color: #000; }
+        .progress-steps .step-item.active::before { border-color: #0d6efd; background-color: #0d6efd; color: white; }
+        .progress-steps .step-item.completed::before { border-color: #198754; background-color: #198754; color: white; }
+        .progress-steps .step-item.completed::after { background-color: #198754; }
+        .patient-profile, .specialty-item { cursor: pointer; transition: all 0.2s ease-in-out; }
+        .patient-profile.selected, .specialty-item.selected { border-color: #0d6efd !important; box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); transform: translateY(-3px); }
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+
+        /* Step 3 Styles */
+        .date-selector .date-item { padding: 0.5rem 1rem; border: 1px solid #dee2e6; border-radius: 0.5rem; cursor: pointer; text-align: center; }
+        .date-selector .date-item.active { background-color: #198754; color: white; border-color: #198754; }
+        .doctor-card { border: 1px solid #e9ecef; border-radius: 0.5rem; }
+        .time-slot { cursor: pointer; border: 1px solid #ced4da; }
+        .time-slot.active { background-color: #0d6efd !important; color: white !important; border-color: #0d6efd !important; }
+        .time-slot.disabled { background-color: #f8f9fa; cursor: not-allowed; color: #ced4da; border-color: #f8f9fa; }
+        .btn-booking { background-color: #00B5F1; border-color: #00B5F1; color: white; }
+        .btn-booking:hover { background-color: #0099cc; border-color: #0099cc; color: white; }
+    </style>
+</head>
+<body>
+
+<div id="loader"><div class="spinner-border text-primary" role="status"></div></div>
+
+<div id="booking-page-content" style="display: none;">
+    <nav class="sidebar">
+        <div class="px-4 mb-4"><h4 class="fw-bold text-primary"><i class="fa-solid fa-clinic-medical"></i> ClinicPlus</h4></div>
+        <ul class="nav flex-column px-3">
+            <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="fa-solid fa-house fa-fw"></i> Trang chủ</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-calendar-check fa-fw"></i> Lịch khám</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/booking"><i class="fa-solid fa-plus-circle fa-fw"></i> Đặt lịch</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-comments fa-fw"></i> Tin nhắn</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-user fa-fw"></i> Cá nhân</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="booking-container">
+            <h2 class="text-center mb-4">Đặt lịch khám</h2>
+            <div class="progress-steps">
+                <div class="step-item active" data-step="1">Chọn người bệnh</div>
+                <div class="step-item" data-step="2">Chọn chuyên khoa</div>
+                <div class="step-item" data-step="3">Chọn bác sĩ & thời gian</div>
+            </div>
+
+            <!-- === STEP 1: CHỌN NGƯỜI BỆNH === -->
+            <div id="step-1" class="booking-step">
+                <!-- ... Nội dung bước 1 ... -->
+            </div>
+
+            <!-- === STEP 2: CHỌN CHUYÊN KHOA === -->
+            <div id="step-2" class="booking-step" style="display: none;">
+                <!-- ... Nội dung bước 2 ... -->
+            </div>
+
+            <!-- === STEP 3: CHỌN BÁC SĨ & THỜI GIAN (CẬP NHẬT) === -->
+            <div id="step-3" class="booking-step" style="display: none;">
+                <h4 class="mb-3">3. Chọn bác sĩ và thời gian</h4>
+                <!-- Search and Date Filter -->
+                <div class="row g-3 mb-4 align-items-center">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="fa-solid fa-search"></i></span>
+                            <input type="text" class="form-control bg-light border-0" placeholder="Tìm kiếm bác sĩ...">
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="d-flex justify-content-between align-items-center date-selector">
+                            <div class="date-item active"><b>T3</b><br><small>06/08</small></div>
+                            <div class="date-item"><b>T4</b><br><small>07/08</small></div>
+                            <div class="date-item"><b>T5</b><br><small>08/08</small></div>
+                            <div class="date-item"><b>T6</b><br><small>09/08</small></div>
+                            <div class="date-item"><b>T7</b><br><small>10/08</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor List -->
+                <div class="vstack gap-4">
+                    <a href="/doctor-details" class="text-decoration-none text-dark">
+                        <div class="doctor-card p-3">
+                            <div class="row g-0">
+                                <div class="col-md-3 text-center">
+                                    <img src="https://i.pravatar.cc/100?img=3" class="rounded-circle mb-2" alt="doctor">
+                                    <h6 class="mb-1">BSCKII. Trần Công Hoàng</h6>
+                                    <small class="text-muted">Tim mạch</small>
+                                </div>
+                                <div class="col-md-9">
+                                    <!-- ... nội dung lịch khám ... -->
+                                    <h6 class="mb-2">Lịch khám</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-sm time-slot">07:00</button>
+                                        <button class="btn btn-sm time-slot disabled">07:30</button>
+                                        <button class="btn btn-sm time-slot">08:00</button>
+                                    </div>
+                                    <hr class="my-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            Giá khám: <strong class="text-primary">300.000đ</strong>
+                                            <span class="ms-2 small text-decoration-none text-info">Xem chi tiết</span>
+                                        </div>
+                                        <a href="/confirmation" class="btn btn-booking btn-sm px-4">Đặt lịch khám</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Doctor 2 Card -->
+                    <a href="/doctor-details" class="text-decoration-none text-dark">
+                        <div class="doctor-card p-3">
+                            <div class="row g-0">
+                                <div class="col-md-3 text-center">
+                                    <img src="https://i.pravatar.cc/100?img=5" class="rounded-circle mb-2" alt="doctor">
+                                    <h6 class="mb-1">BSCKII. Lê Vũ Bảo</h6>
+                                    <small class="text-muted">Tim mạch</small>
+                                </div>
+                                <div class="col-md-9">
+                                    <!-- ... nội dung lịch khám 2 ... -->
+                                    <h6 class="mb-2">Lịch khám</h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-sm time-slot">09:00</button>
+                                        <button class="btn btn-sm time-slot">09:30</button>
+                                    </div>
+                                    <hr class="my-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>Giá khám: <strong class="text-primary">300.000đ</strong><span class="ms-2 small text-decoration-none text-info">Xem chi tiết</span></div>
+                                        <button class="btn btn-booking btn-sm px-4">Đặt lịch khám</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button class="btn btn-secondary" id="prev-btn" style="display: none;">Quay lại</button>
+                <button class="btn btn-primary" id="next-btn">Tiếp tục</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // AUTH CHECK... (giữ nguyên)
+        const token = localStorage.getItem('token');
+        if (!token) { window.location.href = '/login'; return; }
+        $.ajax({
+            url: '/api/user/info',
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + token },
+            success: function() { $('#loader').hide(); $('#booking-page-content').show(); fillStepContent(); },
+            error: function() { localStorage.removeItem('token'); window.location.href = '/login'; }
+        });
+
+        // WIZARD LOGIC... (giữ nguyên)
+        let currentStep = 1;
+        const totalSteps = 3;
+        function updateWizard() {
+            $('.booking-step').hide();
+            $('#step-' + currentStep).show();
+            $('.step-item').removeClass('active completed');
+            $('.step-item').each(function() {
+                const step = $(this).data('step');
+                if (step < currentStep) $(this).addClass('completed');
+                else if (step === currentStep) $(this).addClass('active');
+            });
+            $('#prev-btn').toggle(currentStep > 1);
+            $('#next-btn').toggle(currentStep < totalSteps); // Ẩn nút Tiếp tục ở bước 3
+        }
+        $('#next-btn').on('click', function() {
+            if (currentStep < totalSteps) { currentStep++; updateWizard(); }
+        });
+        $('#prev-btn').on('click', function() {
+            if (currentStep > 1) { currentStep--; updateWizard(); }
+        });
+
+        // DYNAMIC CONTENT & SELECTION LOGIC
+        function fillStepContent() {
+            // Fill Step 1
+            $('#step-1').html(`
+                    <h4 class="mb-3">1. Chọn người bệnh</h4>
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action patient-profile selected"><div class="d-flex w-100 align-items-center"><img src="https://i.pravatar.cc/60?img=1" class="rounded-circle me-3" alt="avatar"><div><h5 class="mb-1">Trần Công Hoàng</h5><p class="mb-1 text-muted">Ngày sinh: 20/02/2002 - SĐT: 1234567890</p><span class="badge bg-primary">Chủ tài khoản</span></div><i class="fa-solid fa-check-circle text-primary ms-auto fs-4"></i></div></div>
+                        <a href="#" class="list-group-item list-group-item-action"><i class="fa-solid fa-plus me-2"></i> Thêm thành viên</a>
+                    </div>
+                `);
+
+            // Fill Step 2
+            $('#step-2').html(`
+                    <h4 class="mb-3">2. Chọn chuyên khoa</h4>
+                    <div class="mb-4"><div class="input-group"><span class="input-group-text bg-light border-0"><i class="fa-solid fa-search"></i></span><input type="text" id="specialty-search" class="form-control bg-light border-0" placeholder="Tìm kiếm chuyên khoa..."></div></div>
+                    <div class="row g-3 text-center" id="specialty-list">
+                        <div class="col-6 col-md-4 col-lg-2 specialty-col"><div class="card p-3 specialty-item" data-name="Tim mạch"><i class="fa-solid fa-heart-pulse fa-2x text-danger mb-2"></i><small class="fw-medium">Tim mạch</small></div></div>
+                        <div class="col-6 col-md-4 col-lg-2 specialty-col"><div class="card p-3 specialty-item" data-name="Nội tiết"><i class="fa-solid fa-staff-snake fa-2x text-primary mb-2"></i><small class="fw-medium">Nội tiết</small></div></div>
+                        <!-- Thêm các chuyên khoa khác ở đây -->
+                    </div>
+                `);
+        }
+
+        // EVENT BINDING (Sử dụng event delegation cho nội dung động)
+        $(document).on('keyup', '#specialty-search', function() {
+            const searchTerm = $(this).val().toLowerCase();
+            $('.specialty-col').each(function() {
+                $(this).toggle($(this).find('.specialty-item').data('name').toLowerCase().includes(searchTerm));
+            });
+        });
+        $(document).on('click', '.patient-profile, .specialty-item, .date-item', function() {
+            $(this).siblings().removeClass('selected active');
+            $(this).addClass('selected active');
+        });
+        $(document).on('click', '.time-slot:not(.disabled)', function() {
+            $('.time-slot').removeClass('active');
+            $(this).addClass('active');
+        });
+        $(document).on('click', '.btn-booking', function() {
+            // Logic khi người dùng click nút "Đặt lịch khám" của một bác sĩ cụ thể
+            // Ví dụ: hiển thị modal xác nhận
+            alert('Xác nhận đặt lịch với bác sĩ này?');
+        });
+
+        updateWizard();
+    });
+</script>
+</body>
+</html>
