@@ -13,10 +13,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-// file: com/clinicmanagement/config/JWTAuthFIlter.java
 
 @Component
 public class JWTAuthFIlter extends OncePerRequestFilter {
@@ -24,6 +24,11 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
     private final JWTUtils jwtUtils;
     private final OurUserDetailsService userDetailsService;
     private static final Logger logger = Logger.getLogger(JWTAuthFIlter.class.getName());
+
+    private static final List<String> PUBLIC_URLS = Arrays.asList(
+        "/", "/booking", "/profile", "/confirmation", "/doctor-details", 
+        "/login", "/dashboard", "/auth/**", "/css/**", "/js/**", "/images/**"
+    );
 
     public JWTAuthFIlter(JWTUtils jwtUtils, OurUserDetailsService userDetailsService) {
         this.jwtUtils = jwtUtils;
@@ -34,15 +39,18 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        String requestURI = request.getRequestURI();
+
+        // Skip JWT validation for public URLs
+        if (isPublicURL(requestURI)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
 
-        // BỎ HOÀN TOÀN KHỐI IF KIỂM TRA ĐƯỜNG DẪN Ở ĐÂY.
-        // BẮT ĐẦU TRỰC TIẾP TỪ VIỆC KIỂM TRA HEADER.
-
-        // Nếu không có header hoặc header không đúng định dạng, cứ để request đi tiếp.
-        // Spring Security sẽ xử lý ở bước sau dựa trên cấu hình trong SecurityConfig.
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -52,7 +60,6 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
             jwt = authHeader.substring(7);
             userEmail = jwtUtils.extractUsername(jwt);
 
-            // Chỉ thiết lập Authentication nếu có userEmail và chưa có ai được xác thực trong context
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
@@ -63,16 +70,21 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
                             userDetails.getAuthorities()
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    // Đặt thông tin xác thực vào SecurityContext
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
         } catch (Exception e) {
-            // Có thể ghi log lỗi token ở đây nhưng không block request
             logger.log(Level.WARNING, "Cannot set user authentication: {}", e.getMessage());
         }
 
-        // Luôn cho request đi tiếp
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isPublicURL(String requestURI) {
+        return PUBLIC_URLS.stream().anyMatch(publicUrl -> 
+            publicUrl.endsWith("/**") ? 
+                requestURI.startsWith(publicUrl.substring(0, publicUrl.length() - 3)) :
+                requestURI.equals(publicUrl)
+        );
     }
 }

@@ -1,7 +1,6 @@
 package com.clinicmanagement.service;
 
 import com.clinicmanagement.repository.UserRepo;
-import com.clinicmanagement.Model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

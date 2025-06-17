@@ -42,9 +42,9 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/","/booking","/confirmation","/doctor-details" ,"/login", "/dashboard", "/auth/**", "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/api/user/info").authenticated()
-                .anyRequest().authenticated()
+                    .requestMatchers("/","/booking","/confirmation","/doctor-details" ,"/profile","/login", "/dashboard", "/auth/**", "/css/**", "/js/**", "/images/**").permitAll()
+                    .requestMatchers("/profile", "/api/user/info").authenticated()
+                    .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -26,10 +26,17 @@ public class WebController {
     public String doctorDetailsPage() {
         return "doctor-details";
     }
-
     // Thêm phương thức mới
     @GetMapping("/confirmation")
     public String confirmationPage() {
         return "confirmation"; // Trả về file templates/confirmation.html
     }
+ // Thêm phương thức mới
+    @GetMapping("/profile")
+    public String profilePage() {
+        return "profile"; // Trả về file templates/profile.html
+    }
+    
+
+
 } 

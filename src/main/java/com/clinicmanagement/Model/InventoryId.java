@@ -1,4 +1,4 @@
-package com.clinicmanagement.Model.embedded; // Bạn nên đặt các lớp ID vào một package con là 'embedded'
+package com.clinicmanagement.Model; // Bạn nên đặt các lớp ID vào một package con là 'embedded'
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
