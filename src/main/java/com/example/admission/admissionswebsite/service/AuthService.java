@@ -38,13 +38,13 @@ public class AuthService {
             Users ourUsers = new Users();
             ourUsers.setEmail(registrationRequest.getEmail());
             ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            ourUsers.setRoles("STUDENT");
+            ourUsers.setRoles("USER");
             ourUsers.setAddress(registrationRequest.getAddress());
             ourUsers.setFullName(registrationRequest.getFullName());
             ourUsers.setBirthDate(registrationRequest.getBirthDate());
             ourUsers.setGender(registrationRequest.getGender());
             ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
-            ourUsers.setHighSchoolName(registrationRequest.getHighSchoolName());
+            ourUsers.setOccupation(registrationRequest.getOccupation());
             Users ourUserResult = ourUserRepo.save(ourUsers);
 
             if (ourUserResult != null && ourUserResult.getId()>0) {

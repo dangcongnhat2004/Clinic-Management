@@ -50,7 +50,7 @@ public class AdminService {
     public UserDto getUserIdsByUsersRole() {
         UserDto resp = new UserDto();
         try {
-            List<Users> users = userRepository.findByRoles("STUDENT");
+            List<Users> users = userRepository.findByRoles("USER");
             if (users.isEmpty()) {
                 resp.setStatusCode(404);
                 resp.setMessage("No users found with role 'STUDENT'");
@@ -63,7 +63,7 @@ public class AdminService {
                             user.getEmail(),
                             user.getAddress(),
                             user.getBirthDate(),
-                            user.getHighSchoolName(),
+                            user.getOccupation(),
                             user.getPhoneNumber()
 
                     ))

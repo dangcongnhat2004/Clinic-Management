@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -25,7 +26,6 @@ public class Users implements UserDetails {
     private Long id;
 
     private String fullName;
-    private String highSchoolName;
     private String email;
     private String gender;
     @JsonIgnore
@@ -33,10 +33,20 @@ public class Users implements UserDetails {
 
     private String phoneNumber;
     private String birthDate;
+    @Column(columnDefinition = "TEXT")
     private String address;
     private String status;
     private String roles; // Cột roles lưu trữ dưới dạng chuỗi
+    private String identityCardNumber; // Số CCCD
+    private LocalDate issueDate; // Ngày cấp
 
+    private String occupation; // Nghề nghiệp
+
+    private String hometown; // Quê quán
+
+    private String nationality; // Quốc tịch
+
+    private String ethnicity; // Dân tộc
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Chuyển đổi chuỗi roles thành các quyền (authorities)
@@ -72,7 +82,9 @@ public class Users implements UserDetails {
 
     public enum Role {
         ADMIN,
-        STUDENT,
-        UNIVERSITY
+        USER,
+        DOCTOR,
+        NURSE,
+        STAFF
     }
 }

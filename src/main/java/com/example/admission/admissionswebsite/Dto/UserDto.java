@@ -32,6 +32,14 @@ public class UserDto {
     private String gender;
     private String roles;  // Lưu vai trò dưới dạng chuỗi    // Getter và Setter cho roles
     private Integer id;
+    private String identityCardNumber; // Số CCCD
+    private String issueDate; // Ngày cấp
+    private String occupation; // Nghề nghiệp
+    private String hometown; // Quê quán
+    //quoc tich
+    private String nationality; // Quốc tịch
+    private String ethnicity; // Dân tộc
+
     //    private BigDecimal frequentScore1;
 //    private BigDecimal frequentScore2;
 //    private BigDecimal frequentScore3;
@@ -62,14 +70,14 @@ public class UserDto {
         this.fullName = fullName;
     }
 
-    public UserDto(Integer id,String email, String address, String phoneNumber, String birthDate, String fullName, String highSchoolName) {
+    public UserDto(Integer id,String email, String address, String phoneNumber, String birthDate, String fullName, String occupation) {
         this.id = id;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.fullName = fullName;
-        this.highSchoolName = highSchoolName;
+        this.occupation = occupation;
     }
 
 //    public UserDto(int intExact, String fullName, String email, String address, String birthDate, String highSchoolName, String phoneNumber) {
@@ -128,11 +136,35 @@ public class UserDto {
         this.fullName = fullName;
     }
 
-    public String getHighSchoolName() {
-        return highSchoolName;
+    public String getOccupation() {
+        return occupation;
     }
 
-    public void setHighSchoolName(String highSchoolName) {
-        this.highSchoolName = highSchoolName;
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getHometown() {
+        return hometown;
+    }
+
+    public void setHometown(String hometown) {
+        this.hometown = hometown;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getEthnicity() {
+        return ethnicity;
+    }
+
+    public void setEthnicity(String ethnicity) {
+        this.ethnicity = ethnicity;
     }
 }
