@@ -23,7 +23,7 @@ public class Course {
     private byte[] videoCourse;
     @ManyToOne
     @JoinColumn(name = "majorDetails_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "majorDetails_course_fk"))
-    private MajorDetails majorDetails;
+    private SpecialtyDetail majorDetails;
     @ManyToOne
     @JoinColumn(name = "university_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "university_course_fk"))
     private University university;

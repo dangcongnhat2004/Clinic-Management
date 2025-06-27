@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<main layout:fragment="content">
+    <div class="wrapper">
+        <h2 class="text-center my-4">Thêm Ngành</h2>
+
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <div th:if="${errorMessage}" class="alert alert-danger text-center">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <!-- Hiển thị thông báo thành công nếu có -->
+        <div th:if="${successMessage}" class="alert alert-success text-center">
+            <p th:text="${successMessage}"></p>
+        </div>
+
+        <div class="main-panel">
+            <div class="container d-flex justify-content-center">
+                <div class="page-inner w-50 p-4" style="background-color: #f8f9fa; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                    <form th:action="@{/admin/them-nganh}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                        <!-- Tên ngành -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="nameMajor" name="nameMajor" class="form-control" placeholder="Tên ngành" required />
+                            <label class="form-label" for="nameMajor">Tên ngành</label>
+                        </div>
+
+                        <!-- Mã ngành -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="majorCode" name="majorCode" class="form-control" placeholder="Mã ngành" required />
+                            <label class="form-label" for="majorCode">Mã ngành</label>
+                        </div>
+
+                        <!-- Khối xét tuyển -->
+                        <div class="form-outline mb-4">
+                            <input type="text" id="admissionBlock" name="admissionBlock" class="form-control" placeholder="Khối xét tuyển" required />
+                            <label class="form-label" for="admissionBlock">Khối xét tuyển</label>
+                        </div>
+
+                        <!-- Chọn nhóm ngành -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="majorId">Chọn nhóm ngành</label>
+                            <select id="majorId" name="majorId" class="form-control" required>
+                                <option value="">-- Chọn nhóm ngành --</option>
+                                <option th:each="major : ${majorsList}"
+                                        th:value="${major.id}"
+                                        th:text="${major.id + ' - ' + major.majorGroupName}">
+                                </option>
+                            </select>
+                            <div th:if="${majorsList == null || majorsList.isEmpty()}" class="alert alert-warning">
+                                Không có nhóm ngành nào được tìm thấy.
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Thêm Ngành</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

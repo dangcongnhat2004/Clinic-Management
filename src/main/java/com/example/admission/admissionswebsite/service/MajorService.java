@@ -1,7 +1,6 @@
 package com.example.admission.admissionswebsite.service;
 
 import com.example.admission.admissionswebsite.Dto.MajorDto;
-import com.example.admission.admissionswebsite.Model.AdminPost;
 import com.example.admission.admissionswebsite.Model.Major;
 import com.example.admission.admissionswebsite.repository.MajorRepository;
 import com.example.admission.admissionswebsite.repository.UniversityRepository;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

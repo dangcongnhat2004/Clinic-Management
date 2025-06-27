@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title th:layoutTitle="${pageTitle}"> Dashboard - Trang web tuyển sinh</title>
+    <title th:layoutTitle="${pageTitle}"> Trang web đặt lịch khám </title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -60,7 +60,7 @@
                         <a href="#" class="text-muted small"><i class="fas fa-map-marker-alt text-primary me-2"></i>Da Nang</a>
                     </div>
                     <div class="ps-3">
-                        <a href="mailto:example@gmail.com" class="text-muted small"><i class="fas fa-envelope text-primary me-2"></i>Dangcongnhat2004qb@gmail.com</a>
+                        <a href="mailto:example@gmail.com" class="text-muted small"><i class="fas fa-envelope text-primary me-2"></i>Dangcongnhat.dev@gmail.com</a>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <a href="/" class="navbar-brand p-0">
-                <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i> EduExplorer</h1>
+                <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i> BookingAPT</h1>
                 <!-- <img src="img/logo.png" alt="Logo"> -->
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -103,12 +103,11 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav mx-0 mx-lg-auto">
                     <a href="/" class="nav-item nav-link active">Trang chủ</a>
-                    <a href="/danh-sach-truong-dai-hoc" class="nav-item nav-link">Đại học</a>
-                    <a href="/tai-lieu" class="nav-item nav-link">Tài liệu</a>
-                    <a href="/danh-sach-su-kien" class="nav-item nav-link">Sự kiện</a>
-                    <a href="/danh-sach-bai-dang-tuyen-sinh" class="nav-item nav-link">Tin tức </a>
-                    <a href="/danh-sach-nhom-nganh" class="nav-item nav-link">Ngành</a>
-
+                    <a href="/danh-sach-truong-dai-hoc" class="nav-item nav-link">Đặt lịch</a>
+                    <a href="/danh-sach-nhom-nganh" class="nav-item nav-link">Bác sĩ</a>
+                    <a href="/tai-lieu" class="nav-item nav-link">Chuyên khoa</a>
+                    <a href="/danh-sach-tin-tuc" class="nav-item nav-link">Tin tức </a>
+                    <a href="/danh-sach-su-kien" class="nav-item nav-link">Giới thiệu</a>
                     <!--          <div class="nav-item dropdown">-->
                     <!--            <a href="#" class="nav-link" data-bs-toggle="dropdown">-->
                     <!--              <span class="dropdown-toggle">Pages</span>-->
@@ -158,10 +157,10 @@
                         <div class="col-md-6 col-lg-6 col-xl-5">
                             <div class="footer-item">
                                 <a href="home.html" class="p-0">
-                                    <h3 class="text-white"><i class="fab fa-slack me-3"></i> EduExplore</h3>
+                                    <h3 class="text-white"><i class="fab fa-slack me-3"></i> BookingAPT</h3>
                                     <!-- <img src="img/logo.png" alt="Logo"> -->
                                 </a>
-                                <p class="text-white mb-4">Tương lai của các bạn,nhiệm vụ của chúng tôi...</p>
+                                <p class="text-white mb-4">Sức khỏe của bạn ,nhiệm vụ của chúng tôi...</p>
                                 <div class="footer-btn d-flex">
                                     <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-facebook-f"></i></a>
                                     <a class="btn btn-md-square rounded-circle me-3" href="#"><i class="fab fa-twitter"></i></a>
@@ -174,11 +173,11 @@
                             <div class="footer-item">
                                 <h4 class="text-white mb-4">Dịch vụ</h4>
                                 <a href="#"><i class="fas fa-angle-right me-2"></i> Giới thiệu</a>
-                                <a href="/danh-sach-truong-dai-hoc"><i class="fas fa-angle-right me-2"></i> Đại học</a>
-                                <a href="/danh-sach-tai-lieu"><i class="fas fa-angle-right me-2"></i> Tài liệu</a>
-                                <a href="/danh-sach-su-kien"><i class="fas fa-angle-right me-2"></i> Sự kiện</a>
-                                <a href="/danh-sach-bai-dang"><i class="fas fa-angle-right me-2"></i> Tin tức</a>
-                                <a href="/danh-sach-nhom-nganh"><i class="fas fa-angle-right me-2"></i> Ngành</a>
+                                <a href="/danh-sach-truong-dai-hoc"><i class="fas fa-angle-right me-2"></i> Đặt lịch</a>
+                                <a href="/danh-sach-tai-lieu"><i class="fas fa-angle-right me-2"></i> Bác sĩ</a>
+                                <a href="/danh-sach-su-kien"><i class="fas fa-angle-right me-2"></i> Chuyên khoa</a>
+                                <a href="/danh-sach-bai-dang"><i class="fas fa-angle-right me-2"></i> Tin tức </a>
+                                <a href="/"><i class="fas fa-angle-right me-2"></i> Trang chủ</a>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-4">
@@ -285,8 +284,8 @@
 
             <div class="col-xl-3">
                 <div class="footer-item">
-                    <h4 class="text-white mb-4">Trải nghiệm học thử</h4>
-                    <p class="text-white mb-3">Trai nghiệm trước các ngành học đại học.</p>
+                    <h4 class="text-white mb-4">Khám bệnh trực tuyến</h4>
+                    <p class="text-white mb-3">Trải nghiệm khám bệnh trực tuyến trên hệ thống</p>
                     <div class="position-relative rounded-pill mb-4">
                         <input class="form-control rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Enter your email">
                         <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 mt-2 me-2">Đăng ký</button>

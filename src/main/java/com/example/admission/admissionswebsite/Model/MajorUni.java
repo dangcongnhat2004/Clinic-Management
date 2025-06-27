@@ -16,7 +16,7 @@ public class MajorUni {
     private int id;
     @ManyToOne
     @JoinColumn(name = "majoretails_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "majorDetails_majorUni_fk"))
-    private MajorDetails majorDetails;
+    private SpecialtyDetail majorDetails;
     @ManyToOne
     @JoinColumn(name = "university_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "university_majorUni_fk"))
     private University university;

@@ -45,8 +45,8 @@ public class MajorDetailController {
 
     @GetMapping("/admin/danh-sach-nganh")
     public String getAllMajorDetail(Model model,
-                               @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size) {
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size) {
         try {
             if (page < 0) page = 0;
             Page<MajorDetails> majordetail = majorDetailService.getAllMajorDetails(page, size);

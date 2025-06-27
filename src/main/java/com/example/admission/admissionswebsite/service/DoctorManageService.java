@@ -2,14 +2,18 @@ package com.example.admission.admissionswebsite.service;
 
 import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.Users;
+import com.example.admission.admissionswebsite.repository.DoctorRepository;
 import com.example.admission.admissionswebsite.repository.OurUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
-public class ManageService {
+public class DoctorManageService {
     @Autowired
     private OurUserRepo ourUserRepo;
     @Autowired
@@ -18,6 +22,8 @@ public class ManageService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     public UserDto signUp(UserDto registrationRequest){
         UserDto resp = new UserDto();
@@ -36,6 +42,9 @@ public class ManageService {
             ourUsers.setBirthDate(registrationRequest.getBirthDate());
             ourUsers.setGender(registrationRequest.getGender());
             ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
+            ourUsers.setOccupation(registrationRequest.getOccupation());
+            ourUsers.setAddress(registrationRequest.getAddress());
+            ourUsers.setStatus("ACTIVE");
             Users ourUserResult = ourUserRepo.save(ourUsers);
 
             if (ourUserResult != null && ourUserResult.getId()>0) {
@@ -48,6 +57,37 @@ public class ManageService {
             resp.setError("Error during user registration: " + e.getMessage());
         }
 
+        return resp;
+    }
+
+    public UserDto getUserIdsByUsersRole() {
+        UserDto resp = new UserDto();
+        try {
+            List<Users> users = doctorRepository.findByRoles("DOCTOR");
+            if (users.isEmpty()) {
+                resp.setStatusCode(404);
+                resp.setMessage("No users found with role 'DOCTOR'");
+                return resp;
+            }
+            List<UserDto> userDtos = users.stream()
+                    .map(user -> new UserDto(
+                            Math.toIntExact(user.getId()),
+                            user.getFullName(),
+                            user.getEmail(),
+                            user.getAddress(),
+                            user.getBirthDate(),
+                            user.getOccupation(),
+                            user.getPhoneNumber()
+
+                    ))
+                    .collect(Collectors.toList());
+            resp.setStatusCode(200);
+            resp.setMessage("User IDs retrieved successfully");
+            resp.setOurUser(userDtos); // Đảm bảo trả về danh sách UserDto
+        } catch (Exception e) {
+            resp.setStatusCode(500);
+            resp.setError("Error while retrieving user IDs: " + e.getMessage());
+        }
         return resp;
     }
 }

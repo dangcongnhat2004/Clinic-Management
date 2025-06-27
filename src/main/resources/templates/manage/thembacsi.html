@@ -10,11 +10,19 @@
             <a href="/" class="text-decoration-none text-primary">&larr; Quay lại trang chủ</a>
         </div>
 
-        <h2 class="text-center mb-4">Đăng ký thành viên</h2>
+        <h2 class="text-center mb-4">Đăng ký bác sĩ</h2>
 
         <div class="d-flex justify-content-center">
+
             <div class="col-md-8 p-4 border rounded shadow bg-white">
-                <form id="signupForm" th:action="@{/auth/signup}" th:object="${user}" method="post">
+                <form id="signupForm" th:action="@{/admin/them-bac-si}" th:object="${user}" method="post">
+                    <!-- Hiển thị thông báo thành công hoặc lỗi -->
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                        <span th:text="${successMessage}"></span>
+                    </div>
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="fullName" class="form-label">Họ và tên</label>
@@ -82,9 +90,7 @@
                 </form>
 
                 <!-- Liên kết Đăng nhập ở dưới -->
-                <div class="text-center mt-3">
-                    <span>Đã có tài khoản? <a href="/login" class="text-decoration-none text-primary">Đăng nhập</a></span>
-                </div>
+
             </div>
         </div>
     </div>

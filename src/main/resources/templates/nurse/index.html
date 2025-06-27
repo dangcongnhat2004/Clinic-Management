@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+
+<main layout:fragment="content">
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="index.html" class="logo">
+                <img
+                  src="/Admin/assets/img/kaiadmin/logo_light.svg"
+                  alt="navbar brand"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+          >
+            <div class="container-fluid">
+              <nav
+                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+              >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-search pe-1">
+                      <i class="fa fa-search search-icon"></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search ..."
+                    class="for m-control"
+                  />
+                </div>
+              </nav>
+
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li
+                  class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
+                >
+                  <a
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    role="button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    <i class="fa fa-search"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-search animated fadeIn">
+                    <form class="navbar-left navbar-form nav-search">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          placeholder="Search ..."
+                          class="form-control"
+                        />
+                      </div>
+                    </form>
+                  </ul>
+                </li>
+
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a
+                    class="dropdown-toggle profile-pic"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <div class="avatar-sm">
+                      <img
+                        src="/Admin/assets/img/profile.jpg"
+                        alt="..."
+                        class="avatar-img rounded-circle"
+                      />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold">Admin</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div class="avatar-lg">
+                            <img
+                              src="/Admin/assets/img/profile.jpg"
+                              alt="image profile"
+                              class="avatar-img rounded"
+                            />
+                          </div>
+                          <div class="u-text">
+                            <h4>Admin</h4>
+                            <p class="text-muted">Hello, <span th:text="${email}"></span></p>
+<!--                            <a-->
+<!--                              href="profile.html"-->
+<!--                              class="btn btn-xs btn-secondary btn-sm"-->
+<!--                              >View Profile</a-->
+<!--                            >-->
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="#">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container">
+          <div class="page-inner">
+            <div
+              class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+            >
+
+<!--              <div class="ms-md-auto py-2 py-md-0">-->
+<!--                <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>-->
+<!--                <a href="#" class="btn btn-primary btn-round">Add Customer</a>-->
+<!--              </div>-->
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-primary bubble-shadow-small"
+                        >
+                          <i class="icon-layers"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Ngành học</p>
+                          <h4 class="card-title">154</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-info bubble-shadow-small"
+                        >
+                          <i class="icon-present"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Sự kiện</p>
+                          <h4 class="card-title">130</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-success bubble-shadow-small"
+                        >
+                          <i class="icon-note"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Bài đăng</p>
+                          <h4 class="card-title">45</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-secondary bubble-shadow-small"
+                        >
+                          <i class="icon-graduation"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Trường đại học</p>
+                          <h4 class="card-title">57</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card card-round">
+                  <div class="card-header">
+                    <div class="card-head-row">
+                      <div class="card-title">Quản lý người dùng</div>
+                      <div class="card-tools">
+                        <a
+                          href="#"
+                          class="btn btn-label-success btn-round btn-sm me-2"
+                        >
+                          <span class="btn-label">
+                            <i class="fa fa-pencil"></i>
+                          </span>
+                          Export
+                        </a>
+                        <a href="#" class="btn btn-label-info btn-round btn-sm">
+                          <span class="btn-label">
+                            <i class="fa fa-print"></i>
+                          </span>
+                          Print
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="card">
+
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table
+                                  id="multi-filter-select"
+                                  class="display table table-striped table-hover"
+                          >
+                            <thead>
+                            <tr>
+                              <th>Họ tên</th>
+                              <th>Email</th>
+                              <th>Địa chỉ</th>
+                              <th>Năm sinh</th>
+                              <th>Trường THPT</th>
+                              <th>Số điện thoại</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                              <th>Họ tên</th>
+                              <th>Email</th>
+                              <th>Địa chỉ</th>
+                              <th>Năm sinh</th>
+                              <th>Trường THPT</th>
+                              <th>Số điện thoại</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr>
+                              <td>Nguyễn Thị Mai</td>
+                              <td>nguyenmai@example.com</td>
+                              <td>Hà Nội</td>
+                              <td>2005</td>
+                              <td>Trường THPT Chu Văn An</td>
+                              <td class="text-end">
+                                <span class="badge badge-success">Bình thường</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Trần Văn Minh</td>
+                              <td>tranminh@example.com</td>
+                              <td>TP. Hồ Chí Minh</td>
+                              <td>2004</td>
+                              <td>Trường THPT Nguyễn Thị Minh Khai</td>
+                              <td class="text-end">
+                                <span class="badge badge-success">Bình thường</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Phạm Thị Hằng</td>
+                              <td>phamhang@example.com</td>
+                              <td>Đà Nẵng</td>
+                              <td>2003</td>
+                              <td>Trường THPT Phan Châu Trinh</td>
+                              <td class="text-end">
+                                <span class="badge badge-success">Bình thường</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Lê Quang Vinh</td>
+                              <td>lequangvinh@example.com</td>
+                              <td>Hải Phòng</td>
+                              <td>2005</td>
+                              <td>Trường THPT Trần Nguyên Hãn</td>
+                              <td class="text-end">
+                                <span class="badge badge-success">Bình thường</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Hoàng Thanh Hương</td>
+                              <td>hoanghuong@example.com</td>
+                              <td>Huế</td>
+                              <td>2004</td>
+                              <td>Trường THPT Hai Bà Trưng</td>
+                              <td class="text-end">
+                                <span class="badge badge-success">Bình thường</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Đinh Đức Thịnh</td>
+                              <td>dinhthinh@example.com</td>
+                              <td>Thanh Hóa</td>
+                              <td>2003</td>
+                              <td>Trường THPT Lam Sơn</td>
+                              <td class="text-end">
+                                <span class="badge badge-success">Bình thường</span>
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <td>Vũ Thị Kim Anh</td>
+                              <td>anhvtk@example.com</td>
+                              <td>Bắc Giang</td>
+                              <td>2005</td>
+                              <td>Trường THPT Lục Ngạn</td>
+                              <td class="text-end">
+                                <span class="badge badge-success">Bình thường</span>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card card-primary card-round">
+                  <div class="card-header">
+                    <div class="card-head-row">
+                      <div class="card-title">Danh sách trường đại học</div>
+                      <div class="card-tools">
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-sm btn-label-light dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            Export
+                          </button>
+                          <div
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton"
+                          >
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#"
+                              >Something else here</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-category">Đà nẵng</div>
+                  </div>
+                  <div class="card-body pb-0">
+                    <div class="mb-4 mt-2">
+                      <h1>25</h1>
+                    </div>
+                    <div class="pull-in">
+                      <canvas id="dailySalesChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="card card-round">
+                  <div class="card-body pb-0">
+                    <div class="h1 fw-bold float-end text-primary">+5%</div>
+                    <h2 class="mb-2">17</h2>
+                    <p class="text-muted">Người đăng kí mới</p>
+                    <div class="pull-in sparkline-fix">
+                      <div id="lineChart"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card card-round">
+                  <div class="card-body">
+                    <div class="card-head-row card-tools-still-right">
+                      <div class="card-title">Người đăng kí mới</div>
+                      <div class="card-tools">
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-icon btn-clean me-0"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-h"></i>
+                          </button>
+                          <div
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton"
+                          >
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#"
+                              >Something else here</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-list py-4">
+                      <div class="item-list">
+                        <div class="avatar">
+                          <img
+                            src="/Admin/assets/img/jm_denis.jpg"
+                            alt="..."
+                            class="avatar-img rounded-circle"
+                          />
+                        </div>
+                        <div class="info-user ms-3">
+                          <div class="username">Jimmy Denis</div>
+                          <div class="status">Graphic Designer</div>
+                        </div>
+                        <button class="btn btn-icon btn-link op-8 me-1">
+                          <i class="far fa-envelope"></i>
+                        </button>
+                        <button class="btn btn-icon btn-link btn-danger op-8">
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </div>
+                      <div class="item-list">
+                        <div class="avatar">
+                          <span
+                            class="avatar-title rounded-circle border border-white"
+                            >CF</span
+                          >
+                        </div>
+                        <div class="info-user ms-3">
+                          <div class="username">Chandra Felix</div>
+                          <div class="status">Sales Promotion</div>
+                        </div>
+                        <button class="btn btn-icon btn-link op-8 me-1">
+                          <i class="far fa-envelope"></i>
+                        </button>
+                        <button class="btn btn-icon btn-link btn-danger op-8">
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </div>
+                      <div class="item-list">
+                        <div class="avatar">
+                          <img
+                            src="/Admin/assets/img/talha.jpg"
+                            alt="..."
+                            class="avatar-img rounded-circle"
+                          />
+                        </div>
+                        <div class="info-user ms-3">
+                          <div class="username">Talha</div>
+                          <div class="status">Front End Designer</div>
+                        </div>
+                        <button class="btn btn-icon btn-link op-8 me-1">
+                          <i class="far fa-envelope"></i>
+                        </button>
+                        <button class="btn btn-icon btn-link btn-danger op-8">
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </div>
+                      <div class="item-list">
+                        <div class="avatar">
+                          <img
+                            src="/Admin/assets/img/chadengle.jpg"
+                            alt="..."
+                            class="avatar-img rounded-circle"
+                          />
+                        </div>
+                        <div class="info-user ms-3">
+                          <div class="username">Chad</div>
+                          <div class="status">CEO Zeleaf</div>
+                        </div>
+                        <button class="btn btn-icon btn-link op-8 me-1">
+                          <i class="far fa-envelope"></i>
+                        </button>
+                        <button class="btn btn-icon btn-link btn-danger op-8">
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </div>
+                      <div class="item-list">
+                        <div class="avatar">
+                          <span
+                            class="avatar-title rounded-circle border border-white bg-primary"
+                            >H</span
+                          >
+                        </div>
+                        <div class="info-user ms-3">
+                          <div class="username">Hizrian</div>
+                          <div class="status">Web Designer</div>
+                        </div>
+                        <button class="btn btn-icon btn-link op-8 me-1">
+                          <i class="far fa-envelope"></i>
+                        </button>
+                        <button class="btn btn-icon btn-link btn-danger op-8">
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </div>
+                      <div class="item-list">
+                        <div class="avatar">
+                          <span
+                            class="avatar-title rounded-circle border border-white bg-secondary"
+                            >F</span
+                          >
+                        </div>
+                        <div class="info-user ms-3">
+                          <div class="username">Farrah</div>
+                          <div class="status">Marketing</div>
+                        </div>
+                        <button class="btn btn-icon btn-link op-8 me-1">
+                          <i class="far fa-envelope"></i>
+                        </button>
+                        <button class="btn btn-icon btn-link btn-danger op-8">
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+<!--           -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-head-row card-tools-still-right">
+                      <div class="card-title">Sự kiện sắp tới</div>
+                      <div class="card-tools">
+                        <div class="dropdown">
+                          <button
+                                  class="btn btn-icon btn-clean"
+                                  type="button"
+                                  id="dropdownMenuButton"
+                                  data-bs-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-h"></i>
+                          </button>
+                          <div
+                                  class="dropdown-menu"
+                                  aria-labelledby="dropdownMenuButton"
+                          >
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#"
+                            >Something else here</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <ol class="activity-feed">
+                      <li class="feed-item feed-item-secondary">
+                        <time class="date" datetime="9-25">Ngày 25</time>
+                        <span class="text"
+                        >Sự kiện
+                          <a href="#">"Cuộc thi Best Web Design"</a></span
+                        >
+                      </li>
+                      <li class="feed-item feed-item-success">
+                        <time class="date" datetime="9-24">Ngày 26</time>
+                        <span class="text"
+                        >Sự kiện
+                          <a href="#">"Mở cổng tuyển sinh"</a></span
+                        >
+                      </li>
+                      <li class="feed-item feed-item-info">
+                        <time class="date" datetime="9-23">Ngày 27</time>
+                        <span class="text"
+                        >Sự kiện
+                          <a href="single-group.php"
+                          >"Đóng cổng tuyển sinh"</a
+                          ></span
+                        >
+                      </li>
+                      <li class="feed-item feed-item-warning">
+                        <time class="date" datetime="9-21">Ngày 28</time>
+                        <span class="text"
+                        >Sự kiện
+                          <a href="#">"Hùng biện tiếng anh"</a></span
+                        >
+                      </li>
+                      <li class="feed-item feed-item-danger">
+                        <time class="date" datetime="9-18">Ngày 29</time>
+                        <span class="text"
+                        >Sự kiện
+                          <a href="#">"Đại sứ sinh viên"</a></span
+                        >
+                      </li>
+                      <li class="feed-item">
+                        <time class="date" datetime="9-17">ngày 30</time>
+                        <span class="text"
+                        >Sự kiện
+                          <a href="single-event.php">"Cuộc thi Hackathon"</a></span
+                        >
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Custom template | don't include it in your project! -->
+      <!-- End Custom template -->
+</main>
+</body>
+</html>

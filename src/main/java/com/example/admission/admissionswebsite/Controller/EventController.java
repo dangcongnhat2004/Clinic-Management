@@ -3,11 +3,9 @@ package com.example.admission.admissionswebsite.Controller;
 
 import com.example.admission.admissionswebsite.Dto.EventDto;
 import com.example.admission.admissionswebsite.Dto.UserDto;
-import com.example.admission.admissionswebsite.Model.AdminPost;
 import com.example.admission.admissionswebsite.Model.Event;
 import com.example.admission.admissionswebsite.service.AdminService;
 import com.example.admission.admissionswebsite.service.EventService;
-import com.example.admission.admissionswebsite.service.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

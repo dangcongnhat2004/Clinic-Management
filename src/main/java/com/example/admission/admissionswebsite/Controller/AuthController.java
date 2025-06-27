@@ -62,12 +62,15 @@ public class AuthController {
             if (role.contains("ADMIN")) {
                 System.out.println("Redirecting to /admin");
                 return "redirect:/admin";
-            } else if (role.contains("UNIVERSITY")) {
-                System.out.println("Redirecting to /university");
-                return "redirect:/university";
-            } else if (role.contains("STUDENT")) {
-                System.out.println("Redirecting to /user");
-                return "redirect:/user";
+            } else if (role.contains("DOCTOR")) {
+                System.out.println("Redirecting to /doctor");
+                return "redirect:/doctor";
+            } else if (role.contains("NURSE")) {
+                System.out.println("Redirecting to /nurse");
+                return "redirect:/nurse";
+            } else if (role.contains("STAFF")) {
+                System.out.println("Redirecting to /staff");
+                return "redirect:/staff";
             }
         } else {
             model.addAttribute("errorMessage", "Email hoặc mật khẩu không chính xác.");

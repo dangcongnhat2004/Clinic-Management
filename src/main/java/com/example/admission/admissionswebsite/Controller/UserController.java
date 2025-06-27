@@ -44,7 +44,7 @@ public class UserController {
         model.addAttribute("majors", majors);
         List<Event> events = enduserService.getAllEvent();
         model.addAttribute("events", events);
-        List<AdminPost> posts = enduserService.getAllPost();
+        List<Specialty> posts = enduserService.getAllPost();
         model.addAttribute("posts", posts);
 
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
@@ -102,7 +102,7 @@ public class UserController {
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/listevent"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
     }
-    @GetMapping("/danh-sach-bai-dang-tuyen-sinh")
+    @GetMapping("/danh-sach-tin-tuc")
     public String listAdmissionPost(Model model,@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "6") int size) {
         try {

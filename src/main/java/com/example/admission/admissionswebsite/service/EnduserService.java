@@ -1,9 +1,6 @@
 package com.example.admission.admissionswebsite.service;
 
-import com.example.admission.admissionswebsite.Model.AdminPost;
-import com.example.admission.admissionswebsite.Model.Event;
-import com.example.admission.admissionswebsite.Model.Major;
-import com.example.admission.admissionswebsite.Model.University;
+import com.example.admission.admissionswebsite.Model.*;
 import com.example.admission.admissionswebsite.repository.AdminPostRepository;
 import com.example.admission.admissionswebsite.repository.EventRepository;
 import com.example.admission.admissionswebsite.repository.MajorRepository;
@@ -37,7 +34,7 @@ public class EnduserService {
         return eventRepository.findTop3ByOrderByIdDesc();
     }
 
-    public List<AdminPost> getAllPost() {
+    public List<Specialty> getAllPost() {
         return adminPostRepository.findTop3ByOrderByIdDesc();
     }
     @Transactional(readOnly = true)

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<main layout:fragment="content">
+    <div class="wrapper">
+        <div class="main-panel">
+            <div class="container">
+                <div class="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="card-title">Chỉnh sửa ngành</h4>
+                                    </div>
+                                </div>
+                                <!-- Hiển thị thông báo thành công hoặc lỗi -->
+                                <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                                    <span th:text="${successMessage}"></span>
+                                </div>
+                                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                                    <span th:text="${errorMessage}"></span>
+                                </div>
+                                <!-- Form chỉnh sửa ngành -->
+                                <form th:action="@{/admin/chinh-sua-nganh}" th:object="${majordetails}" method="post">
+                                    <!-- ID ẩn -->
+                                    <input type="hidden" th:field="*{id}" />
+
+                                    <div class="form-group">
+                                        <label for="fieldName">Tên ngành:</label>
+                                        <input type="text" id="fieldName" th:field="*{nameMajor}" class="form-control" required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fieldCode">Mã ngành:</label>
+                                        <input type="text" id="fieldCode" th:field="*{majorCode}" class="form-control" required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fieldCode">Khối xét tuyển:</label>
+                                        <input type="text" id="fieldBlock" th:field="*{admissionBlock}" class="form-control" required />
+                                    </div>
+
+
+
+                                    <center>
+                                        <!-- Nút Lưu -->
+                                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                        <!-- Nút Hủy -->
+                                        <a th:href="@{/admin/danh-sach-nganh}" class="btn btn-secondary">Hủy</a>
+                                    </center>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>

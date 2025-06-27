@@ -5,7 +5,7 @@
 <main layout:fragment="content">
   <div class="container py-5">
     <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-      <h4 class="text-primary">Tin tức tuyển sinh </h4>
+      <h4 class="text-primary">Tin tức </h4>
 <!--      <h1 class="display-4 mb-4">Cập nhật tin tuyển sinh</h1>-->
 <!--      <p class="mb-0">Tổng hợp tất cả các trường đại học & cao đẳng tại Đà Nẵng.-->
       </p>
@@ -26,7 +26,7 @@
                 <h4>
                   <a th:href="@{/chi-tiet-tin-tuc/{id}(id=${admissions.id})}"
                      class="text-dark text-decoration-none">
-                    <span th:text="${admissions.title}">Tên trường</span>
+                    <span th:text="${admissions.title}">Tiêu đề</span>
                   </a>
                 </h4>
                 <p class="text-muted mb-1" th:text="${admissions.description}">Mô tả trường</p>

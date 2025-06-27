@@ -21,16 +21,16 @@ import java.util.stream.Collectors;
 @Service
 public class MajorDetailService {
 
-       @Autowired
-       private MajorDetailRepository majorDetailRepository;
+    @Autowired
+    private MajorDetailRepository majorDetailRepository;
 
 
 
     public List<MajorDetails> getMajorDetailsByMajorId(int majorId) {
         return majorDetailRepository.findByMajorId(majorId);
     }
-       @Autowired
-       private MajorRepository majorRepository;
+    @Autowired
+    private MajorRepository majorRepository;
 
     public MajorDto getMajorGroups() {
         MajorDto resp = new MajorDto();

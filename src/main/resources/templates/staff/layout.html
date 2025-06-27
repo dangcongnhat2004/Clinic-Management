@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title th:layoutTitle="${pageTitle}"> Dashboard - Trang web tuyển sinh</title>
+    <meta
+            content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+            name="viewport"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <!-- Fonts and icons -->
+    <script src="/Admin/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["/Admin/assets/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/Admin/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Admin/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="/Admin/assets/css/kaiadmin.min.css" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="/Admin/assets/css/demo.css" />
+</head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+                <a href="/admin" class="logo">
+                    <img
+                            src="/Admin/assets/img/kaiadmin/edu.png"
+                            alt="navbar brand"
+                            class="navbar-brand"
+                            height="20"
+                    />
+                </a>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="gg-menu-right"></i>
+                    </button>
+                    <button class="btn btn-toggle sidenav-toggler">
+                        <i class="gg-menu-left"></i>
+                    </button>
+                </div>
+                <button class="topbar-toggler more">
+                    <i class="gg-more-vertical-alt"></i>
+                </button>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-item active">
+                        <a
+                                data-bs-toggle="collapse"
+                                href="#dashboard"
+                                class="collapsed"
+                                aria-expanded="false"
+                        >
+                            <p>Dashboard</p>
+                            <span class="caret"></span>
+                        </a>
+
+                    </li>
+                    <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                        <h4 class="text-section">Quản lý</h4>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#base">
+                            <i class="fas fa-layer-group"></i>
+                            <p>Ngành Học</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="base">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-nhom-nganh">
+                                        <span class="sub-item">Danh sách nhóm ngành</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-nhom-nganh">
+                                        <span class="sub-item">Thêm nhóm ngành</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/danh-sach-nganh">
+                                        <span class="sub-item">Danh sách ngành </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-nganh">
+                                        <span class="sub-item">Thêm ngành</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#sidebarLayouts">
+                            <i class="fas fa-th-list"></i>
+                            <p>Sự kiện</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="sidebarLayouts">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-su-kien">
+                                        <span class="sub-item">Danh sách sự kiện</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-su-kien">
+                                        <span class="sub-item">Thêm sự kiện</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#forms">
+                            <i class="fas fa-pen-square"></i>
+                            <p>Bài đăng</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="forms">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-bai-dang">
+                                        <span class="sub-item">Danh sách bài đăng</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-bai-dang">
+                                        <span class="sub-item">Tạo bài đăng</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#tables">
+                            <i class="fas fa-table"></i>
+                            <p>Trường đại học</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="tables">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-truong-dai-hoc">
+                                        <span class="sub-item">Danh sách trường</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-truong-dai-hoc">
+                                        <span class="sub-item">Thêm trường mới</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#maps">
+                            <i class="bi bi-person-lines-fill"></i>
+
+                            <p>Người dùng</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="maps">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-nguoi-dung">
+                                        <span class="sub-item">Danh sách người dùng</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/danh-sach-bac-si">
+                                        <span class="sub-item">Danh sách bác sĩ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/danh-sach-tap-vu">
+                                        <span class="sub-item">Danh sách tạp vụ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/danh-sach-y-ta">
+                                        <span class="sub-item">Danh sách y tá</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+<!--                    quanlybacsi-->
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#quanlybacsi">
+                            <i class="bi bi-person-badge"></i>
+                            <p>Quản lý bác sĩ</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="quanlybacsi">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-bac-si">
+                                        <span class="sub-item">Danh sách bác sĩ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-bac-si">
+                                        <span class="sub-item">Thêm bác sĩ</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+<!--                        quanlyyta-->
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#quanlyyta">
+                            <i class="bi bi-person-heart"></i>
+                            <p>Quản lý y tá</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="quanlyyta">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-y-ta">
+                                        <span class="sub-item">Danh sách y tá</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-y-ta">
+                                        <span class="sub-item">Thêm y tá</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+<!--                    quanlinhanvien-->
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#quanlyphucvu">
+                            <i class="bi bi-person-workspace"></i>
+                            <p>Quản lý phục vụ</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="quanlyphucvu">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin/danh-sach-nhan-vien">
+                                        <span class="sub-item">Danh sách phục vụ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/them-phuc-vu">
+                                        <span class="sub-item">Thêm phục vụ</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Sidebar -->
+
+    <div >
+
+
+    <main layout:fragment="content">
+
+
+    </main>
+
+    </div>
+
+    <!-- Custom template | don't include it in your project! -->
+    <!-- End Custom template -->
+</div>
+<!--   Core JS Files   -->
+<script src="/Admin/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/Admin/assets/js/core/popper.min.js"></script>
+<script src="/Admin/assets/js/core/bootstrap.min.js"></script>
+
+<!--    &lt;!&ndash; jQuery Scrollbar &ndash;&gt;-->
+<!--    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>-->
+
+<!-- Chart JS -->
+<script src="/Admin/assets/js/plugin/chart.js/chart.min.js"></script>
+
+<!-- jQuery Sparkline -->
+<script src="/Admin/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Chart Circle -->
+<script src="/Admin/assets/js/plugin/chart-circle/circles.min.js"></script>
+
+<!-- Datatables -->
+<script src="/Admin/assets/js/plugin/datatables/datatables.min.js"></script>
+
+<!-- Bootstrap Notify -->
+<script src="/Admin/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+<!-- jQuery Vector Maps -->
+<script src="/Admin/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="/Admin/assets/js/plugin/jsvectormap/world.js"></script>
+
+<!-- Sweet Alert -->
+<script src="/Admin/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+<!-- Kaiadmin JS -->
+<script src="/Admin/assets/js/kaiadmin.min.js"></script>
+
+<!--&lt;!&ndash; Kaiadmin DEMO methods, don't include it in your project! &ndash;&gt;-->
+<!--<script src="/Admin/assets/js/setting-demo.js"></script>-->
+<!--<script src="/Admin/assets/js/demo.js"></script>-->
+
+<!-- jQuery Scrollbar -->
+<script src="/Admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- Datatables -->
+<script src="/Admin/assets/js/plugin/datatables/datatables.min.js"></script>
+<!-- Kaiadmin JS -->
+<script src="/Admin/assets/js/kaiadmin.min.js"></script>
+<!-- Kaiadmin DEMO methods, don't include it in your project! -->
+<script src="/Admin/assets/js/setting-demo2.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#basic-datatables").DataTable({});
+
+        $("#multi-filter-select").DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $(
+                            '<select class="form-select"><option value=""></option></select>'
+                        )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                column
+                                    .search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                select.append(
+                                    '<option value="' + d + '">' + d + "</option>"
+                                );
+                            });
+                    });
+            },
+        });
+
+        // Add Row
+        $("#add-row").DataTable({
+            pageLength: 5,
+        });
+
+        var action =
+            '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+        $("#addRowButton").click(function () {
+            $("#add-row")
+                .dataTable()
+                .fnAddData([
+                    $("#addName").val(),
+                    $("#addPosition").val(),
+                    $("#addOffice").val(),
+                    action,
+                ]);
+            $("#addRowModal").modal("hide");
+        });
+    });
+
+</script>
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const userSelect = document.getElementById('usersId');
+        if (userSelect.value === "") {
+            e.preventDefault(); // Ngăn việc submit
+            alert("Vui lòng chọn một người dùng.");
+        }
+    });
+</script>
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const titleInput = document.getElementById('title');
+        if (titleInput.value.trim() === "") {
+            e.preventDefault(); // Ngăn việc submit
+            alert("Vui lòng nhập tiêu đề bài đăng.");
+        }
+    });
+</script>
+</body>
+</html>
