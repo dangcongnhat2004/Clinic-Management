@@ -37,13 +37,13 @@ public class AdminController {
 
     @GetMapping("/user")
     public String homeuser(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            model.addAttribute("email", authentication.getName());
-        } else {
-            model.addAttribute("email", "hello@example.com");
-        }
-        return "user/index";
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            model.addAttribute("email", authentication.getName());
+//        } else {
+//            model.addAttribute("email", "hello@example.com");
+//        }
+        return "user/homepage";
     }
 
     @GetMapping("/login-success")

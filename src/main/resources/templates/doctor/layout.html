@@ -1,437 +1,282 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title th:layoutTitle="${pageTitle}"> Dashboard - Trang web tuyển sinh</title>
-    <meta
-            content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-            name="viewport"
-    />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title th:layoutTitle="${pageTitle}">Bảng điều khiển - Trang chủ người dùng  </title>
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <!-- Fonts and icons -->
-    <script src="/manage/assets/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-        WebFont.load({
-            google: { families: ["Public Sans:300,400,500,600,700"] },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid",
-                    "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands",
-                    "simple-line-icons",
-                ],
-                urls: ["/Admin/assets/css/fonts.min.css"],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
-    </script>
-
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="/manage/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/manage/assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="/manage/assets/css/kaiadmin.min.css" />
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="/manage/assets/css/demo.css" />
-</head>
+        <style>
+            body {
+                background-color: #f0f2f5;
+            }
+            .sidebar {
+                width: 260px;
+                height: 100vh;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: #ffffff;
+                border-right: 1px solid #dee2e6;
+                padding-top: 20px;
+            }
+            .sidebar .nav-link {
+                color: #495057;
+                font-weight: 500;
+                padding: 12px 20px;
+            }
+            .sidebar .nav-link.active,
+            .sidebar .nav-link:hover {
+                background-color: #e9ecef;
+                color: #0d6efd;
+                border-radius: 0.375rem;
+            }
+            .sidebar .nav-link .fa-fw {
+                margin-right: 10px;
+            }
+            .main-content {
+                margin-left: 260px;
+                padding: 20px;
+            }
+            .top-nav {
+                background-color: #ffffff;
+                padding: 10px 20px;
+                border-radius: 0.5rem;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            .card-feature, .article-card {
+                transition: transform 0.2s, box-shadow 0.2s;
+                cursor: pointer;
+            }
+            .card-feature:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            }
+            .article-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+            }
+            .doctor-avatar {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 3px solid #fff;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+            .article-card .card-img {
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+            }
+            /* Loader styles */
+            #loader {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                z-index: 9999;
+            }
+        </style>
+    </head>
 <body>
-<div class="wrapper">
-    <!-- Sidebar -->
 
-    <div class="sidebar" data-background-color="dark">
-        <div class="sidebar-logo">
-            <!-- Logo Header -->
-            <div class="logo-header" data-background-color="dark">
-                <a href="/admin" class="logo">
-                    <img
-                            src="/manage/assets/img/kaiadmin/edu.png"
-                            alt="navbar brand"
-                            class="navbar-brand"
-                            height="20"
-                    />
-                </a>
-                <div class="nav-toggle">
-                    <button class="btn btn-toggle toggle-sidebar">
-                        <i class="gg-menu-right"></i>
-                    </button>
-                    <button class="btn btn-toggle sidenav-toggler">
-                        <i class="gg-menu-left"></i>
-                    </button>
+<!--&lt;!&ndash; === LOADER / AUTH CHECKER === &ndash;&gt;-->
+<!--<div id="loader">-->
+<!--  <div class="spinner-border text-primary" role="status">-->
+<!--    <span class="visually-hidden">Loading...</span>-->
+<!--  </div>-->
+<!--  <p class="mt-3 text-muted">Đang kiểm tra xác thực...</p>-->
+<!--</div>-->
+
+<!-- === MAIN DASHBOARD (HIDDEN BY DEFAULT) === -->
+<div id="dashboard-content" style="display: none;">
+    <!-- === SIDEBAR === -->
+    <nav class="sidebar">
+        <div class="px-4 mb-4">
+            <h4 class="fw-bold text-primary"><i class="fa-solid fa-clinic-medical"></i> ClinicPlus</h4>
+        </div>
+        <ul class="nav flex-column px-3">
+            <li class="nav-item">
+                <a class="nav-link active" href="/dashboard"><i class="fa-solid fa-house fa-fw"></i> Trang chủ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/appointments"><i class="fa-solid fa-calendar-check fa-fw"></i> Lịch khám</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/booking"><i class="fa-solid fa-plus-circle fa-fw"></i> Đặt lịch</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fa-solid fa-comments fa-fw"></i> Tin nhắn</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fa-solid fa-user fa-fw"></i> Cá nhân</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- === MAIN CONTENT AREA === -->
+    <div class="main-content">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav d-flex justify-content-between align-items-center">
+            <div class="input-group" style="max-width: 400px;">
+                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-search"></i></span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Tìm kiếm bác sĩ, chuyên khoa...">
+            </div>
+            <div class="d-flex align-items-center">
+                <a href="#" class="nav-link me-3"><i class="fa-solid fa-bell fs-5"></i></a>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://i.pravatar.cc/40?img=1" alt="avatar" width="32" height="32" class="rounded-circle me-2">
+                        <span id="user-name-display" class="fw-bold">User</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                        <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
+                        <li><a class="dropdown-item" href="#">Cài đặt</a></li>
+                        <li><hr class="dropdown-divider"></li>
+
+                        <!-- FORM ĐĂNG XUẤT ĐÃ ĐƯỢC CẬP NHẬT -->
+                        <form th:action="@{/logout}" method="post" onsubmit="handleLogout()">
+                            <button type="submit">Đăng xuất</button>
+                        </form>
+                    </ul>
                 </div>
-                <button class="topbar-toggler more">
-                    <i class="gg-more-vertical-alt"></i>
-                </button>
             </div>
-            <!-- End Logo Header -->
-        </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
-            <div class="sidebar-content">
-                <ul class="nav nav-secondary">
-                    <li class="nav-item active">
-                        <a
-                                data-bs-toggle="collapse"
-                                href="#dashboard"
-                                class="collapsed"
-                                aria-expanded="false"
-                        >
-                            <p>Dashboard</p>
-                            <span class="caret"></span>
-                        </a>
+        </header>
 
-                    </li>
-                    <li class="nav-section">
-                <span class="sidebar-mini-icon">
-                  <i class="fa fa-ellipsis-h"></i>
-                </span>
-                        <h4 class="text-section">Quản lý</h4>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#base">
-                            <i class="fas fa-layer-group"></i>
-                            <p>Ngành Học</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="base">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-nhom-nganh">
-                                        <span class="sub-item">Danh sách nhóm ngành</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-nhom-nganh">
-                                        <span class="sub-item">Thêm nhóm ngành</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-nganh">
-                                        <span class="sub-item">Danh sách ngành </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-nganh">
-                                        <span class="sub-item">Thêm ngành</span>
-                                    </a>
-                                </li>
+        <main layout:fragment="content">
 
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                            <i class="fas fa-th-list"></i>
-                            <p>Sự kiện</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="sidebarLayouts">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-su-kien">
-                                        <span class="sub-item">Danh sách sự kiện</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-su-kien">
-                                        <span class="sub-item">Thêm sự kiện</span>
-                                    </a>
-                                </li>
 
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#forms">
-                            <i class="fas fa-pen-square"></i>
-                            <p>Bài đăng</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="forms">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-bai-dang">
-                                        <span class="sub-item">Danh sách bài đăng</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-bai-dang">
-                                        <span class="sub-item">Tạo bài đăng</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#tables">
-                            <i class="fas fa-table"></i>
-                            <p>Trường đại học</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="tables">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-truong-dai-hoc">
-                                        <span class="sub-item">Danh sách trường</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-truong-dai-hoc">
-                                        <span class="sub-item">Thêm trường mới</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#maps">
-                            <i class="bi bi-person-lines-fill"></i>
-
-                            <p>Người dùng</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="maps">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-nguoi-dung">
-                                        <span class="sub-item">Danh sách người dùng</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-bac-si">
-                                        <span class="sub-item">Danh sách bác sĩ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-tap-vu">
-                                        <span class="sub-item">Danh sách tạp vụ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-y-ta">
-                                        <span class="sub-item">Danh sách y tá</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </li>
-
-<!--                    quanlybacsi-->
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#quanlybacsi">
-                            <i class="bi bi-person-badge"></i>
-                            <p>Quản lý bác sĩ</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="quanlybacsi">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-bac-si">
-                                        <span class="sub-item">Danh sách bác sĩ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-bac-si">
-                                        <span class="sub-item">Thêm bác sĩ</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </li>
-<!--                        quanlyyta-->
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#quanlyyta">
-                            <i class="bi bi-person-heart"></i>
-                            <p>Quản lý y tá</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="quanlyyta">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-y-ta">
-                                        <span class="sub-item">Danh sách y tá</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-y-ta">
-                                        <span class="sub-item">Thêm y tá</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </li>
-<!--                    quanlinhanvien-->
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#quanlyphucvu">
-                            <i class="bi bi-person-workspace"></i>
-                            <p>Quản lý phục vụ</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="quanlyphucvu">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-nhan-vien">
-                                        <span class="sub-item">Danh sách phục vụ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-phuc-vu">
-                                        <span class="sub-item">Thêm phục vụ</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
+        </main>
+        <!-- Main Content Grid -->
     </div>
-
-    <!-- End Sidebar -->
-
-    <div >
-
-
-    <main layout:fragment="content">
-
-
-    </main>
-
-    </div>
-
-    <!-- Custom template | don't include it in your project! -->
-    <!-- End Custom template -->
 </div>
-<!--   Core JS Files   -->
-<script src="/manage/assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="/manage/assets/js/core/popper.min.js"></script>
-<script src="/manage/assets/js/core/bootstrap.min.js"></script>
 
-<!--    &lt;!&ndash; jQuery Scrollbar &ndash;&gt;-->
-<!--    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>-->
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Chart JS -->
-<script src="/manage/assets/js/plugin/chart.js/chart.min.js"></script>
+<!-- Logic JS của bạn -->
+<!--<script>-->
+<!--    // Hàm này sẽ giả lập việc kiểm tra xác thực và lấy dữ liệu-->
+<!--    function checkAuthAndLoadData() {-->
+<!--        // Trong thực tế, bạn sẽ gọi API ở đây-->
+<!--        // Ví dụ: $.get('/api/user/me', function(data) { ... });-->
 
-<!-- jQuery Sparkline -->
-<script src="/manage/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+<!--        // Giả lập việc kiểm tra mất 1 giây-->
+<!--        setTimeout(function() {-->
+<!--            // -&#45;&#45; KHI THÀNH CÔNG -&#45;&#45;-->
 
-<!-- Chart Circle -->
-<script src="/manage/assets/js/plugin/chart-circle/circles.min.js"></script>
+<!--            // Dữ liệu người dùng giả lập-->
+<!--            const userData = {-->
+<!--                name: "Minh Anh"-->
+<!--            };-->
 
-<!-- Datatables -->
-<script src="/manage/assets/js/plugin/datatables/datatables.min.js"></script>
+<!--            // Cập nhật tên người dùng trên giao diện-->
+<!--            $('#user-name-display').text(userData.name);-->
+<!--            $('#user-name-greeting').text(userData.name);-->
 
-<!-- Bootstrap Notify -->
-<script src="/manage/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<!--            // Ẩn loader đi-->
+<!--            $('#loader').fadeOut(300);-->
 
-<!-- jQuery Vector Maps -->
-<script src="/manage/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-<script src="/manage/assets/js/plugin/jsvectormap/world.js"></script>
+<!--            // Hiển thị nội dung dashboard-->
+<!--            $('#dashboard-content').css('display', 'block'); // Hoặc dùng .fadeIn() cho đẹp-->
 
-<!-- Sweet Alert -->
-<script src="/manage/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
-<!-- Kaiadmin JS -->
-<script src="/manage/assets/js/kaiadmin.min.js"></script>
+<!--            // -&#45;&#45; KHI THẤT BẠI (ví dụ: chưa đăng nhập) -&#45;&#45;-->
+<!--            // Bạn sẽ chuyển hướng người dùng đến trang đăng nhập-->
+<!--            // window.location.href = "/login";-->
 
-<!--&lt;!&ndash; Kaiadmin DEMO methods, don't include it in your project! &ndash;&gt;-->
-<!--<script src="/Admin/assets/js/setting-demo.js"></script>-->
-<!--<script src="/Admin/assets/js/demo.js"></script>-->
+<!--        }, 1000); // 1000ms = 1 giây-->
+<!--    }-->
 
-<!-- jQuery Scrollbar -->
-<script src="/manage/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-<!-- Datatables -->
-<script src="/manage/assets/js/plugin/datatables/datatables.min.js"></script>
-<!-- Kaiadmin JS -->
-<script src="/manage/assets/js/kaiadmin.min.js"></script>
-<!-- Kaiadmin DEMO methods, don't include it in your project! -->
-<script src="/manage/assets/js/setting-demo2.js"></script>
+<!--    // Chạy hàm khi tài liệu đã sẵn sàng-->
+<!--    $(document).ready(function() {-->
+<!--        checkAuthAndLoadData();-->
+<!--    });-->
+
+<!--    // Thêm logic cho nút đăng xuất-->
+<!--    $('#logout-button').on('click', function(e) {-->
+<!--        e.preventDefault();-->
+<!--        alert('Đang thực hiện đăng xuất...');-->
+<!--        // Thêm logic đăng xuất thật ở đây-->
+<!--        // window.location.href = "/logout";-->
+<!--    });-->
+<!--</script>-->
 <script>
-    $(document).ready(function () {
-        $("#basic-datatables").DataTable({});
+    function handleLogout() {
+        // In ra console để kiểm tra xem hàm có được gọi không
+        console.log("Đang thực hiện xóa token...");
 
-        $("#multi-filter-select").DataTable({
-            pageLength: 5,
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        var column = this;
-                        var select = $(
-                            '<select class="form-select"><option value=""></option></select>'
-                        )
-                            .appendTo($(column.footer()).empty())
-                            .on("change", function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+        // Xóa token khỏi Local Storage
+        localStorage.removeItem('jwt_token'); // <-- Thay 'jwt_token' bằng tên key bạn đã dùng để lưu token
 
-                                column
-                                    .search(val ? "^" + val + "$" : "", true, false)
-                                    .draw();
-                            });
+        // Bạn không cần gọi event.preventDefault() hay form.submit()
+        // Hàm sẽ chạy xong và form sẽ tiếp tục submit như bình thường.
+        console.log("Đã xóa token. Form sẽ được submit ngay bây giờ.");
+    }
+</script>
 
-                        column
-                            .data()
-                            .unique()
-                            .sort()
-                            .each(function (d, j) {
-                                select.append(
-                                    '<option value="' + d + '">' + d + "</option>"
-                                );
-                            });
-                    });
-            },
-        });
+<!-- Logic JS của bạn -->
+<script>
+    // Hàm này sẽ giả lập việc kiểm tra xác thực và lấy dữ liệu
+    function checkAuthAndLoadData() {
+        // Trong thực tế, bạn sẽ gọi API ở đây
+        // Ví dụ: $.get('/api/user/me', function(data) { ... });
 
-        // Add Row
-        $("#add-row").DataTable({
-            pageLength: 5,
-        });
+        // Giả lập việc kiểm tra mất 1 giây
+        setTimeout(function() {
+            // --- KHI THÀNH CÔNG ---
 
-        var action =
-            '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+            // Dữ liệu người dùng giả lập
+            const userData = {
+                name: "Minh Anh"
+            };
 
-        $("#addRowButton").click(function () {
-            $("#add-row")
-                .dataTable()
-                .fnAddData([
-                    $("#addName").val(),
-                    $("#addPosition").val(),
-                    $("#addOffice").val(),
-                    action,
-                ]);
-            $("#addRowModal").modal("hide");
-        });
+            // Cập nhật tên người dùng trên giao diện
+            $('#user-name-display').text(userData.name);
+            $('#user-name-greeting').text(userData.name);
+
+            // Ẩn loader đi
+            $('#loader').fadeOut(300);
+
+            // Hiển thị nội dung dashboard
+            $('#dashboard-content').css('display', 'block'); // Hoặc dùng .fadeIn() cho đẹp
+
+
+            // --- KHI THẤT BẠI (ví dụ: chưa đăng nhập) ---
+            // Bạn sẽ chuyển hướng người dùng đến trang đăng nhập
+            // window.location.href = "/login";
+
+        }, 1000); // 1000ms = 1 giây
+    }
+
+    // Chạy hàm khi tài liệu đã sẵn sàng
+    $(document).ready(function() {
+        checkAuthAndLoadData();
     });
 
+
 </script>
-<script>
-    document.querySelector('form').addEventListener('submit', function (e) {
-        const userSelect = document.getElementById('usersId');
-        if (userSelect.value === "") {
-            e.preventDefault(); // Ngăn việc submit
-            alert("Vui lòng chọn một người dùng.");
-        }
-    });
-</script>
-<script>
-    document.querySelector('form').addEventListener('submit', function (e) {
-        const titleInput = document.getElementById('title');
-        if (titleInput.value.trim() === "") {
-            e.preventDefault(); // Ngăn việc submit
-            alert("Vui lòng nhập tiêu đề bài đăng.");
-        }
-    });
-</script>
+
+</body>
+</html>
 </body>
 </html>
