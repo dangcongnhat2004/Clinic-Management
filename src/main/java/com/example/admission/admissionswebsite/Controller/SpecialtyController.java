@@ -83,7 +83,7 @@ public class SpecialtyController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Đã xảy ra lỗi khi xóa chuyên khoa.");
         }
-        return "redirect:/admin/danh-sach-nhom-nganh";
+        return "redirect:/admin/danh-sach-chuyen-khoa";
     }
 
     @GetMapping("/admin/chinh-sua-chuyen-khoa/{id}")

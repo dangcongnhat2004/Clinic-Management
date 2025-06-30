@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-lg-5 animated fadeInRight">
                         <div class="calrousel-img" style="object-fit: cover;">
-                            <img src="/user/img/bannerbacsi.png" class="img-fluid w-100" alt="">
+                            <img src="/enduser/img/bannerbacsi.png" class="img-fluid w-100" alt="">
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 <div class="row gy-4 gy-lg-0 gx-0 gx-lg-5 align-items-center">
                     <div class="col-lg-5 animated fadeInLeft">
                         <div class="calrousel-img">
-                            <img src="/user/img/bannerbacsi2.jpg" class="img-fluid w-100" alt="">
+                            <img src="/enduser/img/bannerbacsi2.jpg" class="img-fluid w-100" alt="">
                         </div>
                     </div>
                     <div class="col-lg-7 animated fadeInRight">
@@ -91,24 +91,24 @@
         </div>
         <div class="row g-4">
             <!-- Lặp qua danh sách Major -->
-            <th:block th:each="major : ${majors}">
+            <th:block th:each="specialty : ${specialty}">
                 <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
                     <div class="feature-item p-4 pt-0 h-100 d-flex flex-column">
                         <div class="feature-icon p-4 mb-4">
                             <i class="fab fa-slack me-2"></i> <!-- Có thể thay icon theo dữ liệu -->
                         </div>
-                        <h4 class="mb-3 text-center" th:text="${major.majorGroupName}">Tên Ngành</h4>
+                        <h4 class="mb-3 text-center" th:text="${specialty.specialtyName}">Tên chuyên khoa</h4>
 
                         <!-- Giới hạn chiều cao mô tả để hiển thị tối đa 8 dòng -->
                         <p class="mb-4 flex-grow-1 overflow-hidden text-wrap"
                            style="max-height: 12em; line-height: 1.5em;"
-                           th:text="${major.description}">
-                            Mô tả ngành...
+                           th:text="${specialty.description}">
+                            Mô tả chuyên khoa...
                         </p>
 
                         <div>
                             <a class="btn btn-primary rounded-pill py-2 px-4 w-100"
-                               th:href="@{'/chi-tiet-nganh-hoc/' + ${major.id}}">
+                               th:href="@{'/chi-tiet-chuyen-khoa/' + ${specialty.id}}">
                                 Xem chi tiết
                             </a>
                         </div>

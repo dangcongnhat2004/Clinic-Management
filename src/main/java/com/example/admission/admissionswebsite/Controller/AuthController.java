@@ -72,6 +72,10 @@ public class AuthController {
                 System.out.println("Redirecting to /staff");
                 return "redirect:/staff";
             }
+            else if (role.contains("USER")) {
+                System.out.println("Redirecting to /user");
+                return "redirect:/user";
+            }
         } else {
             model.addAttribute("errorMessage", "Email hoặc mật khẩu không chính xác.");
             return "/home/login";
@@ -81,7 +85,10 @@ public class AuthController {
     }
 
 
-
+    @GetMapping("/auth/logout-handler")
+    public String logoutHandler() {
+        return "logout_handler"; // Trả về file logout_handler.html
+    }
 
 
 

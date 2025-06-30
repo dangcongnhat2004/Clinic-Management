@@ -31,37 +31,50 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/auth/**") // Bỏ qua CSRF cho các endpoint trong /auth/**
+                        .ignoringRequestMatchers("/auth/**") // Chỉ tắt CSRF cho các API xác thực
                 )
+                // PHÂN QUYỀN TẬP TRUNG TẠI ĐÂY
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/user/**", "/Admin/**", "/favicon.ico").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/student/**").hasAuthority("STUDENT")
+                        // Các URL công khai, bất kỳ ai cũng có thể truy cập
+                        .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**","/manage/**","/enduser/**").permitAll()
+
+                        // Các URL yêu cầu quyền cụ thể
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN") // Chỉ ADMIN được vào
+                        .requestMatchers("/user/**").hasAnyAuthority("USER") // Cả hai đều được vào
+                        .requestMatchers("/staff/**").hasAnyAuthority("STAFF") // Cả hai đều được vào
+                        .requestMatchers("/nurse/**").hasAnyAuthority("NURSE") // Cả hai đều được vào
+                        .requestMatchers("/doctor/**").hasAnyAuthority("DOCTOR") // Cả hai đều được vào
+
+                        // Tất cả các request còn lại đều cần phải xác thực (đăng nhập)
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Sử dụng session khi cần
-                        .invalidSessionUrl("/login?expired=true") // Chuyển hướng khi session hết hạn
+                        // Vẫn giữ IF_REQUIRED để logout hoạt động đúng
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .invalidSessionUrl("/auth/login?expired=true")
+                )
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login?logout=true")
+                        // SỬ DỤNG GIẢI PHÁP "Bất khả chiến bại" để đảm bảo xóa token
+                        .logoutSuccessUrl("/auth/logout-handler")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
+                        .deleteCookies("JSESSIONID", "jwtToken") // <-- Xóa cả cookie JWT
+                        .permitAll()
                 )
                 .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/auth/login") // Trang lỗi khi không có quyền truy cập
+                        .accessDeniedPage("/auth/login") // Chuyển về login nếu không có quyền
                 )
-                .authenticationProvider(authenticationProvider()) // Cài đặt Provider cho xác thực
-                .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class); // Thêm JWTAuthFilter trước UsernamePasswordAuthenticationFilter
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
-
-
-
-
+    // Các bean khác giữ nguyên
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

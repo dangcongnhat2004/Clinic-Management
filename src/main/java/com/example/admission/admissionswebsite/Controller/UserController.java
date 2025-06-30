@@ -40,11 +40,13 @@ public class UserController {
     public String homePage(Model model) {
         List<University> universities = enduserService.getAllUniversities();
         model.addAttribute("universities", universities);
-        List<Major> majors = enduserService.getAllMajor();
-        model.addAttribute("majors", majors);
+//        List<Major> majors = enduserService.getAllMajor();
+//        model.addAttribute("majors", majors);
+        List<Specialty> specialty = enduserService.getAllSpecialty();
+        model.addAttribute("specialty", specialty);
         List<Event> events = enduserService.getAllEvent();
         model.addAttribute("events", events);
-        List<Specialty> posts = enduserService.getAllPost();
+        List<AdminPost> posts = enduserService.getAllPost();
         model.addAttribute("posts", posts);
 
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model

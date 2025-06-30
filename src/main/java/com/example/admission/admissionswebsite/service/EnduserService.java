@@ -1,10 +1,7 @@
 package com.example.admission.admissionswebsite.service;
 
 import com.example.admission.admissionswebsite.Model.*;
-import com.example.admission.admissionswebsite.repository.AdminPostRepository;
-import com.example.admission.admissionswebsite.repository.EventRepository;
-import com.example.admission.admissionswebsite.repository.MajorRepository;
-import com.example.admission.admissionswebsite.repository.UniversityRepository;
+import com.example.admission.admissionswebsite.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,20 +18,25 @@ public class EnduserService {
     @Autowired
     private MajorRepository majorRepository;
     @Autowired
+    private SpecialtyRepository specialtyRepository;
+    @Autowired
     private EventRepository eventRepository;
     @Autowired
     private AdminPostRepository adminPostRepository;
     public List<University> getAllUniversities() {
         return universityRepository.findTop4ByOrderByIdDesc();
     }
-    public List<Major> getAllMajor() {
-        return majorRepository.findTop4ByOrderByIdDesc();
-    }
+//    public List<Major> getAllMajor() {
+//        return majorRepository.findTop4ByOrderByIdDesc();
+//    }
     public List<Event> getAllEvent() {
         return eventRepository.findTop3ByOrderByIdDesc();
     }
+    public List<Specialty> getAllSpecialty() {
+        return specialtyRepository.findTop4ByOrderByIdDesc();
+    }
 
-    public List<Specialty> getAllPost() {
+    public List<AdminPost> getAllPost() {
         return adminPostRepository.findTop3ByOrderByIdDesc();
     }
     @Transactional(readOnly = true)

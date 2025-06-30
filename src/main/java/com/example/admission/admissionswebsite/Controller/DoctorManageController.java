@@ -56,12 +56,12 @@ public class DoctorManageController {
 
     @GetMapping("/doctor")
     public String homedoctor(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            model.addAttribute("email", authentication.getName());
-        } else {
-            model.addAttribute("email", "hello@example.com");
-        }
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            model.addAttribute("email", authentication.getName());
+//        } else {
+//            model.addAttribute("email", "hello@example.com");
+//        }
         return "doctor/index";
     }
 

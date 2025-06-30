@@ -23,7 +23,10 @@
     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
         <p th:text="${errorMessage}"></p>
     </div>
-
+    <!-- Hiển thị thông báo khi vừa đăng xuất -->
+<!--    <div th:if="${param.logout}" style="color: green;">-->
+<!--        Bạn đã đăng xuất thành công.-->
+<!--    </div>-->
     <form th:action="@{/auth/signin}" method="post" class="p-4 border rounded shadow bg-white">
         <div class="mb-3">
             <label for="email" class="form-label">Tên đăng nhập hoặc Email</label>

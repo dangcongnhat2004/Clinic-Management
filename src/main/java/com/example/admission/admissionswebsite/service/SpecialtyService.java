@@ -76,8 +76,8 @@ public class SpecialtyService {
 
             // Tạo Major
             Specialty specialty = new Specialty();
-            specialty.setSpecialtyName(specialty.getSpecialtyName());
-            specialty.setDescription(specialty.getDescription());
+            specialty.setSpecialtyName(specialtyDto.getSpecialtyName());
+            specialty.setDescription(specialtyDto.getDescription());
             specialty.setSpecialtyImage(fileName);
 
             // Tìm University nếu có
@@ -100,7 +100,7 @@ public class SpecialtyService {
             response.setMessage("Lỗi khi lưu ảnh: " + e.getMessage());
         } catch (Exception e) {
             response.setStatusCode(500);
-            response.setMessage("Đã xảy ra lỗi khi thêm nhóm ngành: " + e.getMessage());
+            response.setMessage("Đã xảy ra lỗi khi thêm chuyên khoa: " + e.getMessage());
         }
 
         return response;

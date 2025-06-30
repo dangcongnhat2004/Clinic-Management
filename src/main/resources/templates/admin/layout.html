@@ -12,7 +12,7 @@
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!-- Fonts and icons -->
-    <script src="/Admin/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="/manage/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
         WebFont.load({
             google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -32,12 +32,12 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="/Admin/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/Admin/assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="/Admin/assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="/manage/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/manage/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="/manage/assets/css/kaiadmin.min.css" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="/Admin/assets/css/demo.css" />
+    <link rel="stylesheet" href="/manage/assets/css/demo.css" />
 </head>
 <body>
 <div class="wrapper">
@@ -49,7 +49,7 @@
             <div class="logo-header" data-background-color="dark">
                 <a href="/admin" class="logo">
                     <img
-                            src="/Admin/assets/img/kaiadmin/edu.png"
+                            src="/manage/assets/img/kaiadmin/edu.png"
                             alt="navbar brand"
                             class="navbar-brand"
                             height="20"
@@ -71,158 +71,113 @@
         </div>
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
             <div class="sidebar-content">
+                <!-- BẮT ĐẦU PHẦN CẦN THAY THẾ -->
                 <ul class="nav nav-secondary">
                     <li class="nav-item active">
-                        <a
-                                data-bs-toggle="collapse"
-                                href="#dashboard"
-                                class="collapsed"
-                                aria-expanded="false"
-                        >
+                        <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                            <!-- Icon cho Dashboard -->
+                            <i class="bi bi-grid-1x2-fill"></i>
                             <p>Dashboard</p>
                             <span class="caret"></span>
                         </a>
-
+                        <div class="collapse" id="dashboard">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/admin">
+                                        <span class="sub-item">Thống kê chung</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-section">
-                <span class="sidebar-mini-icon">
-                  <i class="fa fa-ellipsis-h"></i>
-                </span>
+        <span class="sidebar-mini-icon">
+            <i class="fa fa-ellipsis-h"></i>
+        </span>
                         <h4 class="text-section">Quản lý</h4>
                     </li>
+
+                    <!-- Mục 1: Chuyên khoa -->
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base">
-                            <i class="fas fa-layer-group"></i>
+                            <!-- Icon Bootstrap cho Chuyên khoa (thay thế fas fa-layer-group) -->
+                            <i class="bi bi-heart-pulse-fill"></i>
                             <p>Chuyên khoa</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="base">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-chuyen-khoa">
-                                        <span class="sub-item">Danh sách chuyên khoa</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-chuyen-khoa">
-                                        <span class="sub-item">Thêm chuyên khoa</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-nganh">
-                                        <span class="sub-item">Danh sách chuyên khoa </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-nganh">
-                                        <span class="sub-item">Thêm chuyên khoa</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-chuyen-khoa"><span class="sub-item">Danh sách chuyên khoa</span></a></li>
+                                <li><a href="/admin/them-chuyen-khoa"><span class="sub-item">Thêm chuyên khoa</span></a></li>
                             </ul>
                         </div>
                     </li>
+
+                    <!-- Mục 2: Sự kiện -->
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                            <i class="fas fa-th-list"></i>
+                            <!-- Icon Bootstrap cho Sự kiện (thay thế fas fa-th-list) -->
+                            <i class="bi bi-calendar-event-fill"></i>
                             <p>Sự kiện</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="sidebarLayouts">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-su-kien">
-                                        <span class="sub-item">Danh sách sự kiện</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-su-kien">
-                                        <span class="sub-item">Thêm sự kiện</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-su-kien"><span class="sub-item">Danh sách sự kiện</span></a></li>
+                                <li><a href="/admin/them-su-kien"><span class="sub-item">Thêm sự kiện</span></a></li>
                             </ul>
                         </div>
                     </li>
+
+                    <!-- Mục 3: Bài đăng -->
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#forms">
-                            <i class="fas fa-pen-square"></i>
+                            <!-- Icon Bootstrap cho Bài đăng (thay thế fas fa-pen-square) -->
+                            <i class="bi bi-file-earmark-text-fill"></i>
                             <p>Bài đăng</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="forms">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-bai-dang">
-                                        <span class="sub-item">Danh sách bài đăng</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-bai-dang">
-                                        <span class="sub-item">Tạo bài đăng</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-bai-dang"><span class="sub-item">Danh sách bài đăng</span></a></li>
+                                <li><a href="/admin/them-bai-dang"><span class="sub-item">Tạo bài đăng</span></a></li>
                             </ul>
                         </div>
                     </li>
+
+                    <!-- Mục 4: Trường đại học (Giữ nguyên icon vì không rõ ngữ cảnh, đề xuất icon mới) -->
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#tables">
-                            <i class="fas fa-table"></i>
+                            <!-- Icon Bootstrap cho Trường đại học (thay thế fas fa-table) -->
+                            <i class="bi bi-bank"></i>
                             <p>Trường đại học</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="tables">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-truong-dai-hoc">
-                                        <span class="sub-item">Danh sách trường</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-truong-dai-hoc">
-                                        <span class="sub-item">Thêm trường mới</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-truong-dai-hoc"><span class="sub-item">Danh sách trường</span></a></li>
+                                <li><a href="/admin/them-truong-dai-hoc"><span class="sub-item">Thêm trường mới</span></a></li>
                             </ul>
                         </div>
                     </li>
+
+                    <!-- CÁC MỤC SAU GIỮ NGUYÊN VÌ ĐÃ HIỂN THỊ ĐÚNG -->
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#maps">
                             <i class="bi bi-person-lines-fill"></i>
-
                             <p>Người dùng</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="maps">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-nguoi-dung">
-                                        <span class="sub-item">Danh sách người dùng</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-bac-si">
-                                        <span class="sub-item">Danh sách bác sĩ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-tap-vu">
-                                        <span class="sub-item">Danh sách tạp vụ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/danh-sach-y-ta">
-                                        <span class="sub-item">Danh sách y tá</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-nguoi-dung"><span class="sub-item">Danh sách người dùng</span></a></li>
+                                <li><a href="/admin/danh-sach-bac-si"><span class="sub-item">Danh sách bác sĩ</span></a></li>
+                                <li><a href="/admin/danh-sach-tap-vu"><span class="sub-item">Danh sách tạp vụ</span></a></li>
+                                <li><a href="/admin/danh-sach-y-ta"><span class="sub-item">Danh sách y tá</span></a></li>
                             </ul>
                         </div>
                     </li>
 
-<!--                    quanlybacsi-->
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#quanlybacsi">
                             <i class="bi bi-person-badge"></i>
@@ -231,21 +186,12 @@
                         </a>
                         <div class="collapse" id="quanlybacsi">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-bac-si">
-                                        <span class="sub-item">Danh sách bác sĩ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-bac-si">
-                                        <span class="sub-item">Thêm bác sĩ</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-bac-si"><span class="sub-item">Danh sách bác sĩ</span></a></li>
+                                <li><a href="/admin/them-bac-si"><span class="sub-item">Thêm bác sĩ</span></a></li>
                             </ul>
                         </div>
                     </li>
-<!--                        quanlyyta-->
+
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#quanlyyta">
                             <i class="bi bi-person-heart"></i>
@@ -254,21 +200,12 @@
                         </a>
                         <div class="collapse" id="quanlyyta">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-y-ta">
-                                        <span class="sub-item">Danh sách y tá</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-y-ta">
-                                        <span class="sub-item">Thêm y tá</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-y-ta"><span class="sub-item">Danh sách y tá</span></a></li>
+                                <li><a href="/admin/them-y-ta"><span class="sub-item">Thêm y tá</span></a></li>
                             </ul>
                         </div>
                     </li>
-<!--                    quanlinhanvien-->
+
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#quanlyphucvu">
                             <i class="bi bi-person-workspace"></i>
@@ -277,23 +214,13 @@
                         </a>
                         <div class="collapse" id="quanlyphucvu">
                             <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/danh-sach-phuc-vu">
-                                        <span class="sub-item">Danh sách phục vụ</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/them-phuc-vu">
-                                        <span class="sub-item">Thêm phục vụ</span>
-                                    </a>
-                                </li>
-
+                                <li><a href="/admin/danh-sach-phuc-vu"><span class="sub-item">Danh sách phục vụ</span></a></li>
+                                <li><a href="/admin/them-phuc-vu"><span class="sub-item">Thêm phục vụ</span></a></li>
                             </ul>
                         </div>
                     </li>
-
                 </ul>
-            </div>
+                <!-- KẾT THÚC PHẦN CẦN THAY THẾ -->            </div>
         </div>
     </div>
 
@@ -313,50 +240,62 @@
     <!-- End Custom template -->
 </div>
 <!--   Core JS Files   -->
-<script src="/Admin/assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="/Admin/assets/js/core/popper.min.js"></script>
-<script src="/Admin/assets/js/core/bootstrap.min.js"></script>
+<script src="/manage/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/manage/assets/js/core/popper.min.js"></script>
+<script src="/manage/assets/js/core/bootstrap.min.js"></script>
 
 <!--    &lt;!&ndash; jQuery Scrollbar &ndash;&gt;-->
 <!--    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>-->
+<script>
+    function handleLogout() {
+        // In ra console để kiểm tra xem hàm có được gọi không
+        console.log("Đang thực hiện xóa token...");
 
+        // Xóa token khỏi Local Storage
+        localStorage.removeItem('jwt_token'); // <-- Thay 'jwt_token' bằng tên key bạn đã dùng để lưu token
+
+        // Bạn không cần gọi event.preventDefault() hay form.submit()
+        // Hàm sẽ chạy xong và form sẽ tiếp tục submit như bình thường.
+        console.log("Đã xóa token. Form sẽ được submit ngay bây giờ.");
+    }
+</script>
 <!-- Chart JS -->
-<script src="/Admin/assets/js/plugin/chart.js/chart.min.js"></script>
+<script src="/manage/assets/js/plugin/chart.js/chart.min.js"></script>
 
 <!-- jQuery Sparkline -->
-<script src="/Admin/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+<script src="/manage/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
 <!-- Chart Circle -->
-<script src="/Admin/assets/js/plugin/chart-circle/circles.min.js"></script>
+<script src="/manage/assets/js/plugin/chart-circle/circles.min.js"></script>
 
 <!-- Datatables -->
-<script src="/Admin/assets/js/plugin/datatables/datatables.min.js"></script>
+<script src="/manage/assets/js/plugin/datatables/datatables.min.js"></script>
 
 <!-- Bootstrap Notify -->
-<script src="/Admin/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="/manage/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
 <!-- jQuery Vector Maps -->
-<script src="/Admin/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-<script src="/Admin/assets/js/plugin/jsvectormap/world.js"></script>
+<script src="/manage/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="/manage/assets/js/plugin/jsvectormap/world.js"></script>
 
 <!-- Sweet Alert -->
-<script src="/Admin/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="/manage/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
 <!-- Kaiadmin JS -->
-<script src="/Admin/assets/js/kaiadmin.min.js"></script>
+<script src="/manage/assets/js/kaiadmin.min.js"></script>
 
 <!--&lt;!&ndash; Kaiadmin DEMO methods, don't include it in your project! &ndash;&gt;-->
 <!--<script src="/Admin/assets/js/setting-demo.js"></script>-->
 <!--<script src="/Admin/assets/js/demo.js"></script>-->
 
 <!-- jQuery Scrollbar -->
-<script src="/Admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/manage/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 <!-- Datatables -->
-<script src="/Admin/assets/js/plugin/datatables/datatables.min.js"></script>
+<script src="/manage/assets/js/plugin/datatables/datatables.min.js"></script>
 <!-- Kaiadmin JS -->
-<script src="/Admin/assets/js/kaiadmin.min.js"></script>
+<script src="/manage/assets/js/kaiadmin.min.js"></script>
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-<script src="/Admin/assets/js/setting-demo2.js"></script>
+<script src="/manage/assets/js/setting-demo2.js"></script>
 <script>
     $(document).ready(function () {
         $("#basic-datatables").DataTable({});

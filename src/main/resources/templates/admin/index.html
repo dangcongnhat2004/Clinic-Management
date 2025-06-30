@@ -13,7 +13,7 @@
             <div class="logo-header" data-background-color="dark">
               <a href="index.html" class="logo">
                 <img
-                  src="/Admin/assets/img/kaiadmin/logo_light.svg"
+                  src="/manage/assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -91,7 +91,7 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="/Admin/assets/img/profile.jpg"
+                        src="/manage/assets/img/profile.jpg"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -107,7 +107,7 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="/Admin/assets/img/profile.jpg"
+                              src="/manage/assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -126,7 +126,11 @@
                       <li>
                         <div class="dropdown-divider"></div>
 
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <!-- FORM ĐĂNG XUẤT ĐÃ ĐƯỢC CẬP NHẬT -->
+                        <form th:action="@{/logout}" method="post" onsubmit="handleLogout()">
+                          <button type="submit">Đăng xuất</button>
+                        </form>
+
                       </li>
                     </div>
                   </ul>
@@ -457,7 +461,7 @@
                       <div class="item-list">
                         <div class="avatar">
                           <img
-                            src="/Admin/assets/img/jm_denis.jpg"
+                            src="/manage/assets/img/jm_denis.jpg"
                             alt="..."
                             class="avatar-img rounded-circle"
                           />
@@ -494,7 +498,7 @@
                       <div class="item-list">
                         <div class="avatar">
                           <img
-                            src="/Admin/assets/img/talha.jpg"
+                            src="/manage/assets/img/talha.jpg"
                             alt="..."
                             class="avatar-img rounded-circle"
                           />
@@ -513,7 +517,7 @@
                       <div class="item-list">
                         <div class="avatar">
                           <img
-                            src="/Admin/assets/img/chadengle.jpg"
+                            src="/manage/assets/img/chadengle.jpg"
                             alt="..."
                             class="avatar-img rounded-circle"
                           />
@@ -661,4 +665,17 @@
       <!-- End Custom template -->
 </main>
 </body>
+<script>
+  function handleLogout() {
+    // In ra console để kiểm tra xem hàm có được gọi không
+    console.log("Đang thực hiện xóa token...");
+
+    // Xóa token khỏi Local Storage
+    localStorage.removeItem('jwt_token'); // <-- Thay 'jwt_token' bằng tên key bạn đã dùng để lưu token
+
+    // Bạn không cần gọi event.preventDefault() hay form.submit()
+    // Hàm sẽ chạy xong và form sẽ tiếp tục submit như bình thường.
+    console.log("Đã xóa token. Form sẽ được submit ngay bây giờ.");
+  }
+</script>
 </html>

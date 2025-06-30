@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Đang đăng xuất...</title>
+</head>
+<body>
+
+<script>
+    // Bước 1: Xóa token một cách chắc chắn
+    localStorage.removeItem('jwt_token'); // <-- Thay bằng key chính xác của bạn
+
+    // Bước 2: Chuyển hướng người dùng đến trang đăng nhập cuối cùng
+    window.location.href = '/auth/login?logout';
+</script>
+
+</body>
+</html>

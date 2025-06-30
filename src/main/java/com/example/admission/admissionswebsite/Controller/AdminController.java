@@ -35,6 +35,17 @@ public class AdminController {
         return "admin/index";
     }
 
+    @GetMapping("/user")
+    public String homeuser(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("email", authentication.getName());
+        } else {
+            model.addAttribute("email", "hello@example.com");
+        }
+        return "user/index";
+    }
+
     @GetMapping("/login-success")
     public String loginSuccess(RedirectAttributes redirectAttributes) {
         // Kiểm tra quyền hạn của người dùng

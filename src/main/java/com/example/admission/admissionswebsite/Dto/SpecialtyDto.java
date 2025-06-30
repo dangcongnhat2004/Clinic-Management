@@ -15,8 +15,6 @@ public class SpecialtyDto {
     private String specialtyName;
     private MultipartFile specialtyImage;
     private String description;
-    private Integer universityId;
-    private String universityName;
     private int statusCode;
     private String message;
 

@@ -33,31 +33,27 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
     private static final Logger logger = Logger.getLogger(JWTAuthFIlter.class.getName());
 
     private static final List<String> PUBLIC_URLS = Arrays.asList(
-            "/", "/signup", "/auth/**", "/public/**", "/user/**","/Admin/**","/test","/favicon.ico"
+            "/", "/signup", "/auth/**", "/public/**", "/enduser/**","/manage/**","/test","/favicon.ico"
     );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String requestURI = request.getRequestURI();
-
-        // Bỏ qua JWT kiểm tra cho các URL public
-        if (isPublicURL(requestURI)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        // Bỏ logic kiểm tra public URL đi, filter này sẽ chạy cho MỌI request
 
         final String authHeader = request.getHeader("Authorization");
         String jwtToken = null;
 
+        // Ưu tiên lấy token từ Header
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwtToken = authHeader.substring(7);
         } else {
+            // Nếu không có trong header, thử tìm trong cookie
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
-                    if ("jwtToken".equals(cookie.getName())) {
+                    if ("jwtToken".equals(cookie.getName())) { // <-- Nên đặt tên key này vào một hằng số
                         jwtToken = cookie.getValue();
                         break;
                     }
@@ -65,10 +61,11 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
             }
         }
 
+        // Nếu có token, tiến hành xác thực
         if (jwtToken != null) {
             try {
                 String userEmail = jwtUtils.extractUsername(jwtToken);
-
+                // Chỉ thiết lập Authentication nếu nó chưa tồn tại
                 if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = ourUserDetailsService.loadUserByUsername(userEmail);
 
@@ -76,24 +73,20 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
                         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
+                        // Thiết lập người dùng đã xác thực vào Security Context
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
                 }
-            } catch (ExpiredJwtException e) {
-//                logger.warning("Token đã hết hạn.");
-                response.sendRedirect("/auth/login");
-                return;
             } catch (Exception e) {
-//                logger.warning("Token không hợp lệ.");
-                response.sendRedirect("/auth/login");
-                return;
+                // Không nên redirect ở đây. Chỉ cần log lỗi và để request tiếp tục.
+                // Spring Security sẽ tự xử lý việc từ chối truy cập ở bước sau.
+//                 logger.warn("Lỗi xác thực JWT: " + e.getMessage());
             }
         }
 
+        // Luôn luôn gọi filterChain.doFilter để request được tiếp tục xử lý
         filterChain.doFilter(request, response);
     }
-
     private boolean isPublicURL(String requestURI) {
         return PUBLIC_URLS.stream().anyMatch(publicUrl -> requestURI.matches(publicUrl.replace("**", ".*")));
     }
