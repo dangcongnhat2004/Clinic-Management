@@ -129,6 +129,12 @@ public class UserController {
         model.addAttribute("adminPost", adminPost);
         return "/user/postdetail";
     }
+    @GetMapping("/dat-lich")
+    public String appointments(Model model) {
+
+//        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
+        return "/user/appointments"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
     @GetMapping("/user/course")
     public String course() {
         return "user/course";

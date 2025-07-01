@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{doctor/layout}">
+
+<body>
+<main layout:fragment="content">
+    <div class="booking-container">
+        <div class="booking-header d-flex align-items-center">
+            <a href="javascript:history.back()" class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
+            <h4 class="mb-0">Đặt lịch khám</h4>
+        </div>
+
+        <div class="booking-body">
+            <!-- Chỉ báo các bước -->
+            <div class="step-indicator mb-4">
+                <div class="step active" id="step1">1. Chọn bác sĩ</div>
+                <div class="step" id="step2">2. Chọn lịch khám</div>
+                <div class="step" id="step3">3. Thông tin khám</div>
+            </div>
+
+            <!-- Bước 1: Chọn bác sĩ -->
+            <div id="doctorSelection" class="booking-step active">
+                <!-- Ô tìm kiếm -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" class="form-control" placeholder="Tìm kiếm bác sĩ theo tên...">
+                    </div>
+                </div>
+
+                <!-- ======================================================= -->
+                <!-- BẮT ĐẦU: Ô DROPDOWN CHỌN CHUYÊN KHOA -->
+                <!-- ======================================================= -->
+                <div class="mb-4">
+                    <select class="form-select" aria-label="Chọn chuyên khoa">
+                        <option selected>Tất cả chuyên khoa</option>
+                        <option value="tim-mach">Tim mạch</option>
+                        <option value="da-lieu">Da liễu</option>
+                        <option value="noi-tiet">Nội tiết</option>
+                        <option value="nhi">Nhi</option>
+                        <option value="tai-mui-hong">Tai Mũi Họng</option>
+                        <option value="san-phu-khoa">Sản Phụ khoa</option>
+                        <option value="co-xuong-khop">Cơ Xương Khớp</option>
+                        <option value="tieu-hoa">Tiêu hóa</option>
+                    </select>
+                </div>
+                <!-- ======================================================= -->
+                <!-- KẾT THÚC: Ô DROPDOWN CHỌN CHUYÊN KHOA -->
+                <!-- ======================================================= -->
+
+
+                <div class="row g-4" id="doctorList">
+                    <!-- Bắt đầu: Mock list bác sĩ -->
+
+                    <!-- Bác sĩ 1 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card doctor-card">
+                            <img src="https://th.bing.com/th/id/R.d0884ad46f48d7cc8b5d7ccf8d65bc0f?rik=08Q9MimTvoCAmA&pid=ImgRaw&r=0" class="card-img-top" alt="Ảnh Bác sĩ Nguyễn Văn An">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">ThS.BS Nguyễn Văn An</h5>
+                                <p class="card-text text-muted mb-2">Chuyên khoa Tim mạch</p>
+                                <p class="card-text small"><i class="fa-solid fa-hospital me-2"></i>Bệnh viện Chợ Rẫy</p>
+                                <p class="card-text small"><i class="fa-solid fa-stethoscope me-2"></i>15 năm kinh nghiệm</p>
+                                <button class="btn btn-primary w-100">Chọn</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bác sĩ 2 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card doctor-card">
+                            <img src="https://th.bing.com/th/id/R.d0884ad46f48d7cc8b5d7ccf8d65bc0f?rik=08Q9MimTvoCAmA&pid=ImgRaw&r=0" class="card-img-top" alt="Ảnh Bác sĩ Trần Thị Bích">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">BS.CKII Trần Thị Bích</h5>
+                                <p class="card-text text-muted mb-2">Chuyên khoa Da liễu</p>
+                                <p class="card-text small"><i class="fa-solid fa-hospital me-2"></i>Bệnh viện Da liễu TP.HCM</p>
+                                <p class="card-text small"><i class="fa-solid fa-stethoscope me-2"></i>12 năm kinh nghiệm</p>
+                                <button class="btn btn-primary w-100">Chọn</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bác sĩ 3 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card doctor-card">
+                            <img src="https://th.bing.com/th/id/R.d0884ad46f48d7cc8b5d7ccf8d65bc0f?rik=08Q9MimTvoCAmA&pid=ImgRaw&r=0" class="card-img-top" alt="Ảnh Bác sĩ Lê Hoàng Cường">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">PGS.TS.BS Lê Hoàng Cường</h5>
+                                <p class="card-text text-muted mb-2">Chuyên khoa Nội tiết</p>
+                                <p class="card-text small"><i class="fa-solid fa-hospital me-2"></i>Bệnh viện Đại học Y Dược</p>
+                                <p class="card-text small"><i class="fa-solid fa-stethoscope me-2"></i>20 năm kinh nghiệm</p>
+                                <button class="btn btn-primary w-100">Chọn</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bác sĩ 4 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card doctor-card">
+                            <img src="https://via.placeholder.com/300x200.png?text=Ảnh+Bác+Sĩ" class="card-img-top" alt="Ảnh Bác sĩ Phạm Thị Dung">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">BS.CKI Phạm Thị Dung</h5>
+                                <p class="card-text text-muted mb-2">Chuyên khoa Nhi</p>
+                                <p class="card-text small"><i class="fa-solid fa-hospital me-2"></i>Bệnh viện Nhi đồng 1</p>
+                                <p class="card-text small"><i class="fa-solid fa-stethoscope me-2"></i>10 năm kinh nghiệm</p>
+                                <button class="btn btn-primary w-100">Chọn</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bác sĩ 5 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card doctor-card">
+                            <img src="https://via.placeholder.com/300x200.png?text=Ảnh+Bác+Sĩ" class="card-img-top" alt="Ảnh Bác sĩ Vũ Minh Hải">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">ThS.BS Vũ Minh Hải</h5>
+                                <p class="card-text text-muted mb-2">Chuyên khoa Tai Mũi Họng</p>
+                                <p class="card-text small"><i class="fa-solid fa-hospital me-2"></i>Bệnh viện Tai Mũi Họng Sài Gòn</p>
+                                <p class="card-text small"><i class="fa-solid fa-stethoscope me-2"></i>8 năm kinh nghiệm</p>
+                                <button class="btn btn-primary w-100">Chọn</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bác sĩ 6 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card doctor-card">
+                            <img src="https://via.placeholder.com/300x200.png?text=Ảnh+Bác+Sĩ" class="card-img-top" alt="Ảnh Bác sĩ Hoàng Thị Giang">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">BS. Hoàng Thị Giang</h5>
+                                <p class="card-text text-muted mb-2">Chuyên khoa Sản Phụ khoa</p>
+                                <p class="card-text small"><i class="fa-solid fa-hospital me-2"></i>Bệnh viện Từ Dũ</p>
+                                <p class="card-text small"><i class="fa-solid fa-stethoscope me-2"></i>9 năm kinh nghiệm</p>
+                                <button class="btn btn-primary w-100">Chọn</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kết thúc: Mock list bác sĩ -->
+                </div>
+            </div>
+
+            <!-- Bước 2: Chọn lịch khám -->
+            <div id="scheduleSelection" class="booking-step d-none">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="mb-3">
+                            <label class="form-label">Chọn ngày khám</label>
+                            <input type="text" class="form-control" id="appointmentDate">
+                        </div>
+                        <div class="selected-doctor-info mb-3">
+                            <!-- Thông tin bác sĩ đã chọn sẽ được hiển thị ở đây -->
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <label class="form-label">Chọn giờ khám</label>
+                        <div id="timeSlotList" class="d-grid gap-2">
+                            <!-- Danh sách khung giờ sẽ được thêm vào đây bằng JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bước 3: Thông tin khám -->
+            <div id="appointmentInfo" class="booking-step d-none">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Hình thức khám</label>
+                            <select class="form-select" id="appointmentType">
+                                <option value="OFFLINE">Khám trực tiếp</option>
+                                <option value="ONLINE">Khám trực tuyến</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Lý do khám</label>
+                            <textarea class="form-control" id="reasonForVisit" rows="4" placeholder="Mô tả triệu chứng của bạn..."></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Thông tin đã chọn</h6>
+                                <div id="appointmentSummary">
+                                    <!-- Tóm tắt thông tin đặt lịch sẽ được hiển thị ở đây -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút điều hướng -->
+            <div class="d-flex justify-content-between mt-4">
+                <button class="btn btn-outline-secondary" id="prevBtn" style="display: none;">Quay lại</button>
+                <button class="btn btn-next" id="nextBtn">Tiếp tục</button>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>

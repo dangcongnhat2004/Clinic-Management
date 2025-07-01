@@ -93,6 +93,113 @@
                 flex-direction: column;
                 z-index: 9999;
             }
+
+            /*appointments*/
+            .booking-header {
+                background-color: #00B5F1;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+            }
+            .booking-body { padding: 1.5rem; }
+            .doctor-card {
+                border: 1px solid #dee2e6;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .doctor-card:hover {
+                border-color: #00B5F1;
+                box-shadow: 0 0 0 2px rgba(0, 181, 241, 0.25);
+            }
+            .doctor-card.selected {
+                border-color: #00B5F1;
+                box-shadow: 0 0 0 2px rgba(0, 181, 241, 0.25);
+                background-color: #f8fdff;
+            }
+            .time-slot {
+                border: 1px solid #dee2e6;
+                border-radius: 0.5rem;
+                padding: 0.5rem 1rem;
+                margin-bottom: 0.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .time-slot:hover {
+                border-color: #00B5F1;
+                background-color: #f8fdff;
+            }
+            .time-slot.selected {
+                border-color: #00B5F1;
+                background-color: #f8fdff;
+                box-shadow: 0 0 0 2px rgba(0, 181, 241, 0.25);
+            }
+            .time-slot.unavailable {
+                background-color: #f8f9fa;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
+            .btn-next {
+                background-color: #00B5F1;
+                border-color: #00B5F1;
+                color: white;
+                padding: 0.75rem 2rem;
+                font-weight: 600;
+            }
+            .btn-next:hover {
+                background-color: #0099cc;
+                border-color: #0099cc;
+                color: white;
+            }
+            .step-indicator {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 2rem;
+                position: relative;
+            }
+            .step-indicator::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background-color: #dee2e6;
+                z-index: 1;
+            }
+            .step {
+                background-color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 2rem;
+                border: 2px solid #dee2e6;
+                color: #6c757d;
+                font-weight: 600;
+                position: relative;
+                z-index: 2;
+            }
+            .step.active {
+                border-color: #00B5F1;
+                color: #00B5F1;
+            }
+            .step.completed {
+                border-color: #198754;
+                color: #198754;
+            }
+            .doctor-card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            .doctor-card .card-body {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .doctor-card .btn {
+                margin-top: auto; /* Quan trọng: Đẩy nút bấm xuống dưới cùng */
+            }
         </style>
     </head>
 <body>
@@ -273,7 +380,7 @@
         checkAuthAndLoadData();
     });
 
-
+// appointment
 </script>
 
 </body>
