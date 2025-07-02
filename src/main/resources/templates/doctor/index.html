@@ -4,26 +4,26 @@
       layout:decorate="~{doctor/layout}">
 
 <main layout:fragment="content"><main>
-  <h2 class="mb-4 fw-light">Buổi sáng tốt lành, <b id="user-name-greeting">User</b>!</h2>
+<!--  <h2 class="mb-4 fw-light">Buổi sáng tốt lành, <b id="user-name-greeting">User</b>!</h2>-->
 
   <!-- Quick Features -->
   <div class="row g-4 mb-5">
     <!-- ... Các card tính năng nhanh giữ nguyên ... -->
     <div class="col-lg-3 col-md-6">
       <!-- Bọc card trong thẻ <a> để có thể click -->
-      <a href="/appointments" class="text-decoration-none">
+      <a href="/doctor/lich-lam-viec" class="text-decoration-none">
         <div class="card card-feature text-center p-3 shadow-sm border-0">
           <div class="card-body">
             <i class="fa-solid fa-clipboard-list fa-3x text-warning mb-3"></i>
-            <h5 class="card-title">Đặt hẹn bác sĩ</h5>
+            <h5 class="card-title">Lịch làm việc</h5>
           </div>
         </div>
       </a>
     </div>
-    <div class="col-lg-3 col-md-6"><div class="card card-feature text-center p-3 shadow-sm border-0"><div class="card-body"><i class="fa-solid fa-file-medical fa-3x text-success mb-3"></i><h5 class="card-title">Hồ sơ sức khoẻ</h5></div></div></div>
+    <div class="col-lg-3 col-md-6"><div class="card card-feature text-center p-3 shadow-sm border-0"><div class="card-body"><i class="fa-solid fa-file-medical fa-3x text-success mb-3"></i><h5 class="card-title">Hồ sơ bệnh nhân</h5></div></div></div>
     <div class="col-lg-3 col-md-6">
       <!-- Bọc card trong thẻ <a> để có thể click -->
-      <a href="/booking" class="text-decoration-none">
+      <a href="/doctor/lich-kham" class="text-decoration-none">
         <div class="card card-feature text-center p-3 shadow-sm border-0">
           <div class="card-body">
             <i class="fa-solid fa-calendar-plus fa-3x text-primary mb-3"></i>
@@ -32,62 +32,14 @@
         </div>
       </a>
     </div>
-    <div class="col-lg-3 col-md-6"><div class="card card-feature text-center p-3 shadow-sm border-0"><div class="card-body"><i class="fa-solid fa-pills fa-3x text-danger mb-3"></i><h5 class="card-title">Đơn thuốc của tôi</h5></div></div></div>
-  </div>
-
-  <!-- Featured Doctors -->
-  <div class="mb-5">
-    <!-- ... Phần bác sĩ nổi bật giữ nguyên ... -->
-    <div class="section-header"><h3 class="fw-normal">Bác sĩ nổi bật</h3><a href="#" class="text-decoration-none">Xem thêm <i class="fa-solid fa-arrow-right"></i></a></div>
-    <div class="row g-4">
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=5" alt="Bác sĩ A" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ A</h5><p class="card-text text-muted">Chuyên khoa Tim mạch</p></div></div></div>
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=6" alt="Bác sĩ B" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ B</h5><p class="card-text text-muted">Chuyên khoa Nội tiết</p></div></div></div>
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=7" alt="Bác sĩ C" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ C</h5><p class="card-text text-muted">Chuyên khoa Thần kinh</p></div></div></div>
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=8" alt="Bác sĩ D" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ D</h5><p class="card-text text-muted">Chuyên khoa Da liễu</p></div></div></div>
-    </div>
-  </div>
-
-  <!-- Specialties -->
-  <div class="mb-5">
-    <!-- ... Phần chuyên khoa giữ nguyên ... -->
-    <div class="section-header"><h3 class="fw-normal">Chuyên khoa</h3><a href="#" class="text-decoration-none">Xem thêm <i class="fa-solid fa-arrow-right"></i></a></div>
-    <!-- Trong file: dashboard.html, mục "Chuyên khoa" -->
-
-    <div class="row g-4">
-      <!-- Bọc mỗi card chuyên khoa trong thẻ <a> -->
-      <div class="col-lg-4 col-md-6">
-        <a href="/specialty-details" class="text-decoration-none text-dark">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1579154341199-83359d48953e?q=80&w=400" class="card-img-top" alt="Tim mạch" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title">Tim mạch</h5>
-            </div>
-          </div>
-        </a>
+    <div class="col-lg-3 col-md-6">
+      <div class="card card-feature text-center p-3 shadow-sm border-0">
+        <div class="card-body">
+          <i class="fa-solid fa-user fa-3x text-primary mb-3"></i>
+          <h5 class="card-title">Thông tin cá nhân</h5>
+        </div>
       </div>
-      <div class="col-lg-4 col-md-6">
-        <a href="/specialty-details" class="text-decoration-none text-dark">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400" class="card-img-top" alt="Nội tiết" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title">Nội tiết</h5>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- Làm tương tự cho các chuyên khoa khác -->
-      <div class="col-lg-4 col-md-6">
-        <a href="/specialty-details" class="text-decoration-none text-dark">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400" class="card-img-top" alt="Nội tiết" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title">Nội tiết</h5>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
+    </div>  </div>
 
   <!-- === NEW SECTION: NEWS & ARTICLES === -->
   <div>

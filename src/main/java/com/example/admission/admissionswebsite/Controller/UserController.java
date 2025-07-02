@@ -1,5 +1,6 @@
 package com.example.admission.admissionswebsite.Controller;
 
+import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.*;
 import com.example.admission.admissionswebsite.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class UserController {
     private EnduserService enduserService;
     @Autowired
     private EventService eventService;
+    @Autowired
+    private DoctorManageService doctorManageService;
     @GetMapping("/auth/signup")
     public String showSignUpForm(Model model) {
         model.addAttribute("user", new Users());
@@ -44,8 +47,8 @@ public class UserController {
 //        model.addAttribute("majors", majors);
         List<Specialty> specialty = enduserService.getAllSpecialty();
         model.addAttribute("specialty", specialty);
-        List<Event> events = enduserService.getAllEvent();
-        model.addAttribute("events", events);
+        List<Users> doctors  = enduserService.getAllDoctor();
+        model.addAttribute("doctors",doctors);
         List<AdminPost> posts = enduserService.getAllPost();
         model.addAttribute("posts", posts);
 
@@ -134,6 +137,12 @@ public class UserController {
 
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/appointments"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
+    @GetMapping("/user/thong-tin-ca-nhan/{id}")
+    public String profile(Model model) {
+
+//        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
+        return "/user/profile"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
     }
     @GetMapping("/user/course")
     public String course() {

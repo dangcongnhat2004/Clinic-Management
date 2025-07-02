@@ -22,6 +22,8 @@ public class EnduserService {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
+    private DoctorRepository doctorRepository;
+    @Autowired
     private AdminPostRepository adminPostRepository;
     public List<University> getAllUniversities() {
         return universityRepository.findTop4ByOrderByIdDesc();
@@ -29,9 +31,13 @@ public class EnduserService {
 //    public List<Major> getAllMajor() {
 //        return majorRepository.findTop4ByOrderByIdDesc();
 //    }
-    public List<Event> getAllEvent() {
-        return eventRepository.findTop3ByOrderByIdDesc();
+//    public List<Event> getAllEvent() {
+//        return eventRepository.findTop3ByOrderByIdDesc();
+//    }
+    public List<Users> getAllDoctor() {
+        return doctorRepository.findTop3ByRolesOrderByIdDesc("DOCTOR");
     }
+
     public List<Specialty> getAllSpecialty() {
         return specialtyRepository.findTop4ByOrderByIdDesc();
     }

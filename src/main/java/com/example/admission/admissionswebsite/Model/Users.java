@@ -36,49 +36,44 @@ public class Users implements UserDetails {
     @Column(columnDefinition = "TEXT")
     private String address;
     private String status;
-    private String roles; // Cột roles lưu trữ dưới dạng chuỗi
-    private String identityCardNumber; // Số CCCD
-    private LocalDate issueDate; // Ngày cấp
+    private String roles;
+    private String identityCardNumber; // Đã có: Số CCCD
+    private LocalDate issueDate;
 
-    private String occupation; // Nghề nghiệp
+    private String occupation;
+    private String hometown;
+    private String nationality;
+    private String ethnicity;
 
-    private String hometown; // Quê quán
+    // =======================================================
+    // BẮT ĐẦU: CÁC TRƯỜNG MỚI ĐƯỢC THÊM
+    // =======================================================
+    private String healthInsuranceNumber; // Mã thẻ BHYT
+    private String relationship;          // Mối quan hệ (Bản thân, Con,...)
+    private String avatarUrl;             // Đường dẫn tới file ảnh avatar
+    // =======================================================
+    // KẾT THÚC: CÁC TRƯỜNG MỚI ĐƯỢC THÊM
+    // =======================================================
 
-    private String nationality; // Quốc tịch
-
-    private String ethnicity; // Dân tộc
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Chuyển đổi chuỗi roles thành các quyền (authorities)
         return Arrays.stream(roles.split(","))
                 .map(role -> new SimpleGrantedAuthority(role))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public String getUsername() {
-        return email; // Assuming email is used as the username
-    }
+    // ... các phương thức UserDetails khác giữ nguyên ...
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
+    public String getUsername() { return email; }
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
+    public boolean isAccountNonExpired() { return true; }
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
+    public boolean isAccountNonLocked() { return true; }
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
+    @Override
+    public boolean isEnabled() { return true; }
 
     public enum Role {
         ADMIN,

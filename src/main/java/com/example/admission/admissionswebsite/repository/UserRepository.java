@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<Users,Integer> {
     Optional<Users> findByEmail(String email);
     List<Users> findByRoles(String role);
-    @Query("SELECT u FROM University u WHERE u.id = :id")
+    @Query("SELECT u FROM Users u WHERE u.id = :id")
     Optional<Users> findById(@Param("id") Long id);
 }

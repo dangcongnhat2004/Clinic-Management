@@ -1,6 +1,7 @@
 package com.example.admission.admissionswebsite.repository;
 
 import com.example.admission.admissionswebsite.Model.Doctor;
+import com.example.admission.admissionswebsite.Model.Event;
 import com.example.admission.admissionswebsite.Model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,7 @@ public interface DoctorRepository extends JpaRepository<Users, Integer> {
     List<Users> findByRoles(String role);
     @Query("SELECT u FROM University u WHERE u.id = :id")
     Optional<Users> findById(@Param("id") Long id);
+
+    List<Users> findTop3ByRolesOrderByIdDesc(String roles);
+
 }

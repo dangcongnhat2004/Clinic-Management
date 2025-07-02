@@ -199,39 +199,51 @@
             <p class="mb-0">Tổng hợp tất cả các bác sĩ tại trung tâm.
             </p>
         </div>
-        <div class="row g-4">
-            <div class="row g-4 justify-content-center">
-                <div class="row g-4">
-                    <!-- Lặp qua danh sách các trường đại học -->
-                    <th:block th:each="university : ${universities}">
-                        <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
-                            <div class="team-item">
-                                <div class="team-img">
-                                    <a th:href="@{'/chi-tiet-truong-dai-hoc/' + ${university.id}}">
-                                        <img th:src="@{/images/{universityLogo}(universityLogo=${university.universityLogo})}"
-                                             class="img-fluid rounded-top w-100" alt="Logo trường">
-                                    </a>
-                                </div>
-                                <div class="team-title p-4">
-                                    <h4 class="mb-0">
-                                        <a th:href="@{'/chi-tiet-truong-dai-hoc/' + ${university.id}}" th:text="${university.nameSchool}" style="color: inherit; text-decoration: none;">
-                                            Tên trường
-                                        </a>
-                                    </h4>
+        <div class="row g-4 justify-content-center">
+            <!-- Lặp qua danh sách các bác sĩ -->
+            <th:block th:each="doctor : ${doctors}">
+                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="team-item">
+                        <div class="team-img">
+                            <a th:href="@{'/bac-si/' + ${doctor.id}}">
+                                <!-- ============================================================== -->
+                                <!-- BẮT ĐẦU: SỬA LẠI CÁCH HIỂN THỊ ẢNH -->
+                                <!-- ============================================================== -->
+                                <!-- 1. Nếu bác sĩ CÓ ảnh đại diện (avatarUrl không rỗng) -->
+                                <img th:if="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                     th:src="@{/avatars/{avatarFileName}(avatarFileName=${doctor.avatarUrl})}"
+                                     class="img-fluid rounded-top w-100"
+                                     alt="Ảnh bác sĩ"
+                                     style="height: 250px; object-fit: cover;"> <!-- Thêm style để ảnh đồng đều -->
 
-                                </div>
-                            </div>
+                                <!-- 2. Nếu bác sĩ KHÔNG CÓ ảnh đại diện (avatarUrl rỗng) -->
+                                <img th:unless="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                     th:src="@{/images/default-avatar.png}"
+                                class="img-fluid rounded-top w-100"
+                                alt="Ảnh bác sĩ mặc định"
+                                style="height: 250px; object-fit: cover;">
+
+                                <!-- ============================================================== -->
+                                <!-- KẾT THÚC: SỬA LẠI CÁCH HIỂN THỊ ẢNH -->
+                                <!-- ============================================================== -->
+                            </a>
                         </div>
-                    </th:block>
+                        <div class="team-title p-4">
+                            <a th:href="@{'/bac-si/' + ${doctor.id}}" style="color: inherit; text-decoration: none;">
+                                <h5 class="mb-1" th:text="${doctor.fullName}">Tên Bác Sĩ</h5>
+                            </a>
+                            <p class="text-muted mb-0" th:text="${doctor.occupation}">Chuyên khoa</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="nav-btn px-3">
-                    <center>
-                        <a href="/danh-sach-truong-dai-hoc" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0">
-                            Xem tất cả
-                        </a>
-                    </center>
-                </div>
-            </div>
+            </th:block>
+        </div>
+
+        <!-- Nút "Xem tất cả" trỏ đến trang danh sách bác sĩ -->
+        <div class="text-center mt-4">
+            <a href="/danh-sach-bac-si" class="btn btn-primary rounded-pill py-2 px-4">
+                Xem tất cả bác sĩ
+            </a>
         </div>
     </div>
 </div>

@@ -33,7 +33,7 @@ public class JWTAuthFIlter extends OncePerRequestFilter {
     private static final Logger logger = Logger.getLogger(JWTAuthFIlter.class.getName());
 
     private static final List<String> PUBLIC_URLS = Arrays.asList(
-            "/", "/signup", "/auth/**", "/public/**", "/enduser/**","/manage/**","/test","/favicon.ico"
+           "/", "/signup", "/auth/**", "/public/**", "/enduser/**","/manage/**","/test","/favicon.ico"
     );
 
     @Override

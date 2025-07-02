@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,6 +74,23 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFIlter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // Cấu hình này sẽ bảo Spring Security BỎ QUA hoàn toàn việc kiểm tra bảo mật
+        // đối với các URL khớp với các mẫu được liệt kê.
+        return (web) -> web.ignoring().requestMatchers(
+                "/css/**",
+                "/js/**",
+                "/images/**",      // Thư mục từ upload.path
+                "/uploads/**",     // Thư mục từ upload.paths
+                "/Events/**",      // Thư mục từ upload.event
+                "/Users/**",       // Thư mục từ upload.user
+                "/Major/**",       // Thư mục từ upload.major
+                "/specialty/**",   // Thư mục từ upload.specialty
+                "/avatars/**"      // Thư mục từ upload.avatars
+        );
     }
     // Các bean khác giữ nguyên
     @Bean

@@ -201,70 +201,6 @@
                 margin-top: auto; /* Quan trọng: Đẩy nút bấm xuống dưới cùng */
             }
         </style>
-    <style>
-        .profile-container {
-            max-width: 900px;
-            margin: 2rem auto;
-        }
-        .profile-card {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-        }
-        .profile-header {
-            background-color: #00B5F1;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-        }
-        .avatar-upload {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1.5rem;
-        }
-        .avatar-upload .avatar-preview {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            background-size: cover;
-            background-position: center;
-        }
-        .avatar-upload .avatar-edit {
-            position: absolute;
-            right: 5px;
-            bottom: 5px;
-        }
-        .avatar-upload .avatar-edit input { display: none; }
-        .avatar-upload .avatar-edit label {
-            width: 34px;
-            height: 34px;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .required-label::after {
-            content: " *";
-            color: red;
-        }
-        .btn-save {
-            background-color: #00B5F1;
-            border-color: #00B5F1;
-            color: white;
-        }
-        .btn-save:hover {
-            background-color: #0099cc;
-            border-color: #0099cc;
-        }
-    </style>
     </head>
 <body>
 
@@ -285,20 +221,20 @@
         </div>
         <ul class="nav flex-column px-3">
             <li class="nav-item">
-                <a class="nav-link active" href="/doctor"><i class="fa-solid fa-house fa-fw"></i> Trang chủ</a>
+                <a class="nav-link active" href="/user"><i class="fa-solid fa-house fa-fw"></i> Trang chủ</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/doctor/lich-lam-viec"><i class="fa-solid fa-calendar-check fa-fw"></i> Lịch làm việc</a>
+                <a class="nav-link" href="/lich-kham"><i class="fa-solid fa-calendar-check fa-fw"></i> Lịch khám</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/doctor/ho-so-benh-nhan"><i class="fa-solid fa-plus-circle fa-fw"></i> Hồ sơ bệnh nhân</a>
+                <a class="nav-link" href="/dat-lich"><i class="fa-solid fa-plus-circle fa-fw"></i> Đặt lịch</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/doctor/tin-nhan"><i class="fa-solid fa-comments fa-fw"></i> Tin nhắn</a>
+                <a class="nav-link" href="#"><i class="fa-solid fa-comments fa-fw"></i> Tin nhắn</a>
             </li>
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="/doctor/thong-tin-ca-nhan/{id}"><i class="fa-solid fa-user fa-fw"></i>Thông tin Cá nhân</a>-->
-<!--            </li>-->
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fa-solid fa-user fa-fw"></i> Cá nhân</a>
+            </li>
         </ul>
     </nav>
 
@@ -307,8 +243,8 @@
         <!-- Top Navigation Bar -->
         <header class="top-nav d-flex justify-content-between align-items-center">
             <div class="input-group" style="max-width: 400px;">
-<!--                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-search"></i></span>-->
-<!--                <input type="text" class="form-control bg-light border-0" placeholder="Tìm kiếm bác sĩ, chuyên khoa...">-->
+                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-search"></i></span>
+                <input type="text" class="form-control bg-light border-0" placeholder="Tìm kiếm bác sĩ, chuyên khoa...">
             </div>
             <div class="d-flex align-items-center">
                 <a href="#" class="nav-link me-3"><i class="fa-solid fa-bell fs-5"></i></a>
@@ -318,10 +254,7 @@
                         <span id="user-name-display" class="fw-bold">User</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
-                        <!-- DÒNG MỚI ĐÃ SỬA ĐÚNG -->
-                        <a th:href="@{/doctor/thong-tin-ca-nhan}" class="dropdown-item">
-                            <i class="fa-solid fa-user-circle me-2"></i>Thông tin cá nhân
-                        </a>
+                        <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
                         <li><a class="dropdown-item" href="#">Cài đặt</a></li>
                         <li><hr class="dropdown-divider"></li>
 

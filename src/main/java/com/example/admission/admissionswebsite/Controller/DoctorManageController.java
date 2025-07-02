@@ -2,6 +2,7 @@ package com.example.admission.admissionswebsite.Controller;
 
 import com.example.admission.admissionswebsite.Dto.UniversityDto;
 import com.example.admission.admissionswebsite.Dto.UserDto;
+import com.example.admission.admissionswebsite.Model.Event;
 import com.example.admission.admissionswebsite.Model.University;
 import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.repository.UserRepository;
@@ -16,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -55,14 +58,39 @@ public class DoctorManageController {
     }
 
     @GetMapping("/doctor")
-    public String homedoctor(Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            model.addAttribute("email", authentication.getName());
-//        } else {
-//            model.addAttribute("email", "hello@example.com");
-//        }
+    public String homedoctor(Model model, Principal principal) { // <-- Thêm Principal
+        if (principal != null) {
+            // Lấy thông tin user đang đăng nhập và đưa vào model
+            String username = principal.getName();
+            Users currentUser = doctorManageService.findByEmail(username).orElse(null);
+            model.addAttribute("currentUser", currentUser); // <-- Dùng tên "currentUser" cho rõ ràng
+        } else {
+            // Xử lý trường hợp không có ai đăng nhập
+            return "redirect:/login";
+        }
+
+
+
         return "doctor/index";
+    }
+    @GetMapping("/doctor/thong-tin-ca-nhan")
+    public String showMyProfile(Principal principal, Model model) {
+        // 1. Kiểm tra xem người dùng đã đăng nhập chưa
+        if (principal == null) {
+            // Nếu chưa đăng nhập, chuyển hướng về trang login
+            return "redirect:/login";
+        }
+
+        // 2. Lấy username của người dùng đang đăng nhập
+        String username = principal.getName();
+
+        // 3. Dùng username để tìm thông tin đầy đủ trong database
+        Users loggedInUser = doctorManageService.findByEmail(username) // Hoặc findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("Không tìm thấy người dùng: " + username));
+
+        model.addAttribute("information", loggedInUser);
+
+        return "doctor/profile";
     }
 
     @GetMapping("/admin/danh-sach-bac-si")
@@ -98,7 +126,23 @@ public class DoctorManageController {
         model.addAttribute("university", university);
         return "/user/universitydetail";
     }
+    @PostMapping("/doctor/thong-tin-ca-nhan/cap-nhat")
+    public String updateProfile(@ModelAttribute("information") Users updatedUserData,
+                                @RequestParam("avatarFile") MultipartFile avatarFile, // <-- THÊM THAM SỐ NÀY
+                                RedirectAttributes redirectAttributes) {
+        try {
+            // Gọi service để thực hiện việc cập nhật, truyền cả file vào
+            doctorManageService.updateUserProfile(updatedUserData, avatarFile);
 
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin cá nhân thành công!");
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
+            e.printStackTrace(); // In lỗi ra console để debug
+        }
+
+        return "redirect:/doctor/thong-tin-ca-nhan";
+    }
 //    @PostMapping("/admin/them-truong-dai-hoc")
 //    public String addUniversity(@ModelAttribute UniversityDto universityDto,
 //                                @RequestParam("usersId") Integer userId,
