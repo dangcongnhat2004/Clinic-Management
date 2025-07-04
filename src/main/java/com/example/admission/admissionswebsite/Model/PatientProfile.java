@@ -16,8 +16,7 @@ public class PatientProfile {
     // Hồ sơ này thuộc về tài khoản User nào
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users managingUser;
-
+    private Users user;
     @Column(nullable = false)
     private String fullName;
     private LocalDate dateOfBirth;

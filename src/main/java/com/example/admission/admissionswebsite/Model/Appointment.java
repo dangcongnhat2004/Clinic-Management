@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "patient_profile_id", nullable = false)
@@ -19,7 +19,7 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctor;
+    private Doctor doctor; 
 
     // Một cuộc hẹn sẽ chiếm 1 khung giờ
     @OneToOne
@@ -41,7 +41,13 @@ public class Appointment {
 
     private BigDecimal fee;
     private String paymentMethod;
-    private String paymentStatus;
+    @Enumerated(EnumType.STRING) // <<< SỬA ĐỔI QUAN TRỌNG
+    private PaymentStatus paymentStatus; // <<< SỬA ĐỔI QUAN TRỌNG: Đổi kiểu từ String
+    @Column(unique = true) // Mã giao dịch thanh toán, ví dụ vnp_TxnRef
+    private String paymentCode;
+    public enum PaymentStatus {
+        UNPAID, PAID, FAILED
+    }
 
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
     private MedicalRecord medicalRecord;

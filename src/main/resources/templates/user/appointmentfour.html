@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title>Xác nhận & Thanh toán</title>
+  <!-- Các style CSS cho trang thanh toán -->
+  <style>
+    .booking-container { max-width: 900px; margin: 2rem auto; }
+    .confirmation-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: #fff;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .confirmation-header {
+      background-color: #00B5F1;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+    }
+    .confirmation-body { padding: 1.5rem; }
+    .info-card {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+    .payment-method {
+      padding: 1rem;
+      border: 1px solid #dee2e6;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .payment-method.selected {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+    }
+    .btn-confirm {
+      background-color: #00B5F1;
+      border-color: #00B5F1;
+      color: white;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .btn-confirm:hover {
+      background-color: #0099cc;
+      border-color: #0099cc;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<main layout:fragment="content">
+  <div class="confirmation-container">
+    <!-- HEADER -->
+    <div class="confirmation-header d-flex align-items-center">
+      <!-- Nút "Quay lại" Trang 3 (Nhập thông tin) -->
+      <!-- Đảm bảo truyền đủ và đúng các tham số mà Trang 3 yêu cầu -->
+      <a th:href="@{/dat-lich/nhap-thong-tin(doctorId=${doctor.userAccount.id}, date=${appointmentDate}, time=${appointmentTime})}"
+         class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
+      <h4 class="mb-0">Xác nhận & Thanh toán</h4>
+    </div>
+
+    <!-- BODY -->
+    <div class="confirmation-body">
+      <!-- Chỉ báo các bước - Bước 4 được kích hoạt -->
+      <div class="step-indicator mb-4">
+        <div class="step">1. Chọn bác sĩ</div>
+        <div class="step">2. Chọn lịch khám</div>
+        <div class="step">3. Thông tin khám</div>
+        <div class="step active">4. Thanh toán</div>
+      </div>
+
+      <!-- Form cuối cùng để tạo cuộc hẹn và chuyển đến VNPay -->
+      <form th:action="@{/dat-lich/tao-thanh-toan-vnpay}" method="post">
+        <!-- Gửi tất cả thông tin đã thu thập được đi ẩn -->
+        <input type="hidden" name="doctorId" th:value="${doctor.userAccount.id}" />
+        <input type="hidden" name="appointmentDate" th:value="${appointmentDate}" />
+        <input type="hidden" name="appointmentTime" th:value="${appointmentTime}" />
+        <input type="hidden" name="appointmentType" th:value="${appointmentType}" />
+        <input type="hidden" name="reasonForVisit" th:value="${reasonForVisit}" />
+
+        <div class="row g-4">
+          <!-- Cột thông tin tóm tắt -->
+          <div class="col-md-7">
+            <div class="mb-4">
+              <h6>Thông tin khám bệnh</h6>
+              <div class="info-card">
+                <div class="d-flex align-items-center mb-2">
+                  <img th:src="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()} ? @{/avatars/{fileName}(fileName=${doctor.avatarUrl})} : '/images/default-avatar.png'"
+                       class="rounded-circle me-2" alt="doctor" style="width:40px; height:40px; object-fit: cover;">
+                  <div>
+                    <strong th:text="${doctor.fullName}">Tên bác sĩ</strong><br>
+                    <!-- Sửa lại để dùng 'specialization' -->
+                    <small class="text-muted" th:text="${doctor.specialization}">Khoa</small>
+                  </div>
+                </div>
+                <hr class="my-2">
+                <div class="d-flex align-items-center">
+                  <i class="fa-regular fa-calendar-days fa-fw me-2 text-primary"></i>
+                  <strong><span th:text="${#temporals.format(T(java.time.LocalDate).parse(appointmentDate), 'dd/MM/yyyy')}"></span>, <span th:text="${appointmentTime}"></span></strong>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <h6>Lý do khám</h6>
+              <textarea class="form-control" rows="3" th:text="${reasonForVisit}" readonly></textarea>
+            </div>
+          </div>
+
+          <!-- Cột thanh toán -->
+          <div class="col-md-5">
+            <h6>Phương thức thanh toán</h6>
+            <div class="info-card">
+              <div class="vstack gap-2" id="payment-methods">
+                <!-- Thêm thuộc tính name="paymentMethod" -->
+                <div class="form-check payment-method selected">
+                  <input class="form-check-input" type="radio" name="paymentMethod" id="vnpay" value="VNPAY" checked>
+                  <label class="form-check-label" for="vnpay">Cổng thanh toán VNPay</label>
+                </div>
+                <div class="form-check payment-method">
+                  <input class="form-check-input" type="radio" name="paymentMethod" id="momo" value="MOMO" disabled>
+                  <label class="form-check-label text-muted" for="momo">Ví điện tử Momo (Bảo trì)</label>
+                </div>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <strong>Chi phí khám</strong>
+                <!-- Bạn có thể lấy phí khám từ đối tượng doctor nếu có -->
+                <strong class="fs-5 text-primary" th:text="${#numbers.formatDecimal(doctor.examinationFee, 0, 'COMMA', 0, 'POINT')} + 'đ'">300.000đ</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-confirm">Xác nhận & Chuyển đến VNPay</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<th:block layout:fragment="scripts">
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Logic để thêm class 'selected' khi người dùng chọn phương thức thanh toán
+      document.querySelectorAll('#payment-methods .form-check-input').forEach(function(radio) {
+        if (!radio.disabled) {
+          radio.addEventListener('change', function() {
+            document.querySelectorAll('#payment-methods .payment-method').forEach(function(item) {
+              item.classList.remove('selected');
+            });
+            this.closest('.payment-method').classList.add('selected');
+          });
+        }
+      });
+    });
+  </script>
+</th:block>
+</body>
+</html>

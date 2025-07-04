@@ -8,7 +8,10 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+    <head>
+        <!-- Thêm CSS cho Date Picker (ví dụ: Flatpickr) -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    </head>
         <style>
             body {
                 background-color: #f0f2f5;
@@ -383,6 +386,139 @@
 // appointment
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const doctorId = document.querySelector('input[name="doctorId"]').value;
+        const timeSlotList = document.getElementById('timeSlotList');
+        const nextBtn = document.getElementById('nextBtn');
+        const selectedDateInput = document.getElementById('selectedDate');
+        const selectedTimeInput = document.getElementById('selectedTime');
+        let selectedTimeSlot = null;
+
+        // Khởi tạo Date Picker
+        flatpickr("#appointmentDateInput", {
+            dateFormat: "d-m-Y", // Định dạng ngày tháng
+            minDate: "today",     // Không cho chọn ngày trong quá khứ
+            onChange: function(selectedDates, dateStr, instance) {
+                const formattedDate = selectedDates[0].toISOString().split('T')[0]; // Format YYYY-MM-DD
+                selectedDateInput.value = formattedDate;
+                fetchAvailableSlots(formattedDate);
+            }
+        });
+
+        // Hàm gọi API để lấy giờ trống
+        async function fetchAvailableSlots(date) {
+            timeSlotList.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>';
+            nextBtn.disabled = true;
+            selectedTimeInput.value = '';
+
+            try {
+                // GIẢ SỬ: bạn có một API trả về danh sách các chuỗi giờ khám
+                // const response = await fetch(`/api/schedules/${doctorId}?date=${date}`);
+                // const slots = await response.json();
+
+                // ---- DỮ LIỆU GIẢ LẬP (thay thế bằng API thật) ----
+                const slots = ["08:00", "08:30", "09:00", "10:30", "11:00", "14:00", "15:30"];
+                // ---------------------------------------------
+
+                timeSlotList.innerHTML = ''; // Xóa nội dung cũ
+                if (slots.length === 0) {
+                    timeSlotList.innerHTML = '<div class="alert alert-warning">Không có lịch trống cho ngày này.</div>';
+                } else {
+                    slots.forEach(slot => {
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.className = 'btn btn-outline-primary time-slot-btn';
+                        button.textContent = slot;
+                        button.dataset.time = slot;
+                        button.onclick = () => selectTimeSlot(button);
+                        timeSlotList.appendChild(button);
+                    });
+                }
+            } catch (error) {
+                timeSlotList.innerHTML = '<div class="alert alert-danger">Lỗi khi tải lịch khám.</div>';
+                console.error('Error fetching slots:', error);
+            }
+        }
+
+        // Hàm xử lý khi chọn một khung giờ
+        function selectTimeSlot(button) {
+            // Bỏ chọn slot cũ
+            if (selectedTimeSlot) {
+                selectedTimeSlot.classList.remove('active');
+            }
+            // Chọn slot mới
+            button.classList.add('active');
+            selectedTimeSlot = button;
+
+            // Lưu giá trị và kích hoạt nút "Tiếp tục"
+            selectedTimeInput.value = button.dataset.time;
+            nextBtn.disabled = false;
+        }
+    });
+</script>
+<th:block layout:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lấy doctorId từ input ẩn, đây là ID của USER
+            const doctorId = document.querySelector('input[name="doctorId"]').value;
+            const timeSlotList = document.getElementById('timeSlotList');
+            const nextBtn = document.getElementById('nextBtn');
+            const selectedDateInput = document.getElementById('selectedDate');
+            const selectedTimeInput = document.getElementById('selectedTime');
+            let selectedTimeSlot = null;
+
+            flatpickr("#appointmentDateInput", {
+                dateFormat: "Y-m-d", // Dùng định dạng YYYY-MM-DD để gửi đi cho dễ
+                minDate: "today",
+                onChange: function(selectedDates, dateStr, instance) {
+                    selectedDateInput.value = dateStr;
+                    fetchAvailableSlots(dateStr);
+                }
+            });
+
+            async function fetchAvailableSlots(date) {
+                timeSlotList.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>';
+                nextBtn.disabled = true;
+                selectedTimeInput.value = '';
+
+                try {
+                    // Gọi API thật, truyền doctorId (là user_id) và date
+                    const response = await fetch(`/api/schedules/available-slots?doctorId=${doctorId}&date=${date}`);
+                    if (!response.ok) throw new Error('Failed to fetch slots');
+                    const slots = await response.json(); // Nhận về danh sách giờ ["08:00", "09:30"]
+
+                    timeSlotList.innerHTML = '';
+                    if (slots.length === 0) {
+                        timeSlotList.innerHTML = '<div class="alert alert-warning">Không có lịch trống cho ngày này.</div>';
+                    } else {
+                        slots.forEach(slot => {
+                            const button = document.createElement('button');
+                            button.type = 'button';
+                            button.className = 'btn btn-outline-primary time-slot-btn';
+                            button.textContent = slot;
+                            button.dataset.time = slot;
+                            button.onclick = () => selectTimeSlot(button);
+                            timeSlotList.appendChild(button);
+                        });
+                    }
+                } catch (error) {
+                    timeSlotList.innerHTML = '<div class="alert alert-danger">Lỗi khi tải lịch khám. Vui lòng thử lại.</div>';
+                    console.error('Error fetching slots:', error);
+                }
+            }
+
+            function selectTimeSlot(button) {
+                document.querySelectorAll('.time-slot-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                selectedTimeInput.value = button.dataset.time;
+                nextBtn.disabled = false;
+            }
+        });
+    </script>
+</th:block>
 </body>
 </html>
 </body>

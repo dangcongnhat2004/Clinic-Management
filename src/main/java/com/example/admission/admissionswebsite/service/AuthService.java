@@ -3,15 +3,20 @@ package com.example.admission.admissionswebsite.service;
 
 
 import com.example.admission.admissionswebsite.Dto.UserDto;
+import com.example.admission.admissionswebsite.Model.PatientProfile;
 import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.repository.OurUserRepo;
+import com.example.admission.admissionswebsite.repository.PatientProfileRepository;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 @Service
@@ -25,41 +30,110 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private PatientProfileRepository patientProfileRepository;
 
-    public UserDto signUp(UserDto registrationRequest){
-        UserDto resp = new UserDto();
-        if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
-            resp.setStatusCode(400);
-            resp.setMessage("Email already registered");
-            return resp;
-        }
-
-        try {
-            Users ourUsers = new Users();
-            ourUsers.setEmail(registrationRequest.getEmail());
-            ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            ourUsers.setRoles("USER");
-            ourUsers.setAddress(registrationRequest.getAddress());
-            ourUsers.setFullName(registrationRequest.getFullName());
-            ourUsers.setBirthDate(registrationRequest.getBirthDate());
-            ourUsers.setGender(registrationRequest.getGender());
-            ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
-            ourUsers.setOccupation(registrationRequest.getOccupation());
-            Users ourUserResult = ourUserRepo.save(ourUsers);
-
-            if (ourUserResult != null && ourUserResult.getId()>0) {
-                resp.setOurUsers(ourUserResult);
-                resp.setMessage("User Saved Successfully");
-                resp.setStatusCode(200);
-            }
-        }catch (Exception e) {
-            resp.setStatusCode(500);
-            resp.setError("Error during user registration: " + e.getMessage());
-        }
-
+//    public UserDto signUp(UserDto registrationRequest){
+//        UserDto resp = new UserDto();
+//        if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
+//            resp.setStatusCode(400);
+//            resp.setMessage("Email already registered");
+//            return resp;
+//        }
+//
+//        try {
+//            Users ourUsers = new Users();
+//            ourUsers.setEmail(registrationRequest.getEmail());
+//            ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+//            ourUsers.setRoles("USER");
+//            ourUsers.setAddress(registrationRequest.getAddress());
+//            ourUsers.setFullName(registrationRequest.getFullName());
+//            ourUsers.setBirthDate(registrationRequest.getBirthDate());
+//            ourUsers.setGender(registrationRequest.getGender());
+//            ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
+//            ourUsers.setOccupation(registrationRequest.getOccupation());
+//            Users ourUserResult = ourUserRepo.save(ourUsers);
+//
+//            if (ourUserResult != null && ourUserResult.getId()>0) {
+//                resp.setOurUsers(ourUserResult);
+//                resp.setMessage("User Saved Successfully");
+//                resp.setStatusCode(200);
+//            }
+//        }catch (Exception e) {
+//            resp.setStatusCode(500);
+//            resp.setError("Error during user registration: " + e.getMessage());
+//        }
+//
+//        return resp;
+//    }
+@Transactional
+public UserDto signUp(UserDto registrationRequest) {
+    UserDto resp = new UserDto();
+    if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
+        resp.setStatusCode(400);
+        resp.setMessage("Email đã được đăng ký");
         return resp;
     }
 
+    try {
+        // BƯỚC 1: TẠO VÀ LƯU USER MỚI
+        Users ourUsers = new Users();
+        ourUsers.setEmail(registrationRequest.getEmail());
+        ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        ourUsers.setRoles("USER");
+        ourUsers.setAddress(registrationRequest.getAddress());
+        ourUsers.setFullName(registrationRequest.getFullName());
+        // Giả sử birthDate từ request là String, lưu vào Users cũng là String
+        ourUsers.setBirthDate(registrationRequest.getBirthDate());
+        ourUsers.setGender(registrationRequest.getGender());
+        ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
+
+        Users savedUser = ourUserRepo.save(ourUsers);
+
+        // BƯỚC 2: TỰ ĐỘNG TẠO HỒ SƠ BỆNH NHÂN (PATIENT PROFILE)
+        PatientProfile patientProfile = new PatientProfile();
+
+        // ===============================================
+        // SỬA LỖI 1: Sửa tên phương thức setter
+        // ===============================================
+        patientProfile.setUser(savedUser); // Đổi từ setManagingUser -> setUser
+
+        // --- Ánh xạ các thông tin chung ---
+        patientProfile.setFullName(savedUser.getFullName());
+
+        // ===============================================
+        // SỬA LỖI 2: Chuyển đổi chuỗi ngày tháng sang LocalDate
+        // ===============================================
+        // Giả sử chuỗi ngày tháng từ request có định dạng "yyyy-MM-dd"
+        if (savedUser.getBirthDate() != null && !savedUser.getBirthDate().isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate birthDate = LocalDate.parse(savedUser.getBirthDate(), formatter);
+            patientProfile.setDateOfBirth(birthDate); // Gán đối tượng LocalDate
+        }
+
+        patientProfile.setGender(savedUser.getGender());
+        patientProfile.setPhoneNumber(savedUser.getPhoneNumber());
+        patientProfile.setEmail(savedUser.getEmail());
+        patientProfile.setAddress(savedUser.getAddress());
+        patientProfile.setRelationship("SELF");
+
+        patientProfileRepository.save(patientProfile);
+
+        // BƯỚC 3: TRẢ VỀ KẾT QUẢ
+        if (savedUser.getId() > 0) {
+            resp.setOurUsers(savedUser);
+            resp.setMessage("Tài khoản đã được tạo và hồ sơ bệnh nhân đã được khởi tạo.");
+            resp.setStatusCode(200);
+        }
+
+    } catch (Exception e) {
+        resp.setStatusCode(500);
+        resp.setError("Lỗi trong quá trình đăng ký: " + e.getMessage());
+        throw new RuntimeException("Đăng ký thất bại, rollback giao dịch", e);
+    }
+
+    return resp;
+}
     public UserDto signIn(UserDto signinRequest) {
         UserDto response = new UserDto();
         try {

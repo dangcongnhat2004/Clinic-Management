@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <!-- Thêm CSS cho Date Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="booking-container">
+        <div class="booking-header d-flex align-items-center">
+            <!-- Nút quay lại trang chọn bác sĩ -->
+            <a th:href="@{/dat-lich/chon-bac-si}" class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
+            <h4 class="mb-0">Đặt lịch khám</h4>
+        </div>
+
+        <div class="booking-body">
+            <!-- Chỉ báo các bước - Bước 2 được kích hoạt -->
+            <div class="step-indicator mb-4">
+                <div class="step">1. Chọn bác sĩ</div>
+                <div class="step active">2. Chọn lịch khám</div>
+                <div class="step">3. Thông tin khám</div>
+                <div class="step">4. Thanh toán</div>
+            </div>
+
+            <!-- Form để thu thập và gửi dữ liệu -->
+            <form th:action="@{/dat-lich/nhap-thong-tin}" method="get" id="scheduleForm">
+                <!-- ======================================================= -->
+                <!-- SỬA LỖI 1: Lấy ID của User, không phải của Doctor -->
+                <!-- ======================================================= -->
+                <input type="hidden" name="doctorId" th:value="${doctor.userAccount.id}" />
+
+                <!-- Input để giữ lại giá trị ngày đã chọn và gửi đi -->
+                <input type="hidden" name="date" th:value="${selectedDateValue}" />
+
+                <!-- Input để lưu giờ được chọn bằng JavaScript -->
+                <input type="hidden" name="time" id="selectedTime" />
+
+                <div class="row g-4">
+                    <!-- Cột bên trái: Chọn ngày và thông tin bác sĩ -->
+                    <div class="col-md-5">
+                        <div class="mb-4">
+                            <label for="appointmentDateInput" class="form-label fw-bold">Chọn ngày khám</label>
+                            <input type="text" class="form-control" id="appointmentDateInput" placeholder="Vui lòng chọn một ngày">
+                        </div>
+
+                        <!-- Hiển thị thông tin bác sĩ đã chọn -->
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center">
+                                <img th:src="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()} ? @{/avatars/{fileName}(fileName=${doctor.avatarUrl})} : '/images/default-avatar.png'"
+                                     class="rounded-circle me-3" alt="Ảnh bác sĩ" style="width: 60px; height: 60px; object-fit: cover;">
+                                <div>
+                                    <h6 class="card-title mb-0" th:text="${doctor.fullName}">Tên Bác Sĩ</h6>
+                                    <!-- ======================================================= -->
+                                    <!-- SỬA LỖI 2: Dùng specialization thay vì occupation -->
+                                    <!-- ======================================================= -->
+                                    <p class="card-text text-muted small" th:text="${doctor.specialization}">Chuyên khoa</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cột bên phải: Chọn giờ khám -->
+                    <div class="col-md-7">
+                        <label class="form-label fw-bold">Chọn giờ khám còn trống</label>
+                        <div id="timeSlotList" class="d-grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));">
+
+                            <!-- ======================================================= -->
+                            <!-- SỬA LỖI 3: Dùng Thymeleaf để hiển thị giờ, không dùng JS fetch -->
+                            <!-- ======================================================= -->
+                            <div th:if="${#lists.isEmpty(availableSlots) and selectedDateValue == null}" class="alert alert-info">
+                                Vui lòng chọn một ngày để xem các khung giờ trống.
+                            </div>
+                            <div th:if="${#lists.isEmpty(availableSlots) and selectedDateValue != null}" class="alert alert-warning">
+                                Không có lịch trống cho ngày này. Vui lòng chọn ngày khác.
+                            </div>
+                            <th:block th:each="slot : ${availableSlots}">
+                                <button type="button" class="btn btn-outline-primary time-slot-btn"
+                                        th:text="${#temporals.format(slot.startTime, 'HH:mm')}"
+                                        th:data-time="${#temporals.format(slot.startTime, 'HH:mm')}">
+                                </button>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút điều hướng -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary" id="nextBtn" disabled>Tiếp tục</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<th:block layout:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('scheduleForm');
+            const nextBtn = document.getElementById('nextBtn');
+            const selectedTimeInput = document.getElementById('selectedTime');
+            const doctorId = form.querySelector('input[name="doctorId"]').value;
+
+            // Khởi tạo Date Picker
+            flatpickr("#appointmentDateInput", {
+                dateFormat: "Y-m-d", // Định dạng để gửi đi trong URL
+                altInput: true,      // Hiển thị một input khác cho người dùng
+                altFormat: "d/m/Y",  // Định dạng thân thiện cho người dùng
+                minDate: "today",
+                // Giữ lại giá trị ngày đã chọn từ trước
+                defaultDate: form.querySelector('input[name="date"]').value || null,
+
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Khi người dùng chọn ngày, reload lại trang với tham số date
+                    window.location.href = `/dat-lich/chon-lich?doctorId=${doctorId}&date=${dateStr}`;
+                }
+            });
+
+            // Gắn sự kiện click cho các nút giờ (chỉ chạy sau khi trang đã tải lại)
+            document.querySelectorAll('.time-slot-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Xóa class 'active' khỏi tất cả các nút giờ
+                    document.querySelectorAll('.time-slot-btn').forEach(btn => btn.classList.remove('active'));
+                    // Thêm class 'active' vào nút vừa được nhấn
+                    this.classList.add('active');
+                    // Lưu giá trị giờ vào input ẩn
+                    selectedTimeInput.value = this.dataset.time;
+                    // Kích hoạt nút "Tiếp tục"
+                    nextBtn.disabled = false;
+                });
+            });
+
+            // Nếu trang tải lại và đã có giờ được chọn, phục hồi trạng thái
+            const preSelectedTime = selectedTimeInput.value;
+            if(preSelectedTime) {
+                const preSelectedButton = document.querySelector(`.time-slot-btn[data-time="${preSelectedTime}"]`);
+                if (preSelectedButton) {
+                    preSelectedButton.classList.add('active');
+                    nextBtn.disabled = false;
+                }
+            }
+        });
+    </script>
+</th:block>
+</body>
+</html>

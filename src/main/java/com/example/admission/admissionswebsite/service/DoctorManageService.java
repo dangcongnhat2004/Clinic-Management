@@ -1,11 +1,14 @@
 package com.example.admission.admissionswebsite.service;
 
 import com.example.admission.admissionswebsite.Dto.UserDto;
+import com.example.admission.admissionswebsite.Model.Doctor;
 import com.example.admission.admissionswebsite.Model.Event;
 import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.repository.DoctorRepository;
+import com.example.admission.admissionswebsite.repository.DoctorsRepository;
 import com.example.admission.admissionswebsite.repository.OurUserRepo;
 import com.example.admission.admissionswebsite.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,47 +38,104 @@ public class DoctorManageService {
     @Autowired
     private DoctorRepository doctorRepository;
     @Autowired
+    private DoctorsRepository doctorsRepository;
+    @Autowired
     private UserRepository userRepository;
 
     @Value("${upload.event}")
     private String uploadPath;
     private static final String UPLOAD_DIR = "src/main/resources/static/avatars/";
 
-    public UserDto signUp(UserDto registrationRequest){
-        UserDto resp = new UserDto();
-        if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
-            resp.setStatusCode(400);
-            resp.setMessage("Email already registered");
-            return resp;
-        }
-
-        try {
-            Users ourUsers = new Users();
-            ourUsers.setEmail(registrationRequest.getEmail());
-            ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            ourUsers.setRoles("DOCTOR");
-            ourUsers.setFullName(registrationRequest.getFullName());
-            ourUsers.setBirthDate(registrationRequest.getBirthDate());
-            ourUsers.setGender(registrationRequest.getGender());
-            ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
-            ourUsers.setOccupation(registrationRequest.getOccupation());
-            ourUsers.setAddress(registrationRequest.getAddress());
-            ourUsers.setStatus("ACTIVE");
-            Users ourUserResult = ourUserRepo.save(ourUsers);
-
-            if (ourUserResult != null && ourUserResult.getId()>0) {
-                resp.setOurUsers(ourUserResult);
-                resp.setMessage("User Saved Successfully");
-                resp.setStatusCode(200);
-            }
-        }catch (Exception e) {
-            resp.setStatusCode(500);
-            resp.setError("Error during user registration: " + e.getMessage());
-        }
-
+//    public UserDto signUp(UserDto registrationRequest){
+//        UserDto resp = new UserDto();
+//        if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
+//            resp.setStatusCode(400);
+//            resp.setMessage("Email already registered");
+//            return resp;
+//        }
+//
+//        try {
+//            Users ourUsers = new Users();
+//            ourUsers.setEmail(registrationRequest.getEmail());
+//            ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+//            ourUsers.setRoles("DOCTOR");
+//            ourUsers.setFullName(registrationRequest.getFullName());
+//            ourUsers.setBirthDate(registrationRequest.getBirthDate());
+//            ourUsers.setGender(registrationRequest.getGender());
+//            ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
+//            ourUsers.setOccupation(registrationRequest.getOccupation());
+//            ourUsers.setAddress(registrationRequest.getAddress());
+//            ourUsers.setStatus("ACTIVE");
+//            Users ourUserResult = ourUserRepo.save(ourUsers);
+//
+//            if (ourUserResult != null && ourUserResult.getId()>0) {
+//                resp.setOurUsers(ourUserResult);
+//                resp.setMessage("User Saved Successfully");
+//                resp.setStatusCode(200);
+//            }
+//        }catch (Exception e) {
+//            resp.setStatusCode(500);
+//            resp.setError("Error during user registration: " + e.getMessage());
+//        }
+//
+//        return resp;
+//    }
+@Transactional // Thêm annotation này để đảm bảo cả 2 thao tác lưu là một giao dịch duy nhất
+public UserDto signUp(UserDto registrationRequest) {
+    UserDto resp = new UserDto();
+    if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
+        resp.setStatusCode(400);
+        resp.setMessage("Email đã được đăng ký");
         return resp;
     }
 
+    try {
+
+        Users ourUsers = new Users();
+        ourUsers.setEmail(registrationRequest.getEmail());
+        ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        ourUsers.setRoles("DOCTOR"); // Đặt vai trò là DOCTOR
+        ourUsers.setFullName(registrationRequest.getFullName());
+        ourUsers.setBirthDate(registrationRequest.getBirthDate());
+        ourUsers.setGender(registrationRequest.getGender());
+        ourUsers.setPhoneNumber(registrationRequest.getPhoneNumber());
+        // ourUsers.setOccupation(registrationRequest.getOccupation()); // Occupation có thể là specialization của Doctor
+        ourUsers.setAddress(registrationRequest.getAddress());
+        ourUsers.setStatus("ACTIVE");
+
+        // Lưu user trước để có ID
+        Users savedUser = ourUserRepo.save(ourUsers);
+
+
+        Doctor doctor = new Doctor();
+
+        doctor.setUserAccount(savedUser); // Gán đối tượng Users vừa lưu vào Doctor
+
+        doctor.setFullName(savedUser.getFullName()); // Lấy tên từ user đã lưu
+        doctor.setStatus("ACTIVE"); // Có thể đặt trạng thái ban đầu
+
+        if (registrationRequest.getOccupation() != null) {
+            doctor.setSpecialization(registrationRequest.getOccupation());
+        }
+
+
+        doctorsRepository.save(doctor);
+
+
+        if (savedUser.getId() > 0) {
+            resp.setOurUsers(savedUser);
+            resp.setMessage("Tài khoản bác sĩ đã được tạo thành công");
+            resp.setStatusCode(200);
+        }
+
+    } catch (Exception e) {
+        resp.setStatusCode(500);
+        resp.setError("Lỗi trong quá trình đăng ký bác sĩ: " + e.getMessage());
+        throw new RuntimeException("Đăng ký thất bại, rollback giao dịch", e);
+    }
+
+    return resp;
+}
     public UserDto getUserIdsByUsersRole() {
         UserDto resp = new UserDto();
         try {

@@ -4,7 +4,10 @@ package com.example.admission.admissionswebsite.Controller;
 import com.example.admission.admissionswebsite.Dto.EventDto;
 import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.Event;
+import com.example.admission.admissionswebsite.Model.Specialty;
+import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.service.AdminService;
+import com.example.admission.admissionswebsite.service.EnduserService;
 import com.example.admission.admissionswebsite.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,22 +17,31 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 public class EventController {
     @Autowired
     private EventService eventService;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private EnduserService enduserService;
     @GetMapping("/admin/them-su-kien")
     public String showAddEventForm(Model model) {
-        UserDto response = adminService.getUserIdsByUniversityRole();
-        if (response.getStatusCode() == 200) {
-            model.addAttribute("usersList", response.getOurUser());
-            return "event/themsukien";
-        } else {
-            model.addAttribute("errorMessage", response.getMessage());
-            return "404";
-        }
+//        UserDto response = adminService.getUserIdsByUniversityRole();
+//        if (response.getStatusCode() == 200) {
+//            model.addAttribute("usersList", response.getOurUser());
+//            return "event/themsukien";
+//        } else {
+//            model.addAttribute("errorMessage", response.getMessage());
+//            return "404";
+//        }
+        List<Specialty> specialty = enduserService.getAllSpecialty();
+        model.addAttribute("specialty", specialty);
+        List<Users> doctors  = enduserService.getAllDoctor();
+        model.addAttribute("doctors",doctors);
+        return "event/themsukien";
 
     }
 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <title>Nhập thông tin khám</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="booking-container">
+        <div class="booking-header d-flex align-items-center">
+            <!-- ======================================================= -->
+            <!-- SỬA LỖI 1: Nút "Quay lại" phải truyền đúng ID của User -->
+            <!-- ======================================================= -->
+            <a th:href="@{/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}" class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
+            <h4 class="mb-0">Đặt lịch khám</h4>
+        </div>
+
+        <div class="booking-body">
+            <!-- Chỉ báo các bước - Bước 3 được kích hoạt -->
+            <div class="step-indicator mb-4">
+                <div class="step">1. Chọn bác sĩ</div>
+                <div class="step">2. Chọn lịch khám</div>
+                <div class="step active">3. Thông tin khám</div>
+                <div class="step">4. Thanh toán</div>
+            </div>
+
+            <!-- Form gửi đến trang thanh toán -->
+            <form th:action="@{/dat-lich/thanh-toan}" method="get">
+                <!-- Các giá trị đã chọn được gửi ẩn đi -->
+                <!-- ======================================================= -->
+                <!-- SỬA LỖI 2: Truyền đi đúng ID của User -->
+                <!-- ======================================================= -->
+                <input type="hidden" name="doctorId" th:value="${doctor.userAccount.id}" />
+                <input type="hidden" name="appointmentDate" th:value="${selectedDate}" />
+                <input type="hidden" name="appointmentTime" th:value="${selectedTime}" />
+
+                <div class="row g-4">
+                    <!-- Cột bên trái: Thông tin bổ sung -->
+                    <div class="col-md-7">
+                        <h5 class="mb-3">Thông tin bổ sung</h5>
+                        <div class="mb-3">
+                            <label for="appointmentType" class="form-label">Hình thức khám</label>
+                            <select class="form-select" id="appointmentType" name="appointmentType">
+                                <option value="OFFLINE" selected>Khám trực tiếp tại trung tâm</option>
+                                <option value="ONLINE">Khám trực tuyến (Online)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reasonForVisit" class="form-label">Lý do/Triệu chứng khám <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="reasonForVisit" name="reasonForVisit" rows="5" placeholder="Vui lòng mô tả ngắn gọn triệu chứng hoặc lý do khám của bạn..." required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Cột bên phải: Tóm tắt thông tin -->
+                    <div class="col-md-5">
+                        <h5 class="mb-3">Tóm tắt thông tin</h5>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img th:src="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()} ? @{/avatars/{fileName}(fileName=${doctor.avatarUrl})} : '/images/default-avatar.png'"
+                                         class="rounded-circle me-3" alt="Ảnh bác sĩ" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <div>
+                                        <h6 class="mb-0" th:text="${doctor.fullName}">Bác Sĩ</h6>
+                                        <!-- ======================================================= -->
+                                        <!-- SỬA LỖI 3: Dùng specialization thay vì occupation -->
+                                        <!-- ======================================================= -->
+                                        <p class="text-muted small mb-0" th:text="${doctor.specialization}">Chuyên khoa</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <ul class="list-unstyled">
+                                    <li class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Ngày khám:</span>
+                                        <strong th:text="${#temporals.format(T(java.time.LocalDate).parse(selectedDate), 'dd/MM/yyyy')}"></strong>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <span class="text-muted">Giờ khám:</span>
+                                        <strong th:text="${selectedTime}"></strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút điều hướng -->
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Tiếp tục đến trang thanh toán</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>

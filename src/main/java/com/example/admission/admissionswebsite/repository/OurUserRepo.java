@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface  OurUserRepo extends JpaRepository<Users, Integer> {
+public interface  OurUserRepo extends JpaRepository<Users, Long> {
     Optional<Users> findByEmail(String email);
     // Lấy danh sách các đối tượng Map chứa id, name và numberPhone của mỗi người dùng
 //    @Query("SELECT new map(u.id as id, u.nameUser as nameUser, u.numberPhone as numberPhone) FROM Users u")

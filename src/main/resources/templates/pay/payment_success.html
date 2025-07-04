@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title>Thanh toán thành công</title>
+  <style>
+    .result-container {
+      max-width: 600px;
+      margin: 3rem auto;
+      text-align: center;
+    }
+    .icon-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: white;
+    }
+    .icon-box.success { background-color: #198754; }
+    .icon-box.failure { background-color: #dc3545; }
+    .icon-box i { font-size: 3rem; }
+    .details-box {
+      background-color: #f8f9fa;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+<main layout:fragment="content">
+  <div class="result-container">
+    <div class="icon-box success">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <h1 class="display-5 text-success">Thanh toán thành công!</h1>
+    <p class="lead text-muted mb-4">
+      Cảm ơn bạn đã thanh toán. Lịch hẹn của bạn đã được xác nhận.
+    </p>
+
+    <div class="details-box">
+      <h5 class="mb-3">Chi tiết giao dịch</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+          Nội dung
+          <span class="fw-bold" th:text="${orderId}"></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+          Số tiền
+          <span class="fw-bold text-success" th:text="${#numbers.formatDecimal(totalPrice, 1, 'POINT', 0, 'COMMA')} + ' VNĐ'"></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+          Thời gian
+          <!-- Định dạng lại thời gian của VNPay cho dễ đọc -->
+          <span th:if="${paymentTime != null}"
+                th:with="formatter=${T(java.time.format.DateTimeFormatter).ofPattern('yyyyMMddHHmmss')},
+               dateTime=${T(java.time.LocalDateTime).parse(paymentTime, formatter)}"
+                th:text="${#temporals.format(dateTime, 'HH:mm:ss, dd-MM-yyyy')}" class="fw-bold">
+</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+          Mã giao dịch VNPay
+          <span class="fw-bold" th:text="${transactionId}"></span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-grid gap-2 d-sm-flex justify-content-center mt-4">
+      <a th:href="@{/lich-su-dat-kham}" class="btn btn-primary btn-lg">Xem lịch sử đặt hẹn</a>
+      <a th:href="@{/user}" class="btn btn-outline-secondary btn-lg">Về trang chủ</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

@@ -24,6 +24,8 @@ public class EnduserService {
     @Autowired
     private DoctorRepository doctorRepository;
     @Autowired
+    private DoctorsRepository doctorsRepository;
+    @Autowired
     private AdminPostRepository adminPostRepository;
     public List<University> getAllUniversities() {
         return universityRepository.findTop4ByOrderByIdDesc();
@@ -37,7 +39,9 @@ public class EnduserService {
     public List<Users> getAllDoctor() {
         return doctorRepository.findTop3ByRolesOrderByIdDesc("DOCTOR");
     }
-
+    public List<Doctor> getAllDoctorsAsDoctorObjects() {
+        return doctorsRepository.findAll();
+    }
     public List<Specialty> getAllSpecialty() {
         return specialtyRepository.findTop4ByOrderByIdDesc();
     }

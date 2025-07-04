@@ -224,4 +224,6 @@ public class DoctorManageController {
         // Trả về trang admin/update-university sau khi xử lý
         return "redirect:/admin/danh-sach-truong-dai-hoc";
     }
+
+
 }

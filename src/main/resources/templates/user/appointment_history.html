@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title>Lịch sử đặt hẹn</title>
+  <style>
+    .history-container {
+      max-width: 900px;
+      margin: 2rem auto;
+    }
+    .appointment-card {
+      background-color: #fff;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .appointment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    }
+    .card-header-custom {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #e9ecef;
+      background-color: #f8f9fa;
+    }
+    .status-badge {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4em 0.8em;
+    }
+    .doctor-info img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+    .action-buttons .btn {
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+<main layout:fragment="content">
+  <div class="history-container">
+    <div class="text-center mb-5">
+      <h1 class="display-5">Lịch sử đặt hẹn</h1>
+      <p class="lead text-muted">Xem lại tất cả các cuộc hẹn đã đặt của bạn.</p>
+    </div>
+
+    <!-- Trường hợp không có cuộc hẹn nào -->
+    <div th:if="${#lists.isEmpty(appointments)}" class="text-center p-5 bg-light rounded">
+      <i class="fa-solid fa-calendar-xmark fa-3x text-muted mb-3"></i>
+      <h4>Bạn chưa có cuộc hẹn nào.</h4>
+      <p>Hãy bắt đầu đặt lịch khám để chăm sóc sức khỏe của bạn.</p>
+      <a th:href="@{/dat-lich/chon-bac-si}" class="btn btn-primary mt-3">Đặt lịch ngay</a>
+    </div>
+
+    <!-- Vòng lặp hiển thị danh sách các cuộc hẹn -->
+    <div th:unless="${#lists.isEmpty(appointments)}" class="vstack gap-4">
+      <div class="appointment-card" th:each="appt : ${appointments}">
+        <div class="card-header-custom d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Mã hẹn:</strong>
+            <span class="text-primary fw-bold" th:text="${'#' + appt.id}">#12345</span>
+            <!-- Hiển thị tên bệnh nhân nếu một tài khoản có nhiều hồ sơ -->
+            <span class="ms-3 text-muted small" th:text="'(Bệnh nhân: ' + ${appt.patient.fullName} + ')'"></span>
+          </div>
+          <!-- Hiển thị trạng thái với màu sắc tương ứng -->
+          <span th:switch="${appt.status.name()}" class="badge rounded-pill status-badge"
+                th:classappend="${appt.status.name() == 'CONFIRMED' ? 'text-bg-success' :
+                                           (appt.status.name() == 'COMPLETED' ? 'text-bg-primary' :
+                                           (appt.status.name() == 'CANCELLED' ? 'text-bg-secondary' : 'text-bg-warning'))}">
+                        <span th:case="'CONFIRMED'">Đã xác nhận</span>
+                        <span th:case="'COMPLETED'">Đã hoàn thành</span>
+                        <span th:case="'CANCELLED'">Đã hủy</span>
+                        <span th:case="'PENDING_CONFIRMATION'">Chờ xác nhận</span>
+                        <span th:case="*">Trạng thái khác</span>
+                    </span>
+        </div>
+        <div class="card-body p-4">
+          <div class="row g-3 align-items-center">
+            <!-- Thông tin Bác sĩ -->
+            <div class="col-md-5 doctor-info d-flex align-items-center">
+              <img th:src="${appt.doctor.avatarUrl != null and !appt.doctor.avatarUrl.isEmpty()} ? @{/avatars/{fileName}(fileName=${appt.doctor.avatarUrl})} : '/images/default-avatar.png'"
+                   class="rounded-circle me-3" alt="Ảnh bác sĩ">
+              <div>
+                <h6 class="mb-0" th:text="${appt.doctor.fullName}">Tên Bác Sĩ</h6>
+                <p class="text-muted small mb-0" th:text="${appt.doctor.specialization}">Chuyên khoa</p>
+              </div>
+            </div>
+            <!-- Thông tin Ngày Giờ -->
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <i class="fa-regular fa-calendar-check fa-2x text-primary me-3"></i>
+                <div>
+                  <strong th:text="${#temporals.format(appt.timeSlot.startTime, 'dd/MM/yyyy')}"></strong><br>
+                  <span class="text-muted" th:text="${#temporals.format(appt.timeSlot.startTime, 'HH:mm')}"></span>
+                </div>
+              </div>
+            </div>
+            <!-- Các nút hành động -->
+            <div class="col-md-3 text-md-end action-buttons">
+              <a href="#" class="btn btn-outline-primary btn-sm mb-1 w-100">Xem chi tiết</a>
+              <!-- Chỉ hiển thị nút hủy nếu lịch hẹn chưa diễn ra và chưa bị hủy -->
+              <a th:if="${appt.status.name() == 'CONFIRMED' and appt.timeSlot.startTime.isAfter(T(java.time.LocalDateTime).now())}"
+                 href="#" class="btn btn-outline-danger btn-sm w-100">Hủy lịch</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
