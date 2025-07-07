@@ -58,11 +58,11 @@ public class AdminPostService {
                 response.setMessage("Vui lòng nhập nội dung bài đăng");
                 return response;
             }
-            if (adminPostDto.getOwnerName() == null || adminPostDto.getOwnerName().isEmpty()) {
-                response.setStatusCode(400);
-                response.setMessage("Vui lòng nhập mã trường của bài đăng");
-                return response;
-            }
+//            if (adminPostDto.getOwnerName() == null || adminPostDto.getOwnerName().isEmpty()) {
+//                response.setStatusCode(400);
+//                response.setMessage("Vui lòng nhập mã trường của bài đăng");
+//                return response;
+//            }
             // Validate file
             if (file == null || file.isEmpty()) {
                 response.setStatusCode(400);
@@ -171,11 +171,11 @@ public class AdminPostService {
                 response.setMessage("Vui lòng nhập nội dung");
                 return response;
             }
-            if (postDto.getOwnerName() == null || postDto.getOwnerName().isEmpty()) {
-                response.setStatusCode(400);
-                response.setMessage("Vui lòng nhập mã trường của bài đăng");
-                return response;
-            }
+//            if (postDto.getOwnerName() == null || postDto.getOwnerName().isEmpty()) {
+//                response.setStatusCode(400);
+//                response.setMessage("Vui lòng nhập mã trường của bài đăng");
+//                return response;
+//            }
             // Tìm bài đăng theo ID
             Optional<AdminPost> optionalPost = adminPostRepository.findById(postDto.getId());
             if (!optionalPost.isPresent()) {
