@@ -90,7 +90,6 @@ public UserDto signUp(UserDto registrationRequest) {
 
         Users savedUser = ourUserRepo.save(ourUsers);
 
-        // BƯỚC 2: TỰ ĐỘNG TẠO HỒ SƠ BỆNH NHÂN (PATIENT PROFILE)
         PatientProfile patientProfile = new PatientProfile();
 
         // ===============================================
@@ -98,17 +97,12 @@ public UserDto signUp(UserDto registrationRequest) {
         // ===============================================
         patientProfile.setUser(savedUser); // Đổi từ setManagingUser -> setUser
 
-        // --- Ánh xạ các thông tin chung ---
         patientProfile.setFullName(savedUser.getFullName());
 
-        // ===============================================
-        // SỬA LỖI 2: Chuyển đổi chuỗi ngày tháng sang LocalDate
-        // ===============================================
-        // Giả sử chuỗi ngày tháng từ request có định dạng "yyyy-MM-dd"
         if (savedUser.getBirthDate() != null && !savedUser.getBirthDate().isEmpty()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate birthDate = LocalDate.parse(savedUser.getBirthDate(), formatter);
-            patientProfile.setDateOfBirth(birthDate); // Gán đối tượng LocalDate
+            patientProfile.setDateOfBirth(birthDate);
         }
 
         patientProfile.setGender(savedUser.getGender());

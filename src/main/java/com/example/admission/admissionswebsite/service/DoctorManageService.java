@@ -1,13 +1,8 @@
 package com.example.admission.admissionswebsite.service;
 
 import com.example.admission.admissionswebsite.Dto.UserDto;
-import com.example.admission.admissionswebsite.Model.Doctor;
-import com.example.admission.admissionswebsite.Model.Event;
-import com.example.admission.admissionswebsite.Model.Users;
-import com.example.admission.admissionswebsite.repository.DoctorRepository;
-import com.example.admission.admissionswebsite.repository.DoctorsRepository;
-import com.example.admission.admissionswebsite.repository.OurUserRepo;
-import com.example.admission.admissionswebsite.repository.UserRepository;
+import com.example.admission.admissionswebsite.Model.*;
+import com.example.admission.admissionswebsite.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,15 +15,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class DoctorManageService {
     @Autowired
     private OurUserRepo ourUserRepo;
+    @Autowired
+    private TimeSlotRepository timeSlotRepository;
     @Autowired
     private JWTUtils jwtUtils;
     @Autowired
@@ -41,7 +39,8 @@ public class DoctorManageService {
     private DoctorsRepository doctorsRepository;
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private AppointmentRepository appointmentRepository; // Thêm repo này vào
     @Value("${upload.event}")
     private String uploadPath;
     private static final String UPLOAD_DIR = "src/main/resources/static/avatars/";
@@ -239,5 +238,109 @@ public UserDto signUp(UserDto registrationRequest) {
         existingUser.setIssueDate(updatedUserData.getIssueDate());
         // LƯU đối tượng đã được cập nhật vào database
         userRepository.save(existingUser);
+    }
+
+
+    @Transactional
+    public List<Appointment> getAppointmentsByDoctorEmail(String email) {
+
+        Users doctorUser = ourUserRepo.findByEmail(email)
+                .orElse(null);
+
+        if (doctorUser == null) {
+            return Collections.emptyList();
+        }
+
+        Doctor doctorProfile = doctorsRepository.findByUserAccount(doctorUser)
+                .orElse(null); // Trả về null nếu không có hồ sơ doctor
+
+        if (doctorProfile == null) {
+            return Collections.emptyList(); // Nếu không có hồ sơ doctor, không có lịch hẹn
+        }
+
+
+        List<Appointment> appointments = appointmentRepository.findByDoctor(doctorProfile);
+
+        // (Tùy chọn) Sắp xếp lại danh sách
+        appointments.sort(Comparator.comparing(a -> a.getTimeSlot().getStartTime()));
+
+        return appointments;
+    }
+
+    @Transactional
+    public void cancelAppointment(Long appointmentId, String reason) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch hẹn với ID: " + appointmentId));
+
+        if (appointment.getStatus() == Appointment.AppointmentStatus.COMPLETED ||
+                appointment.getStatus() == Appointment.AppointmentStatus.CANCELLED) {
+            throw new IllegalStateException("Không thể hủy một lịch hẹn đã hoàn thành hoặc đã bị hủy.");
+        }
+
+        appointment.setStatus(Appointment.AppointmentStatus.CANCELLED);
+        appointment.setCancellationReason(reason);
+        appointment.setCancellationTime(LocalDateTime.now());
+
+        // TODO: (Nâng cao) Giải phóng TimeSlot nếu cần
+
+
+        appointmentRepository.save(appointment);
+
+        // TODO: Gửi email/thông báo cho bệnh nhân về việc lịch hẹn đã bị hủy.
+    }
+
+    // Lấy các TimeSlot của bác sĩ trong ngày hôm nay
+    public List<TimeSlot> getTodayTimeSlots(String doctorEmail) {
+        Doctor doctor = findDoctorByEmail(doctorEmail);
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
+        return timeSlotRepository.findByDoctorAndStartTimeBetween(doctor, startOfDay, endOfDay);
+    }
+
+    // Tạo TimeSlot hàng loạt
+    @Transactional
+    public void createTimeSlotsForDoctor(String doctorEmail, String workDateStr, String startTimeStr, String endTimeStr, int durationInMinutes) {
+        Doctor doctor = findDoctorByEmail(doctorEmail);
+
+        LocalDate workDate = LocalDate.parse(workDateStr);
+        LocalTime startTime = LocalTime.parse(startTimeStr);
+        LocalTime endTime = LocalTime.parse(endTimeStr);
+
+        if (startTime.isAfter(endTime)) {
+            throw new IllegalArgumentException("Giờ bắt đầu không thể sau giờ kết thúc.");
+        }
+
+        List<TimeSlot> newSlots = new ArrayList<>();
+        LocalDateTime currentSlotTime = LocalDateTime.of(workDate, startTime);
+
+        while (!currentSlotTime.toLocalTime().isAfter(endTime.minusMinutes(durationInMinutes))) {
+            LocalDateTime endSlotTime = currentSlotTime.plusMinutes(durationInMinutes);
+
+            TimeSlot newSlot = new TimeSlot();
+            newSlot.setDoctor(doctor);
+            newSlot.setStartTime(currentSlotTime);
+            newSlot.setEndTime(endSlotTime);
+            newSlot.setStatus(TimeSlot.TimeSlotStatus.AVAILABLE);
+
+            newSlots.add(newSlot);
+
+            currentSlotTime = endSlotTime;
+        }
+
+        // TODO: Kiểm tra xem các slot này có bị trùng với slot đã có không trước khi lưu
+
+        timeSlotRepository.saveAll(newSlots);
+    }
+
+    // Hàm tiện ích để tìm bác sĩ
+    private Doctor findDoctorByEmail(String email) {
+        Users user = ourUserRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        return doctorsRepository.findByUserAccount(user).orElseThrow(() -> new RuntimeException("Doctor profile not found"));
+    }
+    public List<TimeSlot> getTimeSlotsForDate(String doctorEmail, LocalDate date) {
+        Doctor doctor = findDoctorByEmail(doctorEmail);
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.atTime(23, 59, 59);
+        return timeSlotRepository.findByDoctorAndStartTimeBetween(doctor, startOfDay, endOfDay);
     }
 }

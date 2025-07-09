@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{doctor/layout}">
+<head>
+    <title>Chi tiết lịch hẹn</title>
+    <style>
+        .info-group .info-label {
+            font-weight: 600;
+            color: #6c757d; /* a bit lighter than black */
+            min-width: 150px;
+        }
+        .info-group .info-value {
+            font-weight: 500;
+        }
+        .action-buttons .btn {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid py-4">
+        <!-- HEADER CỦA TRANG -->
+        <div class="card mb-4">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <a th:href="@{/doctor/schedule}" class="btn btn-outline-primary btn-sm mb-0 me-3">
+                            <i class="fas fa-arrow-left"></i>  Quay lại danh sách
+                        </a>
+                        <h4 class="mb-0 d-inline-block align-middle" th:text="'Chi tiết lịch hẹn #' + ${appointment.id}">Chi tiết lịch hẹn #123</h4>
+                    </div>
+                    <!-- CÁC NÚT HÀNH ĐỘNG -->
+                    <div class="action-buttons">
+                        <!-- Chỉ hiển thị nút "Xác nhận" nếu trạng thái là PENDING_CONFIRMATION -->
+                        <button th:if="${appointment.status.name() == 'PENDING_CONFIRMATION'}" type="button" class="btn btn-success mb-0">
+                            <i class="fas fa-check"></i>  Xác nhận
+                        </button>
+                        <!-- Chỉ hiển thị nút "Hủy" nếu trạng thái chưa hoàn thành hoặc chưa hủy -->
+                        <div class="action-buttons">
+
+                            <button th:if="${appointment.status.name() != 'COMPLETED' and appointment.status.name() != 'CANCELLED'}"
+                                    type="button"
+                                    class="btn btn-danger mb-0"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#cancelAppointmentModal"> <!-- Thuộc tính này sẽ mở Modal -->
+                                <i class="fas fa-times"></i>  Hủy lịch
+                            </button>
+
+                        </div>
+                        <!-- Chỉ hiển thị nút "Tạo bệnh án" nếu đã hoàn thành -->
+                        <a th:if="${appointment.status.name() == 'COMPLETED'}" th:href="@{/doctor/medical-record/create(appointmentId=${appointment.id})}" class="btn btn-primary mb-0">
+                            <i class="fas fa-file-medical"></i>  Tạo bệnh án
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- CỘT THÔNG TIN BÊN TRÁI -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h6>Thông tin chi tiết</h6>
+                    </div>
+                    <div class="card-body pt-0">
+                        <!-- THÔNG TIN BỆNH NHÂN -->
+                        <div class="mt-3">
+                            <h6 class="text-sm">Bệnh nhân</h6>
+                            <div class="d-flex align-items-center p-3 border rounded">
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex align-items-center mb-2 info-group">
+                                        <span class="info-label">Họ và tên:</span>
+                                        <span class="info-value" th:text="${appointment.patient.fullName}">Nguyễn Văn A</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2 info-group">
+                                        <span class="info-label">Ngày sinh:</span>
+                                        <span class="info-value" th:text="${#temporals.format(appointment.patient.dateOfBirth, 'dd/MM/yyyy')}">01/01/1990</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2 info-group">
+                                        <span class="info-label">Giới tính:</span>
+                                        <span class="info-value" th:text="${appointment.patient.gender}">Nam</span>
+                                    </div>
+                                    <div class="d-flex align-items-center info-group">
+                                        <span class="info-label">Số điện thoại:</span>
+                                        <span class="info-value" th:text="${appointment.patient.phoneNumber}">0909123456</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LÝ DO KHÁM -->
+                        <div class="mt-4">
+                            <h6 class="text-sm">Triệu chứng & Lý do khám</h6>
+                            <div class="p-3 border rounded">
+                                <p class="text-sm mb-0" th:text="${appointment.reasonForVisit}">Bệnh nhân bị ho, sốt nhẹ kéo dài 3 ngày, có cảm giác khó thở khi vận động mạnh.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT THÔNG TIN BÊN PHẢI -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <h6>Thông tin lịch hẹn</h6>
+                    </div>
+                    <div class="card-body pt-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-sm text-secondary">Ngày khám:</span>
+                                <strong class="text-sm" th:text="${#temporals.format(appointment.timeSlot.startTime, 'dd/MM/yyyy')}">05/07/2025</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-sm text-secondary">Giờ khám:</span>
+                                <strong class="text-sm" th:text="${#temporals.format(appointment.timeSlot.startTime, 'HH:mm') + ' - ' + #temporals.format(appointment.timeSlot.endTime, 'HH:mm')}">09:00 - 09:30</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-sm text-secondary">Ngày đặt:</span>
+                                <span class="text-sm" th:text="${#temporals.format(appointment.createdAt, 'dd/MM/yyyy HH:mm')}">04/07/2025 10:30</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-sm text-secondary">Hình thức:</span>
+                                <span class="badge"
+                                      th:classappend="${appointment.type.name() == 'ONLINE'} ? 'text-bg-info' : 'text-bg-primary'"
+                                      th:text="${appointment.type.name() == 'ONLINE' ? 'Trực tuyến' : 'Tại phòng khám'}">
+                                    Tại phòng khám
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-sm text-secondary">Trạng thái:</span>
+                                <span class="badge"
+                                      th:switch="${appointment.status.name()}"
+                                      th:classappend="${appointment.status.name() == 'CONFIRMED' ? 'text-bg-success' :
+                                                       (appointment.status.name() == 'COMPLETED' ? 'text-bg-secondary' :
+                                                       (appointment.status.name() == 'CANCELLED' ? 'text-bg-danger' : 'text-bg-warning'))}"
+                                >
+                                    <span th:case="'CONFIRMED'">Đã xác nhận</span>
+                                    <span th:case="'COMPLETED'">Đã hoàn thành</span>
+                                    <span th:case="'CANCELLED'">Đã hủy</span>
+                                    <span th:case="'PENDING_CONFIRMATION'">Chờ xác nhận</span>
+                                    <span th:case="*">Không xác định</span>
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-sm text-secondary">Thanh toán:</span>
+                                <span class="badge"
+                                      th:classappend="${appointment.paymentStatus.name() == 'PAID'} ? 'text-bg-success' : 'text-bg-warning'"
+                                      th:text="${appointment.paymentStatus.name() == 'PAID' ? 'Đã thanh toán' : 'Chưa thanh toán'}">
+                                    Đã thanh toán
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-sm text-secondary">Phí khám:</span>
+                                <strong class="text-sm text-primary" th:text="${#numbers.formatDecimal(appointment.fee, 0, 'COMMA', 0, 'POINT')} + ' đ'">300,000 đ</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cancelAppointmentModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Form sẽ bao bọc toàn bộ nội dung của Modal -->
+                <form th:action="@{/doctor/appointment/cancel}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelModalLabel">Xác nhận hủy lịch hẹn</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn hủy lịch hẹn này không? Vui lòng cung cấp lý do hủy.</p>
+
+                        <!-- Input ẩn để gửi ID của cuộc hẹn đi -->
+                        <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+
+                        <!-- Ô nhập lý do hủy -->
+                        <div class="mb-3">
+                            <label for="cancellationReason" class="form-label">Lý do hủy:</label>
+                            <textarea class="form-control" id="cancellationReason" name="cancellationReason" rows="3" required placeholder="Ví dụ: Có lịch đột xuất, bệnh nhân không phù hợp..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Nút Đóng để hủy thao tác -->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <!-- Nút Xác nhận để gửi form -->
+                        <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

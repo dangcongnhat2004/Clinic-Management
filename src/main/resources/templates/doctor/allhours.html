@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .time-slot-btn.active { background-color: #0d6efd; color: white; border-color: #0d6efd; }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="booking-container">
+        <!-- ... header ... -->
+        <div class="booking-body">
+            <!-- ... step-indicator ... -->
+
+            <form th:action="@{/dat-lich/nhap-thong-tin}" method="get" id="scheduleForm">
+                <!-- Truyền doctorId đi. URL của form sẽ là /dat-lich/nhap-thong-tin?doctorId=... -->
+                <input type="hidden" name="doctorId" th:value="${doctor.id}" />
+                <input type="hidden" name="date" id="selectedDate" th:value="${selectedDate}" />
+                <input type="hidden" name="time" id="selectedTime" />
+
+                <div class="row g-4">
+                    <div class="col-md-5">
+                        <div class="mb-4">
+                            <label for="appointmentDateInput" class="form-label fw-bold">Chọn ngày khám</label>
+                            <!-- Input này sẽ được điều khiển bởi JavaScript để tải lại trang -->
+                            <input type="text" class="form-control" id="appointmentDateInput" placeholder="Nhấn để chọn một ngày...">
+                        </div>
+                        <!-- ... thông tin bác sĩ ... -->
+                    </div>
+
+                    <div class="col-md-7">
+                        <label class="form-label fw-bold">Chọn giờ khám còn trống</label>
+                        <div id="timeSlotList" class="d-grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));">
+
+                            <!-- BẮT ĐẦU: HIỂN THỊ CÁC KHUNG GIỜ TỪ CONTROLLER -->
+                            <th:block th:if="${not #lists.isEmpty(availableSlots)}">
+                                <button type="button" class="btn btn-outline-primary time-slot-btn"
+                                        th:each="slot : ${availableSlots}"
+                                        th:text="${#temporals.format(slot.startTime, 'HH:mm')}"
+                                        th:data-time="${#temporals.format(slot.startTime, 'HH:mm')}">
+                                </button>
+                            </th:block>
+                            <!-- KẾT THÚC: HIỂN THỊ CÁC KHUNG GIỜ -->
+
+                            <!-- Thông báo nếu không có slot nào -->
+                            <div th:if="${#lists.isEmpty(availableSlots)}" class="alert alert-info">
+                                Vui lòng chọn một ngày để xem các khung giờ trống.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-primary" id="nextBtn" disabled>Tiếp tục</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <th:block layout:fragment="scripts">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            document.addEventListener('DOMContentLoaded', function() {
+                const doctorId = /*[[${doctor.id}]]*/ null;
+                const selectedDateFromServer = /*[[${selectedDate}]]*/ null;
+
+                // KÍCH HOẠT FLATPICKR
+                flatpickr("#appointmentDateInput", {
+                    locale: "vn",
+                    dateFormat: "Y-m-d", // Định dạng chuẩn
+                    altInput: true,
+                    altFormat: "d/m/Y",
+                    defaultDate: selectedDateFromServer, // Hiển thị ngày đã chọn
+                    minDate: "today",
+                    onChange: function(selectedDates, dateStr, instance) {
+                        // ===============================================
+                        // ĐÂY LÀ PHẦN QUAN TRỌNG NHẤT
+                        // Tải lại trang với tham số ngày đã chọn
+                        // ===============================================
+                        if (dateStr) {
+                            window.location.href = `/dat-lich/chon-lich?doctorId=${doctorId}&selectedDate=${dateStr}`;
+                        }
+                    }
+                });
+
+                // Logic xử lý khi nhấn vào một nút giờ
+                const nextBtn = document.getElementById('nextBtn');
+                const selectedTimeInput = document.getElementById('selectedTime');
+                document.querySelectorAll('.time-slot-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        document.querySelectorAll('.time-slot-btn').forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        selectedTimeInput.value = this.dataset.time;
+                        nextBtn.disabled = false;
+                    });
+                });
+            });
+            /*]]>*/
+        </script>
+    </th:block>
+</main>
+</body>
+</html>

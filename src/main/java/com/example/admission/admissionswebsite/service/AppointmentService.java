@@ -77,10 +77,14 @@ public class AppointmentService {
         appointment.setReasonForVisit(reason);
         appointment.setType(type);
         appointment.setPaymentMethod(paymentMethod);
-
+        // KIỂM TRA XEM SLOT CÓ CÒN TRỐNG KHÔNG
+        if (timeSlot.getStatus() != TimeSlot.TimeSlotStatus.AVAILABLE) { // Kiểm tra bằng Enum
+            throw new IllegalStateException("Khung giờ này không còn trống. Vui lòng chọn khung giờ khác.");
+        }
         // 6. CẬP NHẬT TRẠNG THÁI CỦA TIMESLOT
         timeSlot.setStatus(TimeSlot.TimeSlotStatus.BOOKED);
         timeSlotRepository.save(timeSlot);
+// KIỂM TRA XEM SLOT CÓ CÒN TRỐNG KHÔNG
 
         // 7. Thiết lập trạng thái ban đầu cho Appointment
         appointment.setStatus(Appointment.AppointmentStatus.PENDING_CONFIRMATION);

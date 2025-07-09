@@ -17,11 +17,10 @@ public class Appointment {
     @JoinColumn(name = "patient_profile_id", nullable = false)
     private PatientProfile patient;
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctor; 
 
-    // Một cuộc hẹn sẽ chiếm 1 khung giờ
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id") // Khóa ngoại trong bảng appointments
+    private Doctor doctor; // Tên thuộc tính này ("doctor") phải khớp với giá trị của `mappedBy` ở trên
     @OneToOne
     @JoinColumn(name = "time_slot_id", unique = true)
     private TimeSlot timeSlot;

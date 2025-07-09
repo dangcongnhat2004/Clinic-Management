@@ -6,6 +6,7 @@ import com.example.admission.admissionswebsite.Model.University;
 import com.example.admission.admissionswebsite.Model.Users;
 import com.example.admission.admissionswebsite.repository.UserRepository;
 import com.example.admission.admissionswebsite.service.AdminService;
+import com.example.admission.admissionswebsite.service.OurUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,6 +25,8 @@ public class AdminController {
      private UserRepository userRepository;
      @Autowired
      private AdminService adminService;
+     @Autowired
+     private OurUserDetailsService userDetailsService;
 
     @GetMapping("/admin")
     public String homeadmin(Model model) {
@@ -36,13 +40,16 @@ public class AdminController {
     }
 
     @GetMapping("/user")
-    public String homeuser(Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            model.addAttribute("email", authentication.getName());
-//        } else {
-//            model.addAttribute("email", "hello@example.com");
-//        }
+    public String homeuser(Model model, Principal principal) {
+        if (principal != null) {
+            // Lấy thông tin user đang đăng nhập và đưa vào model
+            String username = principal.getName();
+            Users currentUser = userDetailsService.findByEmail(username).orElse(null);
+            model.addAttribute("currentUser", currentUser); // <-- Dùng tên "currentUser" cho rõ ràng
+        } else {
+            // Xử lý trường hợp không có ai đăng nhập
+            return "redirect:/login";
+        }
         return "user/homepage";
     }
 

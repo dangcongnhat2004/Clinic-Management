@@ -1,6 +1,7 @@
 package com.example.admission.admissionswebsite.Controller;
 
 import com.example.admission.admissionswebsite.Dto.UserDto;
+import com.example.admission.admissionswebsite.repository.UserRepository;
 import com.example.admission.admissionswebsite.service.AuthService;
 import com.example.admission.admissionswebsite.service.OurUserDetailsService;
 import jakarta.servlet.http.Cookie;
@@ -22,18 +23,32 @@ public class AuthController {
     private OurUserDetailsService ourUserDetailsService;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserRepository userRepository;
 
-    @PostMapping("/signup")
-    public String signUp(@ModelAttribute UserDto signUpRequest, Model model) {
+    @PostMapping("/signup") // URL này nên khớp với th:action trong form
+    public String processSignUp(@ModelAttribute("user") UserDto signUpRequest, Model model) {
+
+        // Gọi service để xử lý
         UserDto response = authService.signUp(signUpRequest);
+
+        // Kiểm tra kết quả trả về từ service
         if (response.getStatusCode() == 200) {
-            // Nếu đăng ký thành công, hiển thị thông báo thành công và chuyển hướng đến trang login
+            // THÀNH CÔNG: Chuyển đến trang đăng nhập với thông báo
             model.addAttribute("successMessage", "Đăng ký thành công! Vui lòng đăng nhập.");
-            return "/home/login";  // Chuyển đến trang đăng nhập
+            return "home/login";  // Render trang đăng nhập
+
         } else {
-            // Nếu có lỗi, hiển thị thông báo lỗi và quay lại trang đăng ký
-            model.addAttribute("errorMessage", response.getMessage() != null ? response.getMessage() : "Đã xảy ra lỗi.");
-            return "/home/register";  // Quay lại trang đăng ký
+            // THẤT BẠI (Email trùng, hoặc lỗi khác)
+
+            // 1. Thêm thông báo lỗi vào model
+            model.addAttribute("errorMessage", response.getMessage());
+
+
+            model.addAttribute("user", signUpRequest);
+
+            // 3. Render lại trang đăng ký
+            return "home/register";
         }
     }
 
@@ -59,18 +74,18 @@ public class AuthController {
             jwtCookie.setPath("/");
             httpServletResponse.addCookie(jwtCookie);
 
-            if (role.contains("ADMIN")) {
-                System.out.println("Redirecting to /admin");
-                return "redirect:/admin";
+            if (role.contains("STAFF")) {
+                System.out.println("Redirecting to /staff");
+                return "redirect:/staff";
             } else if (role.contains("DOCTOR")) {
                 System.out.println("Redirecting to /doctor");
                 return "redirect:/doctor";
             } else if (role.contains("NURSE")) {
                 System.out.println("Redirecting to /nurse");
                 return "redirect:/nurse";
-            } else if (role.contains("STAFF")) {
-                System.out.println("Redirecting to /staff");
-                return "redirect:/staff";
+            } else if (role.contains("ADMIN")) {
+                System.out.println("Redirecting to /admin");
+                return "redirect:/admin";
             }
             else if (role.contains("USER")) {
                 System.out.println("Redirecting to /user");

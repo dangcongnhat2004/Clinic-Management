@@ -15,8 +15,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -35,6 +37,8 @@ public class UserController {
     private EventService eventService;
     @Autowired
     private DoctorManageService doctorManageService;
+    @Autowired
+    private OurUserDetailsService userDetailsService;
     @Autowired
     private AppointmentRepository appointmentRepository;
     @Autowired
@@ -58,6 +62,8 @@ public class UserController {
 //    public String homePage() {
 //        return "/user/home";
 //    }
+
+
     @GetMapping("/")
     public String homePage(Model model) {
         List<University> universities = enduserService.getAllUniversities();
@@ -91,7 +97,42 @@ public class UserController {
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/listmajor"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
     }
+    @GetMapping("/user/thong-tin-ca-nhan")
+    public String showUserProfile(Principal principal, Model model) {
+        // 1. Kiểm tra xem người dùng đã đăng nhập chưa
+        if (principal == null) {
+            // Nếu chưa đăng nhập, chuyển hướng về trang login
+            return "redirect:/auth/login";
+        }
 
+        // 2. Lấy username của người dùng đang đăng nhập
+        String username = principal.getName();
+
+        // 3. Dùng username để tìm thông tin đầy đủ trong database
+        Users loggedInUser = userDetailsService.findByEmail(username) // Hoặc findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("Không tìm thấy người dùng: " + username));
+
+        model.addAttribute("information", loggedInUser);
+
+        return "user/profile";
+    }
+    @PostMapping("/user/thong-tin-ca-nhan/cap-nhat")
+    public String updateProfile(@ModelAttribute("information") Users updatedUserData,
+                                @RequestParam("avatarFile") MultipartFile avatarFile, // <-- THÊM THAM SỐ NÀY
+                                RedirectAttributes redirectAttributes) {
+        try {
+            // Gọi service để thực hiện việc cập nhật, truyền cả file vào
+            userDetailsService.updateUserProfile(updatedUserData, avatarFile);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin cá nhân thành công!");
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
+            e.printStackTrace(); // In lỗi ra console để debug
+        }
+
+        return "redirect:/user/thong-tin-ca-nhan";
+    }
     @GetMapping("/danh-sach-truong-dai-hoc")
     public String listUniversity(Model model,@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "8") int size) {

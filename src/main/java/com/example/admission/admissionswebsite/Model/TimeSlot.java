@@ -12,7 +12,8 @@ public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+//    @Column(nullable = false)
+//    private boolean isAvailable = true;
     // =======================================================
     // BẮT ĐẦU SỬA ĐỔI
     // =======================================================

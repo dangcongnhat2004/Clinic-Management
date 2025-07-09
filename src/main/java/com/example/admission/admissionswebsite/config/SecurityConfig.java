@@ -42,10 +42,10 @@ public class SecurityConfig {
 
                         // Các URL yêu cầu quyền cụ thể
                         .requestMatchers("/admin/**").hasAuthority("ADMIN") // Chỉ ADMIN được vào
-                        .requestMatchers("/user/**").hasAnyAuthority("USER") // Cả hai đều được vào
+                        .requestMatchers("/user/**").hasAuthority("USER") // Cả hai đều được vào
                         .requestMatchers("/staff/**").hasAnyAuthority("STAFF") // Cả hai đều được vào
                         .requestMatchers("/nurse/**").hasAnyAuthority("NURSE") // Cả hai đều được vào
-                        .requestMatchers("/doctor/**").hasAnyAuthority("DOCTOR") // Cả hai đều được vào
+                        .requestMatchers("/doctor/**").hasAuthority("DOCTOR") // Cả hai đều được vào
 
                         // Tất cả các request còn lại đều cần phải xác thực (đăng nhập)
                         .anyRequest().authenticated()

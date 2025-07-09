@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{doctor/layout}"> <!-- Giả sử bạn có một layout riêng cho bác sĩ -->
+<head>
+    <title>Lịch làm việc của tôi</title>
+    <style>
+        /* Tùy chỉnh nhỏ để bảng đẹp hơn */
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        .table th {
+            font-weight: 600;
+        }
+        /* Class để ẩn dòng không khớp với bộ lọc */
+        .filtered {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid py-4">
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <h4 class="mb-0">Lịch làm việc của tôi</h4>
+                    <!-- BỘ LỌC THEO NGÀY -->
+                    <div class="d-flex align-items-center">
+                        <label for="filterDate" class="me-2 text-nowrap">Xem lịch ngày:</label>
+                        <input type="date" class="form-control" id="filterDate" style="width: 200px;">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tên Bệnh Nhân</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thời Gian</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày Đặt</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hình Thức</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng Thái</th>
+                            <th class="text-secondary opacity-7"></th>
+                        </tr>
+                        </thead>
+                        <tbody id="appointmentTableBody"> <!-- Thêm ID cho tbody để JavaScript dễ dàng truy cập -->
+                        <!-- VÒNG LẶP THYMELEAF ĐỂ HIỂN THỊ DỮ LIỆU -->
+                        <tr th:each="appt : ${appointments}" th:attr="data-appointment-date=${#temporals.format(appt.timeSlot.startTime, 'yyyy-MM-dd')}">
+                            <!-- ID Cuộc hẹn -->
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0" th:text="${'#' + appt.id}">#123</p>
+                            </td>
+                            <!-- Tên người đặt -->
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm" th:text="${appt.patient.fullName}">John Michael</h6>
+                                        <p class="text-xs text-secondary mb-0" th:text="${appt.patient.email}">john@example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- Thời gian bắt đầu - kết thúc -->
+                            <td class="align-middle text-center">
+                                    <span class="text-secondary text-xs font-weight-bold"
+                                          th:text="${#temporals.format(appt.timeSlot.startTime, 'HH:mm') + ' - ' + #temporals.format(appt.timeSlot.endTime, 'HH:mm')}">
+                                        09:00 - 09:30
+                                    </span>
+                                <p class="text-xs text-secondary mb-0" th:text="${#temporals.format(appt.timeSlot.startTime, 'dd/MM/yyyy')}"></p>
+                            </td>
+                            <!-- Thời gian đặt -->
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold" th:text="${#temporals.format(appt.createdAt, 'dd/MM/yyyy HH:mm')}">23/04/2025 10:30</span>
+                            </td>
+                            <!-- Hình thức -->
+                            <td class="align-middle text-center text-sm">
+                                <!-- Sử dụng text-bg-* để tự động điều chỉnh màu chữ -->
+                                <span class="badge"
+                                      th:classappend="${appt.type.name() == 'ONLINE'} ? 'text-bg-info' : 'text-bg-primary'"
+                                      th:text="${appt.type.name() == 'ONLINE' ? 'Trực tuyến' : 'Tại phòng khám'}">
+                Tại phòng khám
+            </span>
+                            </td>
+
+                            <!-- Trạng thái -->
+                            <td class="align-middle text-center">
+                                <!-- Sử dụng text-bg-* cho tất cả các trạng thái -->
+                                <span class="badge"
+                                      th:switch="${appt.status.name()}"
+                                      th:classappend="${appt.status.name() == 'CONFIRMED' ? 'text-bg-success' :
+                                   (appt.status.name() == 'COMPLETED' ? 'text-bg-secondary' :
+                                   (appt.status.name() == 'CANCELLED' ? 'text-bg-danger' : 'text-bg-warning'))}">
+                <span th:case="'CONFIRMED'">Đã xác nhận</span>
+                <span th:case="'COMPLETED'">Đã hoàn thành</span>
+                <span th:case="'CANCELLED'">Đã hủy</span>
+                <span th:case="'PENDING_CONFIRMATION'">Chờ xác nhận</span>
+                <span th:case="*">Không xác định</span>
+            </span>
+                            </td>
+                            <!-- Hành động -->
+                            <td class="align-middle">
+                                <!-- Sửa lại link này để trỏ đến trang chi tiết thực tế -->
+                                <a th:href="@{/doctor/appointment/{id}(id=${appt.id})}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Xem chi tiết lịch hẹn">
+                                    Xem chi tiết
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Trường hợp không có lịch hẹn nào -->
+                        <tr id="no-appointments-row" th:if="${#lists.isEmpty(appointments)}">
+                            <td colspan="7" class="text-center py-4">Không có lịch hẹn nào được tìm thấy.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ======================================================= -->
+<!-- BẮT ĐẦU: THÊM SCRIPT ĐỂ LỌC -->
+<!-- ======================================================= -->
+<th:block layout:fragment="scripts">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterDateInput = document.getElementById('filterDate');
+            const appointmentTableBody = document.getElementById('appointmentTableBody');
+            const allRows = appointmentTableBody.querySelectorAll('tr[data-appointment-date]');
+            const noAppointmentsRow = document.getElementById('no-appointments-row');
+
+            filterDateInput.addEventListener('change', function() {
+                const selectedDate = this.value; // Lấy giá trị ngày dạng "yyyy-MM-dd"
+                let visibleRows = 0;
+
+                allRows.forEach(row => {
+                    const appointmentDate = row.dataset.appointmentDate;
+
+                    // Nếu không chọn ngày nào (rỗng) hoặc ngày khớp, thì hiển thị
+                    if (!selectedDate || appointmentDate === selectedDate) {
+                        row.classList.remove('filtered');
+                        visibleRows++;
+                    } else { // Nếu không khớp, ẩn đi
+                        row.classList.add('filtered');
+                    }
+                });
+
+                // Hiển thị/ẩn thông báo "Không có lịch hẹn"
+                if (noAppointmentsRow) {
+                    noAppointmentsRow.style.display = (visibleRows === 0 && allRows.length > 0) ? '' : 'none';
+                }
+            });
+        });
+    </script>
+</th:block>
+<!-- ======================================================= -->
+<!-- KẾT THÚC: SCRIPT ĐỂ LỌC -->
+<!-- ======================================================= -->
+
+</body>
+</html>
