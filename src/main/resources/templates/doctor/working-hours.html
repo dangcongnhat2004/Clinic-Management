@@ -4,27 +4,20 @@
       layout:decorate="~{doctor/layout}">
 <head>
     <title>Quản lý giờ làm việc</title>
-    <!-- 1. Thêm CSS của Flatpickr -->
+    <!-- Thư viện CSS của Flatpickr -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        /* Tùy chỉnh nhỏ để bảng đẹp hơn */
-        .table-hover tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        .table th {
-            font-weight: 600;
-        }
-        /* Style cho input của Flatpickr để trông giống input của Bootstrap */
-        .form-control[readonly] {
-            background-color: #fff;
-        }
+        .table-hover tbody tr:hover { background-color: #f8f9fa; }
+        .table th { font-weight: 600; }
+        .form-control[readonly] { background-color: #fff; cursor: pointer; }
+        .delete-slot-btn { cursor: pointer; }
     </style>
 </head>
 <body>
 <main layout:fragment="content">
     <div class="container-fluid py-4">
 
-        <!-- THÔNG BÁO (SUCCESS/ERROR) -->
+        <!-- KHỐI THÔNG BÁO (SUCCESS/ERROR) -->
         <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
             <span th:text="${successMessage}"></span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -43,16 +36,11 @@
                         <p class="text-sm mb-0">Tạo nhanh các khung giờ khám cho một ngày cụ thể.</p>
                     </div>
                     <div class="card-body">
-                        <!-- Form gửi POST request để tạo các TimeSlot -->
                         <form th:action="@{/doctor/working-hours/create}" method="post">
-                            <!-- Chọn ngày -->
                             <div class="mb-3">
                                 <label for="workDate" class="form-label">Chọn ngày làm việc</label>
-                                <!-- Sửa thành type="text" để Flatpickr kiểm soát -->
                                 <input type="text" class="form-control" id="workDate" name="workDate" required placeholder="Nhấn để chọn ngày...">
                             </div>
-
-                            <!-- Giờ bắt đầu và kết thúc -->
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="startTime" class="form-label">Giờ bắt đầu</label>
@@ -63,20 +51,15 @@
                                     <input type="time" class="form-control" id="endTime" name="endTime" required value="17:00">
                                 </div>
                             </div>
-
-                            <!-- Khoảng thời gian mỗi ca -->
                             <div class="mb-3">
                                 <label for="slotDuration" class="form-label">Thời lượng mỗi ca khám (phút)</label>
                                 <select class="form-select" id="slotDuration" name="slotDuration" required>
                                     <option value="15">15 phút</option>
-                                    <option value="20">20 phút</option>
                                     <option value="30" selected>30 phút</option>
                                     <option value="45">45 phút</option>
                                     <option value="60">60 phút</option>
                                 </select>
                             </div>
-
-                            <!-- Nút submit -->
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">Tạo các khung giờ</button>
                             </div>
@@ -91,10 +74,8 @@
                     <div class="card-header pb-0">
                         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <h5 class="mb-0">Khung giờ làm việc</h5>
-                            <!-- BỘ LỌC THEO NGÀY -->
                             <div class="d-flex align-items-center">
                                 <label for="filterDate" class="me-2 text-nowrap">Xem ngày:</label>
-                                <!-- Sửa thành type="text" để Flatpickr kiểm soát -->
                                 <input type="text" class="form-control" id="filterDate" style="width: 200px;" placeholder="Chọn ngày để lọc...">
                             </div>
                         </div>
@@ -107,31 +88,52 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">Ngày</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Khung giờ</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
-                                    <th class="text-secondary opacity-7"></th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-end pe-3">Hành động</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <!-- Vòng lặp để hiển thị các timeSlot cho ngày đã chọn -->
                                 <tr th:each="slot : ${timeSlots}">
                                     <td>
                                         <p class="text-xs font-weight-bold mb-0 ps-3" th:text="${#temporals.format(slot.startTime, 'dd/MM/yyyy')}"></p>
                                     </td>
                                     <td>
-                                        <span class="text-secondary text-xs font-weight-bold"
-                                              th:text="${#temporals.format(slot.startTime, 'HH:mm') + ' - ' + #temporals.format(slot.endTime, 'HH:mm')}">
-                                        </span>
+                                        <span class="text-secondary text-xs font-weight-bold" th:text="${#temporals.format(slot.startTime, 'HH:mm') + ' - ' + #temporals.format(slot.endTime, 'HH:mm')}"></span>
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        <span class="badge"
-                                              th:classappend="${slot.status.name() == 'AVAILABLE'} ? 'text-bg-success' : 'text-bg-danger'"
-                                              th:text="${slot.status.name() == 'AVAILABLE'} ? 'Còn trống' : 'Đã có hẹn'">
-                                        </span>
+                                            <span class="badge"
+                                                  th:classappend="${slot.status.name() == 'AVAILABLE'} ? 'text-bg-success' : 'text-bg-danger'"
+                                                  th:text="${slot.status.name() == 'AVAILABLE'} ? 'Còn trống' : 'Đã có hẹn'"></span>
                                     </td>
-                                    <td class="align-middle">
-                                        <a href="#" class="text-danger font-weight-bold text-xs">Xóa</a>
+                                    <td class="align-middle text-end pe-3">
+                                        <div th:if="${slot.status.name() == 'AVAILABLE'}">
+                                            <a href="javascript:;"
+                                               class="text-danger font-weight-bold text-xs delete-slot-btn"
+                                               data-bs-toggle="modal"
+                                               th:data-bs-target="'#deleteSlotModal-' + ${slot.id}">
+                                                Xóa
+                                            </a>
+                                            <div class="modal fade" th:id="'deleteSlotModal-' + ${slot.id}" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <form th:action="@{/doctor/working-hours/delete}" method="post">
+                                                            <div class="modal-header"><h5 class="modal-title">Xác nhận xóa khung giờ</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                                                            <div class="modal-body">
+                                                                <p>Bạn có chắc chắn muốn xóa khung giờ làm việc này không?</p>
+                                                                <p class="mb-1"><strong>Ngày:</strong> <span th:text="${#temporals.format(slot.startTime, 'dd/MM/yyyy')}"></span></p>
+                                                                <p class="mb-0"><strong>Thời gian:</strong> <span th:text="${#temporals.format(slot.startTime, 'HH:mm') + ' - ' + #temporals.format(slot.endTime, 'HH:mm')}"></span></p>
+                                                                <input type="hidden" name="slotId" th:value="${slot.id}" />
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
-                                <!-- Thông báo nếu không có slot nào -->
                                 <tr th:if="${#lists.isEmpty(timeSlots)}">
                                     <td colspan="4" class="text-center py-4">Không có khung giờ nào được tạo cho ngày này.</td>
                                 </tr>
@@ -146,31 +148,35 @@
 </main>
 
 <th:block layout:fragment="scripts">
-    <!-- 2. Thêm thư viện JS của Flatpickr -->
+    <!-- ======================================================= -->
+    <!-- ======================================================= -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script> <!-- Gói ngôn ngữ tiếng Việt -->
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+    <!-- ======================================================= -->
+    <!-- ======================================================= -->
 
     <script th:inline="javascript">
         /*<![CDATA[*/
         document.addEventListener('DOMContentLoaded', function() {
-
             const selectedDateFromServer = /*[[${selectedDate}]]*/ null;
 
-            // 3. Kích hoạt Flatpickr cho BỘ LỌC NGÀY
+            // Kích hoạt Flatpickr cho BỘ LỌC NGÀY
             flatpickr("#filterDate", {
                 locale: "vn",
-                dateFormat: "Y-m-d", // Định dạng gửi đi
-                altInput: true,      // Hiển thị ô input thân thiện
-                altFormat: "d/m/Y",  // Định dạng hiển thị
-                defaultDate: selectedDateFromServer, // Đặt ngày mặc định
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                defaultDate: selectedDateFromServer,
                 onChange: function(selectedDates, dateStr, instance) {
                     if (dateStr) {
                         window.location.href = '/doctor/working-hours?date=' + dateStr;
+                    } else {
+                        window.location.href = '/doctor/working-hours';
                     }
                 }
             });
 
-            // 4. Kích hoạt Flatpickr cho FORM TẠO LỊCH
+            // Kích hoạt Flatpickr cho FORM TẠO LỊCH
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             flatpickr("#workDate", {
@@ -181,6 +187,8 @@
                 defaultDate: tomorrow,
                 minDate: "today"
             });
+
+            // Không cần script cho modal xóa nữa vì đã dùng Thymeleaf
         });
         /*]]>*/
     </script>

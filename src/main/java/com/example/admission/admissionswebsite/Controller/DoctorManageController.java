@@ -320,5 +320,16 @@ public class DoctorManageController {
         return "redirect:/admin/danh-sach-truong-dai-hoc";
     }
 
+    @PostMapping("/doctor/working-hours/delete")
+    public String deleteWorkingHour(@RequestParam("slotId") Long slotId, RedirectAttributes redirectAttributes) {
+        try {
+            doctorManageService.deleteTimeSlot(slotId);
+            redirectAttributes.addFlashAttribute("successMessage", "Đã xóa khung giờ làm việc thành công.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi xóa khung giờ: " + e.getMessage());
+        }
 
+        // Quay lại trang giờ làm việc. Thêm return_url nếu muốn quay lại đúng ngày đã lọc
+        return "redirect:/doctor/working-hours";
+    }
 }

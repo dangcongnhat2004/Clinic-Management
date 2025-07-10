@@ -343,4 +343,19 @@ public UserDto signUp(UserDto registrationRequest) {
         LocalDateTime endOfDay = date.atTime(23, 59, 59);
         return timeSlotRepository.findByDoctorAndStartTimeBetween(doctor, startOfDay, endOfDay);
     }
+
+    @Transactional
+    public void deleteTimeSlot(Long slotId) {
+        // 1. Tìm TimeSlot
+        TimeSlot timeSlot = timeSlotRepository.findById(slotId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy khung giờ với ID: " + slotId));
+
+        // 2. Kiểm tra lại một lần nữa để đảm bảo không xóa slot đã có người đặt
+        if (timeSlot.getStatus() != TimeSlot.TimeSlotStatus.AVAILABLE) {
+            throw new IllegalStateException("Không thể xóa khung giờ đã có người đặt lịch.");
+        }
+
+        // 3. Xóa khỏi CSDL
+        timeSlotRepository.delete(timeSlot);
+    }
 }

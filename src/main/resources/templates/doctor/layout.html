@@ -8,7 +8,12 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+<!--    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>-->
+<!--    <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>-->
+<!--    <script src="/manage/assets/js/core/jquery-3.7.1.min.js"></script>-->
+<!--    <script src="/manage/assets/js/core/popper.min.js"></script>-->
+<!--    <script src="/manage/assets/js/core/bootstrap.min.js"></script>-->
+<!--    <script src="/manage/assets/js/kaiadmin.min.js"></script>-->
         <style>
             body {
                 background-color: #f0f2f5;
@@ -355,32 +360,21 @@
 <script>
     // Hàm này sẽ giả lập việc kiểm tra xác thực và lấy dữ liệu
     function checkAuthAndLoadData() {
-        // Trong thực tế, bạn sẽ gọi API ở đây
-        // Ví dụ: $.get('/api/user/me', function(data) { ... });
 
-        // Giả lập việc kiểm tra mất 1 giây
         setTimeout(function() {
-            // --- KHI THÀNH CÔNG ---
 
-            // Dữ liệu người dùng giả lập
             const userData = {
-                name: "Minh Anh"
+                name: ""
             };
 
-            // Cập nhật tên người dùng trên giao diện
             $('#user-name-display').text(userData.name);
             $('#user-name-greeting').text(userData.name);
 
             // Ẩn loader đi
             $('#loader').fadeOut(300);
 
-            // Hiển thị nội dung dashboard
             $('#dashboard-content').css('display', 'block'); // Hoặc dùng .fadeIn() cho đẹp
 
-
-            // --- KHI THẤT BẠI (ví dụ: chưa đăng nhập) ---
-            // Bạn sẽ chuyển hướng người dùng đến trang đăng nhập
-            // window.location.href = "/login";
 
         }, 1000); // 1000ms = 1 giây
     }
@@ -400,24 +394,18 @@
 </script>
 <script>
     function handleLogout() {
-        // In ra console để kiểm tra xem hàm có được gọi không
         console.log("Đang thực hiện xóa token...");
 
         // Xóa token khỏi Local Storage
         localStorage.removeItem('jwt_token'); // <-- Thay 'jwt_token' bằng tên key bạn đã dùng để lưu token
 
-        // Bạn không cần gọi event.preventDefault() hay form.submit()
-        // Hàm sẽ chạy xong và form sẽ tiếp tục submit như bình thường.
+
         console.log("Đã xóa token. Form sẽ được submit ngay bây giờ.");
     }
 </script>
 
-<!-- Logic JS của bạn -->
 <script>
-    // Hàm này sẽ giả lập việc kiểm tra xác thực và lấy dữ liệu
     function checkAuthAndLoadData() {
-        // Trong thực tế, bạn sẽ gọi API ở đây
-        // Ví dụ: $.get('/api/user/me', function(data) { ... });
 
         // Giả lập việc kiểm tra mất 1 giây
         setTimeout(function() {
@@ -428,20 +416,14 @@
                 name: "Minh Anh"
             };
 
-            // Cập nhật tên người dùng trên giao diện
             $('#user-name-display').text(userData.name);
             $('#user-name-greeting').text(userData.name);
 
-            // Ẩn loader đi
             $('#loader').fadeOut(300);
 
-            // Hiển thị nội dung dashboard
             $('#dashboard-content').css('display', 'block'); // Hoặc dùng .fadeIn() cho đẹp
 
 
-            // --- KHI THẤT BẠI (ví dụ: chưa đăng nhập) ---
-            // Bạn sẽ chuyển hướng người dùng đến trang đăng nhập
-            // window.location.href = "/login";
 
         }, 1000); // 1000ms = 1 giây
     }
@@ -453,7 +435,8 @@
 
 // appointment
 </script>
-
+<th:block layout:fragment="scripts"></th:block>
+</main>
 </body>
 </html>
 </body>
