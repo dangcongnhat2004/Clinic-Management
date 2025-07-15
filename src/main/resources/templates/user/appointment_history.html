@@ -17,7 +17,7 @@
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
     .appointment-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-3px);
       box-shadow: 0 4px 15px rgba(0,0,0,0.12);
     }
     .card-header-custom {
@@ -48,12 +48,22 @@
       <p class="lead text-muted">Xem lại tất cả các cuộc hẹn đã đặt của bạn.</p>
     </div>
 
+    <!-- Thông báo thành công/lỗi (nếu có) -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span th:text="${successMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <span th:text="${errorMessage}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <!-- Trường hợp không có cuộc hẹn nào -->
     <div th:if="${#lists.isEmpty(appointments)}" class="text-center p-5 bg-light rounded">
       <i class="fa-solid fa-calendar-xmark fa-3x text-muted mb-3"></i>
       <h4>Bạn chưa có cuộc hẹn nào.</h4>
       <p>Hãy bắt đầu đặt lịch khám để chăm sóc sức khỏe của bạn.</p>
-      <a th:href="@{/user/dat-lich/chon-bac-si}" class="btn btn-primary mt-3">Đặt lịch ngay</a>
+      <a th:href="@{/user/dat-lich}" class="btn btn-primary mt-3">Đặt lịch ngay</a>
     </div>
 
     <!-- Vòng lặp hiển thị danh sách các cuộc hẹn -->
@@ -62,11 +72,8 @@
         <div class="card-header-custom d-flex justify-content-between align-items-center">
           <div>
             <strong>Mã hẹn:</strong>
-            <span class="text-primary fw-bold" th:text="${'#' + appt.id}">#12345</span>
-            <!-- Hiển thị tên bệnh nhân nếu một tài khoản có nhiều hồ sơ -->
-            <span class="ms-3 text-muted small" th:text="'(Bệnh nhân: ' + ${appt.patient.fullName} + ')'"></span>
+            <span class="text-primary fw-bold" th:text="${'#' + appt.id}"></span>
           </div>
-          <!-- Hiển thị trạng thái với màu sắc tương ứng -->
           <span th:switch="${appt.status.name()}" class="badge rounded-pill status-badge"
                 th:classappend="${appt.status.name() == 'CONFIRMED' ? 'text-bg-success' :
                                            (appt.status.name() == 'COMPLETED' ? 'text-bg-primary' :
@@ -80,16 +87,14 @@
         </div>
         <div class="card-body p-4">
           <div class="row g-3 align-items-center">
-            <!-- Thông tin Bác sĩ -->
             <div class="col-md-5 doctor-info d-flex align-items-center">
               <img th:src="${appt.doctor.avatarUrl != null and !appt.doctor.avatarUrl.isEmpty()} ? @{/avatars/{fileName}(fileName=${appt.doctor.avatarUrl})} : '/images/default-avatar.png'"
                    class="rounded-circle me-3" alt="Ảnh bác sĩ">
               <div>
-                <h6 class="mb-0" th:text="${appt.doctor.fullName}">Tên Bác Sĩ</h6>
-                <p class="text-muted small mb-0" th:text="${appt.doctor.specialization}">Chuyên khoa</p>
+                <h6 class="mb-0" th:text="${appt.doctor.fullName}"></h6>
+                <p class="text-muted small mb-0" th:text="${appt.doctor.specialization}"></p>
               </div>
             </div>
-            <!-- Thông tin Ngày Giờ -->
             <div class="col-md-4">
               <div class="d-flex align-items-center">
                 <i class="fa-regular fa-calendar-check fa-2x text-primary me-3"></i>
@@ -99,18 +104,56 @@
                 </div>
               </div>
             </div>
-            <!-- Các nút hành động -->
             <div class="col-md-3 text-md-end action-buttons">
-              <a href="#" class="btn btn-outline-primary btn-sm mb-1 w-100">Xem chi tiết</a>
-              <!-- Chỉ hiển thị nút hủy nếu lịch hẹn chưa diễn ra và chưa bị hủy -->
-              <a th:if="${appt.status.name() == 'CONFIRMED' and appt.timeSlot.startTime.isAfter(T(java.time.LocalDateTime).now())}"
-                 href="#" class="btn btn-outline-danger btn-sm w-100">Hủy lịch</a>
+              <a th:href="@{/user/lich-su-dat-kham/{id}(id=${appt.id})}" class="btn btn-outline-primary btn-sm mb-1 w-100">Xem chi tiết</a>
+              <div th:if="${appt.status.name() == 'CONFIRMED' and appt.timeSlot.startTime.isAfter(T(java.time.LocalDateTime).now())}">
+                <a href="javascript:;"
+                   class="btn btn-outline-danger btn-sm w-100"
+                   data-bs-toggle="modal"
+                   th:data-bs-target="'#cancelAppointmentModal-' + ${appt.id}">
+                  Hủy lịch
+                </a>
+                <!-- Modal đã được chuyển ra ngoài vòng lặp -->
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- Kết thúc thẻ history-container -->
+
+  <!-- =============================================== -->
+  <!-- KHỐI MODAL XÁC NHẬN HỦY - ĐẶT Ở NGOÀI CÙNG -->
+  <!-- =============================================== -->
+  <div th:each="appt : ${appointments}">
+    <div th:if="${appt.status.name() == 'CONFIRMED' and appt.timeSlot.startTime.isAfter(T(java.time.LocalDateTime).now())}">
+      <div class="modal fade" th:id="'cancelAppointmentModal-' + ${appt.id}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <form th:action="@{/user/lich-su-dat-kham/cancel}" method="post">
+              <div class="modal-header">
+                <h5 class="modal-title">Xác nhận hủy lịch hẹn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-start">
+                <p>Bạn có chắc chắn muốn hủy lịch hẹn với <strong><span th:text="${appt.doctor.fullName}"></span></strong> vào lúc <strong><span th:text="${#temporals.format(appt.timeSlot.startTime, 'HH:mm dd/MM/yyyy')}"></span></strong> không?</p>
+                <input type="hidden" name="appointmentId" th:value="${appt.id}" />
+                <div class="mb-3">
+                  <label th:for="'cancellationReason-' + ${appt.id}" class="form-label">Lý do hủy (nếu có):</label>
+                  <textarea class="form-control" name="cancellationReason" th:id="'cancellationReason-' + ${appt.id}" rows="3" placeholder="Ví dụ: Bận việc đột xuất..."></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không, giữ lại lịch</button>
+                <button type="submit" class="btn btn-danger">Vâng, xác nhận hủy</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
 </main>
+<!-- Các file script sẽ được chèn vào bởi file layout chính -->
 </body>
 </html>

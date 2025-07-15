@@ -40,7 +40,9 @@ public class Doctor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
     @OneToMany(mappedBy = "doctor")
     private Set<Appointment> appointments;
 }

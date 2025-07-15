@@ -300,7 +300,10 @@
                 <a class="nav-link" href="#"><i class="fa-solid fa-comments fa-fw"></i> Tin nhắn</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-user fa-fw"></i> Cá nhân</a>
+                <a class="nav-link" th:href="@{/user/ket-qua-kham}"><i class="fa-solid fa-file-waveform fa-fw"></i> Kết quả khám</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/thong-tin-ca-nhan"><i class="fa-solid fa-user fa-fw"></i> Cá nhân</a>
             </li>
         </ul>
     </nav>
@@ -522,6 +525,7 @@
         }
     });
 </script>
+<!--<th:block layout:fragment="scriptss"></th:block>-->
 <th:block layout:fragment="scripts">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>

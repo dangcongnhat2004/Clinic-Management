@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title>Kết quả khám của bạn</title>
+</head>
+<body>
+<main layout:fragment="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header pb-0">
+        <h4 class="mb-0">Kết quả các lần khám bệnh</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover align-items-center mb-0">
+            <thead>
+            <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày khám</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Bác sĩ</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Chuyên khoa</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái bệnh án</th>
+              <th class="text-secondary opacity-7"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- VÒNG LẶP QUA DANH SÁCH BỆNH ÁN -->
+            <!-- Giả sử Controller truyền vào một List<MedicalRecord> có tên là "medicalRecords" -->
+            <tr th:each="record : ${medicalRecords}">
+              <!-- Ngày khám -->
+              <td>
+                <div class="d-flex flex-column justify-content-center">
+                  <h6 class="mb-0 text-sm" th:text="${#temporals.format(record.appointment.timeSlot.startTime, 'dd/MM/yyyy')}">10/07/2025</h6>
+                  <p class="text-xs text-secondary mb-0" th:text="${#temporals.format(record.appointment.timeSlot.startTime, 'HH:mm')}">15:30</p>
+                </div>
+              </td>
+              <!-- Bác sĩ -->
+              <td>
+                <p class="text-sm font-weight-bold mb-0" th:text="${record.appointment.doctor.fullName}">BS. Nguyễn Văn A</p>
+              </td>
+              <!-- Chuyên khoa -->
+              <td>
+                <p class="text-xs font-weight-bold mb-0" th:text="${record.appointment.doctor.specialization}">Tim mạch</p>
+              </td>
+              <!-- Trạng thái bệnh án -->
+              <td class="align-middle text-center text-sm">
+                                    <span class="badge"
+                                          th:classappend="${record.diagnosis != null ? 'text-bg-success' : 'text-bg-warning'}"
+                                          th:text="${record.diagnosis != null ? 'Đã có kết quả' : 'Chờ kết quả'}">
+                                        Đã có kết quả
+                                    </span>
+              </td>
+              <!-- Hành động -->
+              <td class="align-middle text-end">
+                <!-- Nút xem chi tiết bệnh án này -->
+                <a th:if="${record.diagnosis != null}" th:href="@{/user/ket-qua-kham/{id}(id=${record.id})}" class="btn btn-sm btn-outline-primary mb-0">
+                  Xem kết quả
+                </a>
+              </td>
+            </tr>
+
+            <!-- Trường hợp không có bệnh án nào -->
+            <tr th:if="${#lists.isEmpty(medicalRecords)}">
+              <td colspan="5" class="text-center py-4">Bạn chưa có kết quả khám nào.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

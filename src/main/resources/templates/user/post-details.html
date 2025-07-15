@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<head>
+    <!-- Giả sử Controller truyền vào đối tượng Post có tên là "post" -->
+    <title th:text="${post.title}"></title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Tiêu đề bài viết -->
+                    <h1 class="display-5 mb-3" th:text="${post.title}">Tiêu đề bài viết</h1>
+
+                    <!-- Thông tin meta -->
+                    <div class="d-flex align-items-center mb-4 text-muted">
+                        <span><i class="fa fa-user me-2"></i>Admin</span>
+                        <span class="mx-3">|</span>
+                        <span><i class="fa fa-calendar me-2"></i><span th:text="${#dates.format(post.postDate, 'dd MMMM, yyyy')}"></span></span>
+                    </div>
+
+                    <!-- Ảnh đại diện của bài viết -->
+                    <img th:src="@{/uploads/{image}(image=${post.image})}" class="img-fluid rounded mb-4 w-100" alt="Ảnh bài viết">
+
+                    <!-- Nội dung bài viết -->
+                    <div class="post-content fs-5" th:utext="${post.content}">
+                        <!-- th:utext để render HTML từ nội dung -->
+                        <p>Đây là nội dung chi tiết của bài viết...</p>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <!-- Có thể thêm phần bình luận ở đây -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

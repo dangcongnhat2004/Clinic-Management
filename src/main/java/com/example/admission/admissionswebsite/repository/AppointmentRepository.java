@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
@@ -18,4 +19,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByDoctorAndStatus(Doctor doctor, Appointment.AppointmentStatus status);
     @Query("SELECT DISTINCT a.patient FROM Appointment a WHERE a.doctor = :doctor AND a.status = :status")
     List<PatientProfile> findDistinctPatientsByDoctorAndStatus(@Param("doctor") Doctor doctor, @Param("status") Appointment.AppointmentStatus status);
+    @Query("SELECT a FROM Appointment a " +
+            "LEFT JOIN FETCH a.patient p " +
+            "LEFT JOIN FETCH a.doctor d " +
+            "LEFT JOIN FETCH a.timeSlot ts " +
+            "WHERE a.id = :id")
+    Optional<Appointment> findAppointmentDetailsById(@Param("id") Long id);
 }

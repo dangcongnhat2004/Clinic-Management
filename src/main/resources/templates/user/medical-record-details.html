@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title>Chi tiết Kết quả khám</title>
+  <style>
+    .record-card { background-color: #fff; border-radius: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+    .record-header { background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; padding: 1rem 1.5rem; }
+    .record-section-title { font-weight: 600; color: #00B5F1; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 2px solid #00B5F1; padding-bottom: 0.5rem; }
+    .info-grid { display: grid; grid-template-columns: 150px 1fr; gap: 0.5rem 1rem; }
+    .info-grid > dt { font-weight: 600; color: #6c757d; }
+  </style>
+</head>
+<body>
+<main layout:fragment="content">
+  <div class="container-fluid">
+    <!-- Đối tượng làm việc chính là "medicalRecord" -->
+    <div class="record-card" th:object="${medicalRecord}">
+
+      <!-- HEADER -->
+      <div class="record-header d-flex justify-content-between align-items-center">
+        <div>
+          <!-- ======================================================= -->
+          <!-- SỬA LỖI 1: Dùng đường dẫn đầy đủ từ medicalRecord -->
+          <!-- ======================================================= -->
+          <h4 class="mb-1"
+              th:if="*{appointment != null && appointment.timeSlot != null}"
+              th:text="'Kết quả khám ngày ' + ${#temporals.format(medicalRecord.appointment.timeSlot.startTime, 'dd/MM/yyyy')}">
+            Kết quả khám
+          </h4>
+          <!-- Sử dụng *{id} vì nó nằm trong th:object -->
+          <p class="text-muted mb-0" th:text="'Bệnh án số: MR-' + *{id}">Mã bệnh án</p>
+        </div>
+        <div>
+          <a th:href="@{/user/ket-qua-kham}" class="btn btn-outline-secondary btn-sm mb-0">
+            <i class="fas fa-arrow-left"></i>  Quay lại danh sách
+          </a>
+          <a href="javascript:window.print()" class="btn btn-primary btn-sm mb-0">
+            <i class="fas fa-print"></i>  In kết quả
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body p-4">
+        <!-- THÔNG TIN HÀNH CHÍNH -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h5>Thông tin bệnh nhân</h5>
+            <dl class="info-grid">
+              <dt>Họ và tên</dt>
+              <!-- Dùng *{...} vì nó nằm trong th:object -->
+              <dd th:text="*{appointment.patient.fullName}"></dd>
+              <dt>Ngày sinh</dt>
+              <!-- ======================================================= -->
+              <!-- SỬA LỖI 2: Dùng đường dẫn đầy đủ từ medicalRecord -->
+              <!-- ======================================================= -->
+              <dd>
+                                <span th:if="*{appointment.patient.dateOfBirth != null}"
+                                      th:text="${#temporals.format(medicalRecord.appointment.patient.dateOfBirth, 'dd/MM/yyyy')}"></span>
+              </dd>
+              <dt>Giới tính</dt>
+              <dd th:text="*{appointment.patient.gender}"></dd>
+              <dt>Địa chỉ</dt>
+              <dd th:text="*{appointment.patient.address}"></dd>
+            </dl>
+          </div>
+          <div class="col-md-6">
+            <h5>Thông tin bác sĩ khám</h5>
+            <dl class="info-grid">
+              <dt>Bác sĩ</dt>
+              <dd th:text="*{appointment.doctor.fullName}"></dd>
+              <dt>Chuyên khoa</dt>
+              <dd th:text="*{appointment.doctor.specialization}"></dd>
+              <dt>Bệnh viện/Phòng khám</dt>
+              <dd>ClinicPlus</dd>
+            </dl>
+          </div>
+        </div>
+        <hr>
+
+        <!-- NỘI DUNG KHÁM -->
+        <div>
+          <h5 class="record-section-title">Chẩn đoán của Bác sĩ</h5>
+          <div class="p-3 bg-light rounded">
+            <p class="mb-0" th:text="*{diagnosis}">Nội dung chẩn đoán...</p>
+          </div>
+
+          <h5 class="record-section-title">Kết luận & Hướng điều trị</h5>
+          <div class="p-3 bg-light rounded">
+            <p class="mb-0" th:text="*{conclusion}">Nội dung kết luận và hướng điều trị...</p>
+          </div>
+
+          <h5 class="record-section-title">Ghi chú thêm</h5>
+          <div class="p-3 bg-light rounded">
+            <p class="mb-0" th:text="*{doctorNotes != null and !doctorNotes.isEmpty() ? doctorNotes : 'Không có ghi chú thêm.'}">Nội dung ghi chú...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

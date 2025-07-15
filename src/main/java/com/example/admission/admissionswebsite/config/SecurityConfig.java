@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/auth/**") // Chỉ tắt CSRF cho các API xác thực
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/","/chi-tiet/**", "/signup", "/auth/**", "/public/**", "/favicon.ico").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**","/manage/**","/enduser/**").permitAll()
 
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")

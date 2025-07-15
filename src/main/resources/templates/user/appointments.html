@@ -13,33 +13,42 @@
 
         <div class="booking-body">
             <!-- Chỉ báo các bước - Bước 1 được kích hoạt -->
-            <div class="step-indicator mb-4">
-                <div class="step active" id="step1">1. Chọn bác sĩ</div>
-                <div class="step" id="step2">2. Chọn lịch khám</div>
-                <div class="step" id="step3">3. Thông tin khám</div>
-            </div>
-
-            <!-- Nội dung Bước 1 -->
-            <div id="doctorSelection" class="booking-step active">
-                <!-- Ô tìm kiếm -->
-                <div class="mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-                        <input type="text" class="form-control" placeholder="Tìm kiếm bác sĩ theo tên...">
-                    </div>
-                </div>
-
-                <!-- Dropdown chọn chuyên khoa -->
+            <form method="get" th:action="@{/user/dat-lich}">
                 <div class="mb-4">
-                    <select class="form-select" aria-label="Chọn chuyên khoa">
-                        <option value="" selected>Tất cả chuyên khoa</option>
-                        <option th:each="specialty : ${specialties}"
+                    <select class="form-select" name="specialtyId" onchange="this.form.submit()">
+                        <option value="" th:selected="${selectedSpecialtyId == null}">Tất cả chuyên khoa</option>
+                        <option th:each="specialty : ${specialty}"
                                 th:value="${specialty.id}"
-                                th:text="${specialty.specialtyName}">
-                            Khoa Tim Mạch
+                                th:text="${specialty.specialtyName}"
+                                th:selected="${selectedSpecialtyId == specialty.id}">
                         </option>
                     </select>
                 </div>
+            </form>
+            <!-- Nội dung Bước 1 -->
+            <div id="doctorSelection" class="booking-step active">
+                <!-- Ô tìm kiếm -->
+                <form method="get" th:action="@{/user/dat-lich}">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="Tìm kiếm bác sĩ theo tên...">
+                            <button type="submit" class="btn btn-primary">Tìm</button>
+                        </div>
+                    </div>
+                </form>
+
+<!--                &lt;!&ndash; Dropdown chọn chuyên khoa &ndash;&gt;-->
+<!--                <div class="mb-4">-->
+<!--                    <select class="form-select" aria-label="Chọn chuyên khoa">-->
+<!--                        <option value="" selected>Tất cả chuyên khoa</option>-->
+<!--                        <option th:each="specialty : ${specialty}"-->
+<!--                                th:value="${specialty.id}"-->
+<!--                                th:text="${specialty.specialtyName}">-->
+<!--                            Khoa Tim Mạch-->
+<!--                        </option>-->
+<!--                    </select>-->
+<!--                </div>-->
 
                 <!-- DANH SÁCH BÁC SĨ ĐỘNG -->
                 <div class="row g-4" id="doctorList">
@@ -60,8 +69,9 @@
                                 <!-- Dùng doctor.fullName (Đúng) -->
                                 <h5 class="card-title fw-bold" th:text="${doctor.fullName}">...</h5>
                                 <!-- Dùng doctor.specialization (Đúng) -->
-                                <p class="card-text text-muted mb-3" th:text="${doctor.specialization}">...</p>
-
+                                <p class="card-text text-muted mb-3"
+                                   th:text="${doctor.specialty?.specialtyName} ?: 'Chuyên khoa chưa cập nhật'">
+                                </p>
                                 <!-- Dùng doctor.userAccount.id (Đúng) -->
                                 <a th:href="@{/user/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}" class="btn btn-primary w-100 mt-auto">Chọn</a>
                             </div>

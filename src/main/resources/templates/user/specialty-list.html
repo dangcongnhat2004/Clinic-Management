@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<head>
+    <title>Danh sách Chuyên khoa</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <!-- Feature Start (Tái sử dụng khối giao diện) -->
+    <div class="container-fluid feature bg-light py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Chuyên khoa</h4>
+                <h1 class="display-4 mb-4">Tất cả Chuyên khoa</h1>
+                <p class="mb-0">Khám phá tất cả các chuyên khoa y tế hiện có tại trung tâm của chúng tôi để tìm được dịch vụ phù hợp nhất với nhu cầu sức khỏe của bạn.</p>
+            </div>
+
+            <!-- Vòng lặp hiển thị TẤT CẢ chuyên khoa -->
+            <div class="row g-4">
+                <!-- Giả sử Controller truyền vào một List<Specialty> có tên là "allSpecialties" -->
+                <th:block th:each="specialty : ${specialtyPage}">
+                    <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="feature-item p-4 pt-0 h-100 d-flex flex-column">
+                            <div class="feature-icon p-4 mb-4">
+                                <!-- Bạn có thể làm icon động sau này -->
+                                <i class="fa-solid fa-star-of-life fa-2x text-primary"></i>
+                            </div>
+                            <h4 class="mb-3 text-center" th:text="${specialty.specialtyName}">Tên chuyên khoa</h4>
+
+                            <!-- Giới hạn mô tả hiển thị tối đa 5-6 dòng -->
+                            <p class="mb-4 flex-grow-1 overflow-hidden"
+                               style="display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;">
+                                <span th:text="${specialty.description}">Mô tả chuyên khoa...</span>
+                            </p>
+
+                            <!-- Nút Xem chi tiết -->
+                            <div class="mt-auto">
+                                <a class="btn btn-primary rounded-pill py-2 px-4 w-100"
+                                   th:href="@{'/chi-tiet/chi-tiet-chuyen-khoa/' + ${specialty.id}}">
+                                    Xem các bác sĩ
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </th:block>
+                <nav aria-label="Page navigation" th:if="${specialtyPage.totalPages > 1}" class="mt-5">
+                    <ul class="pagination justify-content-center">
+
+                        <!-- Nút Về trang trước (Previous) -->
+                        <li class="page-item" th:classappend="${specialtyPage.first} ? 'disabled'">
+                            <a class="page-link" th:href="@{/chi-tiet/danh-sach-chuyen-khoa(page=${specialtyPage.number - 1}, size=${specialtyPage.size})}">
+                                <span>«</span>
+                            </a>
+                        </li>
+
+                        <!-- Các nút số trang -->
+                        <!-- Chúng ta sẽ tạo một dãy số từ 0 đến totalPages-1 -->
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, specialtyPage.totalPages - 1)}"
+                            th:classappend="${pageNumber == specialtyPage.number} ? 'active'">
+                            <a class="page-link" th:href="@{/chi-tiet/danh-sach-chuyen-khoa(page=${pageNumber}, size=${specialtyPage.size})}"
+                               th:text="${pageNumber + 1}"></a>
+                        </li>
+
+                        <!-- Nút Tới trang sau (Next) -->
+                        <li class="page-item" th:classappend="${specialtyPage.last} ? 'disabled'">
+                            <a class="page-link" th:href="@{/chi-tiet/danh-sach-chuyen-khoa(page=${specialtyPage.number + 1}, size=${specialtyPage.size})}">
+                                <span>»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Thông báo nếu không có chuyên khoa nào -->
+                <div th:if="${#lists.isEmpty(specialtyPage)}" class="text-center col-12">
+                    <p class="lead">Hiện chưa có chuyên khoa nào được cập nhật.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Feature End -->
+</main>
+</body>
+</html>

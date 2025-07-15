@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<head>
+  <title th:text="'Bác sĩ ' + ${doctor.fullName}"></title>
+</head>
+<body>
+<main layout:fragment="content">
+  <div class="container py-5">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <!-- ẢNH VÀ THÔNG TIN NGẮN -->
+        <div class="card position-sticky" style="top: 2rem;">
+          <img th:src="${doctor.avatarUrl != null ? '/avatars/' + doctor.avatarUrl : '/images/default-avatar.png'}"
+               class="card-img-top" alt="Ảnh bác sĩ">
+          <div class="card-body text-center">
+            <h4 class="card-title" th:text="${doctor.fullName}"></h4>
+            <p class="card-text text-primary fw-bold" th:text="${doctor.degree}"></p>
+            <p class="card-text text-muted" th:if="${doctor.specialty != null}" th:text="${doctor.specialty.specialtyName}"></p>
+            <a class="btn btn-primary rounded-pill py-3 px-5 mt-3" th:href="@{/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}">
+              Đặt lịch ngay
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <!-- THÔNG TIN CHI TIẾT -->
+        <div class="mb-5">
+          <h3><i class="fa-solid fa-user-doctor me-2 text-primary"></i>Giới thiệu</h3>
+          <p class="lead" th:text="${doctor.biography}">Nội dung tiểu sử của bác sĩ...</p>
+        </div>
+
+        <div class="mb-5">
+          <h3><i class="fa-solid fa-stethoscope me-2 text-primary"></i>Chuyên khoa</h3>
+          <p th:if="${doctor.specialty != null}" th:text="${doctor.specialty.description}">Mô tả về chuyên khoa...</p>
+        </div>
+
+        <div class="mb-5">
+          <h3><i class="fa-solid fa-briefcase-medical me-2 text-primary"></i>Kinh nghiệm làm việc</h3>
+          <!-- Sử dụng th:utext để render HTML nếu có -->
+          <div th:utext="${doctor.experience}">
+            <p>Nội dung kinh nghiệm làm việc của bác sĩ...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

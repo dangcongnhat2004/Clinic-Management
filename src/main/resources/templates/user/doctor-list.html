@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<head>
+    <title>Đội ngũ Bác sĩ</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid team py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Bác sĩ</h4>
+                <h1 class="display-4 mb-4">Đội ngũ Bác sĩ của chúng tôi</h1>
+                <p class="mb-0">Các chuyên gia y tế tận tâm và giàu kinh nghiệm, luôn sẵn sàng chăm sóc sức khỏe cho bạn.</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Lặp qua danh sách bác sĩ của trang hiện tại -->
+                <th:block th:each="doctor : ${doctorPage.content}">
+                    <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="team-item h-100 d-flex flex-column" style="background-color: #f8f9fa; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <div class="team-img">
+                                <a th:href="@{/chi-tiet/bac-si/{id}(id=${doctor.id})}">
+                                    <img th:if="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                         th:src="@{/avatars/{file}(file=${doctor.avatarUrl})}"
+                                         class="img-fluid rounded-top w-100" alt="Ảnh bác sĩ"
+                                         style="height: 300px; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                                    <img th:unless="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                         th:src="@{/images/default-avatar.png}"
+                                         class="img-fluid rounded-top w-100" alt="Ảnh bác sĩ mặc định"
+                                         style="height: 300px; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                                </a>
+                            </div>
+                            <div class="team-title p-4 flex-grow-1 d-flex flex-column" style="background-color: #ffffff; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                                <a th:href="@{/chi-tiet/bac-si/{id}(id=${doctor.id})}" style="color: inherit; text-decoration: none;">
+                                    <h5 class="mb-1" th:text="${doctor.fullName}" style="font-weight: 600;"></h5>
+                                </a>
+                                <p class="text-muted mb-3" th:if="${doctor.specialty != null}" th:text="${doctor.specialty.specialtyName}"></p>
+                                <div class="mt-auto">
+                                    <a class="btn btn-primary rounded-pill py-2 px-4 w-100" th:href="@{/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}">Đặt lịch</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+
+                <div th:if="${doctorPage.empty}" class="text-center col-12">
+                    <p class="lead">Chưa có thông tin bác sĩ nào.</p>
+                </div>
+            </div>
+
+            <!-- THANH PHÂN TRANG -->
+            <nav aria-label="Page navigation" th:if="${doctorPage.totalPages > 1}" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${doctorPage.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/chi-tiet/bac-si(page=${doctorPage.number - 1})}"><span>«</span></a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, doctorPage.totalPages - 1)}" th:classappend="${pageNumber == doctorPage.number} ? 'active'">
+                        <a class="page-link" th:href="@{/chi-tiet/bac-si(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${doctorPage.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/chi-tiet/bac-si(page=${doctorPage.number + 1})}"><span>»</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -42,6 +42,9 @@ public class EnduserService {
     public List<Doctor> getAllDoctorsAsDoctorObjects() {
         return doctorsRepository.findAll();
     }
+    public List<Doctor> findTop3ByOrderByIdDesc() {
+        return doctorsRepository.findTop3ByOrderByIdDesc();
+    }
     public List<Specialty> getAllSpecialty() {
         return specialtyRepository.findTop4ByOrderByIdDesc();
     }

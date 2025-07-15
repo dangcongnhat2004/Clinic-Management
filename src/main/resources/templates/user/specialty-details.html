@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}"> <!-- Hoặc layout/layout tùy cấu trúc của bạn -->
+<head>
+    <!-- Giả sử Controller truyền vào đối tượng Specialty tên là "specialty" -->
+    <title th:text="'Chi tiết chuyên khoa: ' + ${specialty.specialtyName}"></title>
+</head>
+<body>
+<main layout:fragment="content">
+    <!-- Team Start (được tái sử dụng để hiển thị danh sách bác sĩ) -->
+    <div class="container-fluid team py-5">
+        <div class="container py-5">
+            <!-- PHẦN THÔNG TIN CHI TIẾT CHUYÊN KHOA -->
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Chuyên khoa</h4>
+                <!-- Hiển thị tên chuyên khoa động -->
+                <h1 class="display-4 mb-4" th:text="${specialty.specialtyName}">Tên chuyên khoa</h1>
+                <!-- Hiển thị mô tả chi tiết -->
+                <p class="mb-0" th:text="${specialty.description}">Mô tả chi tiết về chuyên khoa...</p>
+            </div>
+
+            <!-- PHẦN DANH SÁCH BÁC SĨ -->
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.4s" style="max-width: 800px;">
+                <h3 class="mb-4">Các bác sĩ thuộc chuyên khoa</h3>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Vòng lặp qua danh sách các bác sĩ của chuyên khoa này -->
+                <!-- Giả sử Controller truyền vào một List<Doctor> có tên là "doctors" -->
+                <th:block th:each="doctor : ${doctors}">
+                    <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="team-item h-100 d-flex flex-column">
+                            <div class="team-img">
+                                <!-- Link đến trang chi tiết của bác sĩ -->
+                                <a th:href="@{/dat-lich/chon-bac-si(doctorId=${doctor.id})}"> <!-- Hoặc trang chi tiết bác sĩ nếu có -->
+                                    <img th:if="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                         th:src="@{/avatars/{file}(file=${doctor.avatarUrl})}"
+                                         class="img-fluid rounded-top w-100"
+                                         alt="Ảnh bác sĩ"
+                                         style="height: 300px; object-fit: cover;">
+                                    <img th:unless="${doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                         th:src="@{/images/default-avatar.png}"
+                                         class="img-fluid rounded-top w-100"
+                                         alt="Ảnh bác sĩ mặc định"
+                                         style="height: 300px; object-fit: cover;">
+                                </a>
+                            </div>
+                            <div class="team-title p-4 flex-grow-1 d-flex flex-column">
+                                <a th:href="@{/dat-lich/chon-bac-si(doctorId=${doctor.id})}" style="color: inherit; text-decoration: none;">
+                                    <h5 class="mb-1" th:text="${doctor.degree != null ? doctor.degree + ' ' + doctor.fullName : doctor.fullName}">Tên Bác Sĩ</h5>
+                                </a>
+                                <p class="text-muted mb-3" th:text="${doctor.specialization}"></p> <!-- Hoặc doctor.specialty.specialtyName -->
+
+                                <!-- Nút đặt lịch ở cuối card -->
+                                <div class="mt-auto">
+                                    <a class="btn btn-primary rounded-pill py-2 px-4 w-100"
+                                       th:href="@{/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}">
+                                        Đặt lịch ngay
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+
+                <!-- Thông báo nếu chuyên khoa không có bác sĩ nào -->
+                <div th:if="${#lists.isEmpty(doctors)}" class="text-center col-12">
+                    <p class="lead">Chưa có bác sĩ nào thuộc chuyên khoa này.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
+</main>
+</body>
+</html>

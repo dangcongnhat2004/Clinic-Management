@@ -2,166 +2,101 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
+<head>
+  <title>Trang chủ</title>
+</head>
+<body>
+<main layout:fragment="content">
+  <!-- KHỐI CHÀO MỪNG -->
+  <h2 class="mb-4 fw-light">Chào mừng trở lại</b>!</h2>
 
-<main layout:fragment="content"><main>
-<!--  <h2 class="mb-4 fw-light">t tốt lành, <b id="user-name-greeting">User</b>!</h2>-->
-
-  <!-- Quick Features -->
-<!--  <div class="row g-4 mb-5">-->
-<!--    &lt;!&ndash; ... Các card tính năng nhanh giữ nguyên ... &ndash;&gt;-->
-<!--    <div class="col-lg-3 col-md-6">-->
-<!--      &lt;!&ndash; Bọc card trong thẻ <a> để có thể click &ndash;&gt;-->
-<!--      <a href="/dat-lich" class="text-decoration-none">-->
-<!--        <div class="card card-feature text-center p-3 shadow-sm border-0">-->
-<!--          <div class="card-body">-->
-<!--            <i class="fa-solid fa-clipboard-list fa-3x text-warning mb-3"></i>-->
-<!--            <h5 class="card-title">Đặt hẹn bác sĩ</h5>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </a>-->
-<!--    </div>-->
-<!--    <div class="col-lg-3 col-md-6"><div class="card card-feature text-center p-3 shadow-sm border-0"><div class="card-body"><i class="fa-solid fa-file-medical fa-3x text-success mb-3"></i><h5 class="card-title">Hồ sơ sức khoẻ</h5></div></div></div>-->
-<!--    <div class="col-lg-3 col-md-6">-->
-<!--      &lt;!&ndash; Bọc card trong thẻ <a> để có thể click &ndash;&gt;-->
-<!--      <a href="/dat-lich" class="text-decoration-none">-->
-<!--        <div class="card card-feature text-center p-3 shadow-sm border-0">-->
-<!--          <div class="card-body">-->
-<!--            <i class="fa-solid fa-calendar-plus fa-3x text-primary mb-3"></i>-->
-<!--            <h5 class="card-title">Lịch khám</h5>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </a>-->
-<!--    </div>-->
-<!--    <div class="col-lg-3 col-md-6"><div class="card card-feature text-center p-3 shadow-sm border-0"><div class="card-body"><i class="fa-solid fa-pills fa-3x text-danger mb-3"></i><h5 class="card-title">Đơn thuốc của tôi</h5></div></div></div>-->
-<!--  </div>-->
-
-  <!-- Featured Doctors -->
-  <div class="mb-5">
-    <!-- ... Phần bác sĩ nổi bật giữ nguyên ... -->
-    <div class="section-header"><h3 class="fw-normal">Bác sĩ nổi bật</h3><a href="#" class="text-decoration-none">Xem thêm <i class="fa-solid fa-arrow-right"></i></a></div>
-    <div class="row g-4">
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=5" alt="Bác sĩ A" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ A</h5><p class="card-text text-muted">Chuyên khoa Tim mạch</p></div></div></div>
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=6" alt="Bác sĩ B" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ B</h5><p class="card-text text-muted">Chuyên khoa Nội tiết</p></div></div></div>
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=7" alt="Bác sĩ C" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ C</h5><p class="card-text text-muted">Chuyên khoa Thần kinh</p></div></div></div>
-      <div class="col-lg-3 col-md-6"><div class="card text-center border-0"><div class="card-body"><img src="https://i.pravatar.cc/150?img=8" alt="Bác sĩ D" class="doctor-avatar mb-3"><h5 class="card-title">Bác sĩ D</h5><p class="card-text text-muted">Chuyên khoa Da liễu</p></div></div></div>
+  <!-- KHỐI TÍNH NĂNG NHANH -->
+  <div class="row g-4 mb-5">
+    <div class="col-lg-3 col-md-6">
+      <a th:href="@{/user/dat-lich}" class="text-decoration-none">
+        <div class="card card-feature text-center p-3 shadow-sm border-0 h-100">
+          <div class="card-body"><i class="fa-solid fa-calendar-plus fa-3x text-primary mb-3"></i><h5 class="card-title">Đặt lịch hẹn mới</h5></div>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <a th:href="@{/user/lich-su-dat-kham}" class="text-decoration-none">
+        <div class="card card-feature text-center p-3 shadow-sm border-0 h-100">
+          <div class="card-body"><i class="fa-solid fa-calendar-check fa-3x text-success mb-3"></i><h5 class="card-title">Lịch sử khám</h5></div>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <a th:href="@{/user/ket-qua-kham}" class="text-decoration-none">
+        <div class="card card-feature text-center p-3 shadow-sm border-0 h-100">
+          <div class="card-body"><i class="fa-solid fa-file-waveform fa-3x text-info mb-3"></i><h5 class="card-title">Kết quả khám</h5></div>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <a th:href="@{/user/thong-tin-ca-nhan}" class="text-decoration-none">
+        <div class="card card-feature text-center p-3 shadow-sm border-0 h-100">
+          <div class="card-body"><i class="fa-solid fa-user-pen fa-3x text-warning mb-3"></i><h5 class="card-title">Hồ sơ của tôi</h5></div>
+        </div>
+      </a>
     </div>
   </div>
 
-  <!-- Specialties -->
-  <div class="mb-5">
-    <!-- ... Phần chuyên khoa giữ nguyên ... -->
-    <div class="section-header"><h3 class="fw-normal">Chuyên khoa</h3><a href="#" class="text-decoration-none">Xem thêm <i class="fa-solid fa-arrow-right"></i></a></div>
-    <!-- Trong file: dashboard.html, mục "Chuyên khoa" -->
-
+  <!-- KHỐI CHUYÊN KHOA NỔI BẬT -->
+  <div class="mb-5" th:if="${not #lists.isEmpty(featuredSpecialties)}">
+    <div class="section-header">
+      <h3 class="fw-normal">Chuyên khoa nổi bật</h3>
+      <a th:href="@{/chi-tiet/chuyen-khoa}" class="text-decoration-none">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
     <div class="row g-4">
-      <!-- Bọc mỗi card chuyên khoa trong thẻ <a> -->
-      <div class="col-lg-4 col-md-6">
-        <a href="/specialty-details" class="text-decoration-none text-dark">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1579154341199-83359d48953e?q=80&w=400" class="card-img-top" alt="Tim mạch" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title">Tim mạch</h5>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-lg-4 col-md-6">
-        <a href="/specialty-details" class="text-decoration-none text-dark">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400" class="card-img-top" alt="Nội tiết" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title">Nội tiết</h5>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- Làm tương tự cho các chuyên khoa khác -->
-      <div class="col-lg-4 col-md-6">
-        <a href="/specialty-details" class="text-decoration-none text-dark">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400" class="card-img-top" alt="Nội tiết" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title">Nội tiết</h5>
-            </div>
+      <div class="col-md-6 col-lg-4 col-xl-2" th:each="specialty : ${featuredSpecialties}">
+        <a th:href="@{/chi-tiet/chi-tiet-chuyen-khoa/{id}(id=${specialty.id})}" class="text-decoration-none text-dark">
+          <div class="card feature-item p-3 text-center h-100 border-0 shadow-sm">
+            <i class="fa-solid fa-star-of-life fa-2x text-primary mb-3"></i>
+            <h6 class="mb-0" th:text="${specialty.specialtyName}"></h6>
           </div>
         </a>
       </div>
     </div>
   </div>
 
-  <!-- === NEW SECTION: NEWS & ARTICLES === -->
-  <div>
+  <!-- KHỐI BÁC SĨ NỔI BẬT -->
+  <div class="mb-5" th:if="${not #lists.isEmpty(featuredDoctors)}">
+    <div class="section-header"><h3 class="fw-normal">Bác sĩ nổi bật</h3><a th:href="@{/bac-si}" class="text-decoration-none">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a></div>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6" th:each="doctor : ${featuredDoctors}">
+        <div class="card text-center border-0 shadow-sm h-100 team-item">
+          <div class="card-body d-flex flex-column">
+            <a th:href="@{/chi-tiet/bac-si/{id}(id=${doctor.id})}">
+              <img th:src="${doctor.avatarUrl != null ? '/avatars/' + doctor.avatarUrl : '/images/default-avatar.png'}" alt="Bác sĩ" class="doctor-avatar mb-3">
+            </a>
+            <h5 class="card-title" th:text="${doctor.fullName}"></h5>
+            <p class="card-text text-muted" th:if="${doctor.specialty != null}" th:text="${doctor.specialty.specialtyName}"></p>
+            <a class="btn btn-outline-primary btn-sm mt-auto" th:href="@{/user/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}">Đặt lịch</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KHỐI TIN TỨC MỚI NHẤT -->
+  <div th:if="${not #lists.isEmpty(recentPosts)}">
     <div class="section-header">
       <h3 class="fw-normal">Tin tức, bài viết</h3>
-      <a href="#" class="text-decoration-none">Xem thêm <i class="fa-solid fa-arrow-right"></i></a>
+      <a th:href="@{/chi-tiet/tin-tuc}" class="text-decoration-none">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="row g-4">
-      <!-- Giả lập bài viết 1 -->
-      <div class="col-lg-6">
-        <a href="/article-details" class="text-decoration-none text-dark">
+      <div class="col-lg-6" th:each="post : ${recentPosts}">
+        <a th:href="@{/chi-tiet/tin-tuc/{id}(id=${post.id})}" class="text-decoration-none text-dark">
           <div class="card article-card shadow-sm border-0 h-100">
             <div class="row g-0">
               <div class="col-md-4">
-                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=400" class="img-fluid rounded-start h-100" alt="Chất xơ" style="object-fit: cover;">
+                <img th:src="@{/uploads/{image}(image=${post.image})}" class="img-fluid rounded-start h-100" alt="Bài viết" style="object-fit: cover;">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">Chất xơ trong thực phẩm giúp giảm nguy cơ tiểu đường và béo phì</h5>
-                  <p class="card-text text-muted small">Nhiều nghiên cứu phát hiện ra rằng các vi khuẩn đường ruột cũng ảnh hưởng đến bệnh tiểu đường...</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- Giả lập bài viết 2 -->
-      <div class="col-lg-6">
-        <a href="/article-details" class="text-decoration-none text-dark">
-          <div class="card article-card shadow-sm border-0 h-100">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="https://images.unsplash.com/photo-1616882839978-0177b9496669?q=80&w=400" class="img-fluid rounded-start h-100" alt="Nấm chân" style="object-fit: cover;">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">9 biện pháp phòng ngừa và cải thiện nấm chân ở người...</h5>
-                  <p class="card-text text-muted small">Mùa hè nóng ẩm đã đến tại Nhật Bản. Trong khoảng thời gian này, vấn đề đáng quan tâm là...</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- Giả lập bài viết 3 -->
-      <div class="col-lg-6">
-        <a href="/article-details" class="text-decoration-none text-dark">
-          <div class="card article-card shadow-sm border-0 h-100">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=400" class="img-fluid rounded-start h-100" alt="Yoga" style="object-fit: cover;">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">Yoga giúp cải thiện tiểu đường và huyết áp cao</h5>
-                  <p class="card-text text-muted small">Yoga xuất phát từ Ấn Độ cổ đại và hiện nay đã được kết hợp với yếu tố tập luyện thể chất, thu...</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- Giả lập bài viết 4 -->
-      <div class="col-lg-6">
-        <a href="/article-details" class="text-decoration-none text-dark">
-          <div class="card article-card shadow-sm border-0 h-100">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="https://images.unsplash.com/photo-1551022372-0bdac823b9d6?q=80&w=400" class="img-fluid rounded-start h-100" alt="Lão hóa" style="object-fit: cover;">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">Người bị tiểu đường có sự lão hóa nhanh của não?</h5>
-                  <p class="card-text text-muted small">Người sống chung với tiểu đường tuýp 2 được cho là có tốc độ lão hóa não nhanh hơn 26% so với...</p>
+                  <h5 class="card-title" th:text="${post.title}"></h5>
+                  <p class="card-text text-muted small" th:text="${post.description}"></p>
                 </div>
               </div>
             </div>
@@ -170,21 +105,6 @@
       </div>
     </div>
   </div>
-
-</main>
 </main>
 </body>
-<script>
-  function handleLogout() {
-    // In ra console để kiểm tra xem hàm có được gọi không
-    console.log("Đang thực hiện xóa token...");
-
-    // Xóa token khỏi Local Storage
-    localStorage.removeItem('jwt_token'); // <-- Thay 'jwt_token' bằng tên key bạn đã dùng để lưu token
-
-    // Bạn không cần gọi event.preventDefault() hay form.submit()
-    // Hàm sẽ chạy xong và form sẽ tiếp tục submit như bình thường.
-    console.log("Đã xóa token. Form sẽ được submit ngay bây giờ.");
-  }
-</script>
 </html>

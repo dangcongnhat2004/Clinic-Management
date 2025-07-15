@@ -5,6 +5,7 @@ import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.*;
 import com.example.admission.admissionswebsite.repository.AppointmentRepository;
 import com.example.admission.admissionswebsite.repository.MedicalRecordRepository;
+import com.example.admission.admissionswebsite.repository.SpecialtyRepository;
 import com.example.admission.admissionswebsite.repository.UserRepository;
 import com.example.admission.admissionswebsite.service.AdminService;
 import com.example.admission.admissionswebsite.service.DoctorManageService;
@@ -43,6 +44,8 @@ public class DoctorManageController {
     private UniversityService universityService;
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
+    @Autowired
+    private SpecialtyRepository specialtyRepository;
     @Autowired
     private AdminService adminService;
     @Value("${upload.path}")
@@ -84,21 +87,15 @@ public class DoctorManageController {
         return "doctor/index";
     }
     @GetMapping("/doctor/thong-tin-ca-nhan")
-    public String showMyProfile(Principal principal, Model model) {
-        // 1. Kiểm tra xem người dùng đã đăng nhập chưa
-        if (principal == null) {
-            // Nếu chưa đăng nhập, chuyển hướng về trang login
-            return "redirect:/login";
-        }
+    public String showProfilePage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) return "redirect:/auth/login";
 
-        // 2. Lấy username của người dùng đang đăng nhập
-        String username = principal.getName();
-
-        // 3. Dùng username để tìm thông tin đầy đủ trong database
-        Users loggedInUser = doctorManageService.findByEmail(username) // Hoặc findByUsername(username)
-                .orElseThrow(() -> new IllegalStateException("Không tìm thấy người dùng: " + username));
-
-        model.addAttribute("information", loggedInUser);
+        // Tìm hồ sơ Doctor dựa trên email của user đang đăng nhập
+        Doctor doctorProfile = doctorManageService.findDoctorProfileByEmail(userDetails.getUsername());
+        List<Specialty> allSpecialties = specialtyRepository.findAll();
+        model.addAttribute("allSpecialties", allSpecialties);
+        // Truyền đối tượng Doctor sang view
+        model.addAttribute("doctorProfile", doctorProfile);
 
         return "doctor/profile";
     }
@@ -175,19 +172,22 @@ public class DoctorManageController {
         model.addAttribute("university", university);
         return "/user/universitydetail";
     }
-    @PostMapping("/doctor/thong-tin-ca-nhan/cap-nhat")
-    public String updateProfile(@ModelAttribute("information") Users updatedUserData,
-                                @RequestParam("avatarFile") MultipartFile avatarFile, // <-- THÊM THAM SỐ NÀY
-                                RedirectAttributes redirectAttributes) {
-        try {
-            // Gọi service để thực hiện việc cập nhật, truyền cả file vào
-            doctorManageService.updateUserProfile(updatedUserData, avatarFile);
-            redirectAttributes.addFlashAttribute("successMessage", "Đã cập nhật bệnh án thành công!");
-            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin cá nhân thành công!");
+    @PostMapping("/doctor/profile/update")
+    public String updateProfile(@ModelAttribute("doctorProfile") Doctor updatedDoctorData,
+                                @RequestParam("avatarFile") MultipartFile avatarFile,
+                                RedirectAttributes redirectAttributes,
+                                @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) return "redirect:/auth/login";
 
+        try {
+            // Gọi service để thực hiện việc cập nhật, truyền cả file và email của user hiện tại để bảo mật
+            doctorManageService.updateDoctorProfile(userDetails.getUsername(), updatedDoctorData, avatarFile);
+//            doctorManageService.updateDoctorProfile(userDetails.getUsername(), updatedDoctorData, avatarFile);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin thành công!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
-            e.printStackTrace(); // In lỗi ra console để debug
+            e.printStackTrace();
         }
 
         return "redirect:/doctor/thong-tin-ca-nhan";

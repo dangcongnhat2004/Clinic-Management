@@ -50,7 +50,7 @@ public class BookingController {
         // Sửa nội dung thanh toán để parse ID dễ dàng hơn
         String orderInfo = "Thanh toan lich hen ID " + newAppointment.getId();
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        String vnpayReturnUrl = baseUrl + "/vnpay-payment-return";
+        String vnpayReturnUrl = baseUrl + "/user/vnpay-payment-return";
 
         String vnpayUrl = vnpayService.createOrder(fee, orderInfo, vnpayReturnUrl);
 

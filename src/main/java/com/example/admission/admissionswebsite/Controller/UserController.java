@@ -2,14 +2,12 @@ package com.example.admission.admissionswebsite.Controller;
 
 import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.*;
-import com.example.admission.admissionswebsite.repository.AppointmentRepository;
-import com.example.admission.admissionswebsite.repository.DoctorsRepository;
-import com.example.admission.admissionswebsite.repository.PatientProfileRepository;
-import com.example.admission.admissionswebsite.repository.TimeSlotRepository;
+import com.example.admission.admissionswebsite.repository.*;
 import com.example.admission.admissionswebsite.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -36,6 +34,8 @@ public class UserController {
     @Autowired
     private EventService eventService;
     @Autowired
+    private SpecialtyRepository specialtyRepository;
+    @Autowired
     private DoctorManageService doctorManageService;
     @Autowired
     private OurUserDetailsService userDetailsService;
@@ -46,7 +46,11 @@ public class UserController {
     @Autowired
     private DoctorsRepository doctorsRepository;
     @Autowired
+    private PatientService patientService;
+    @Autowired
     private TimeSlotRepository timeSlotRepository;
+    @Autowired // Thêm repository này để tìm chi tiết
+    private MedicalRecordRepository medicalRecordRepository;
     @GetMapping("/auth/signup")
     public String showSignUpForm(Model model) {
         model.addAttribute("user", new Users());
@@ -72,7 +76,7 @@ public class UserController {
 //        model.addAttribute("majors", majors);
         List<Specialty> specialty = enduserService.getAllSpecialty();
         model.addAttribute("specialty", specialty);
-        List<Users> doctors  = enduserService.getAllDoctor();
+        List<Doctor> doctors  = enduserService.findTop3ByOrderByIdDesc();
         model.addAttribute("doctors",doctors);
         List<AdminPost> posts = enduserService.getAllPost();
         model.addAttribute("posts", posts);
@@ -193,7 +197,9 @@ public class UserController {
         return "/user/postdetail";
     }
     @GetMapping("/user/dat-lich")
-    public String appointments(Model model) {
+    public String appointments( @RequestParam(value = "specialtyId", required = false) Long specialtyId,
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                Model model) {
 //        UserDto response = doctorManageService.getUserIdsByUsersRole();
 //        if (response.getStatusCode() == 200) {
 //            model.addAttribute("usersList", response.getOurUser());
@@ -203,14 +209,26 @@ public class UserController {
 //            model.addAttribute("errorMessage", response.getMessage());
 //            return "404";
 //        }
-        List<Specialty> specialty = enduserService.getAllSpecialty();
-        model.addAttribute("specialty", specialty);
-        List<Doctor> doctors  = enduserService.getAllDoctorsAsDoctorObjects();
-        model.addAttribute("doctors",doctors);
+        List<Specialty> specialties = specialtyRepository.findAll();
+        List<Doctor> doctors;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            doctors = doctorsRepository.findByFullNameContainingIgnoreCase(keyword.trim());
+        } else if (specialtyId != null) {
+            doctors = doctorsRepository.findBySpecialty_Id(specialtyId);
+            model.addAttribute("selectedSpecialtyId", specialtyId);
+        } else {
+            doctors = doctorsRepository.findAll();
+        }
+
+        model.addAttribute("doctors", doctors);
+        model.addAttribute("specialtyList", specialties);
+        model.addAttribute("keyword", keyword);
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/appointments";
     }
-    // CÁCH VIẾT AN TOÀN HƠN
+
+
     @GetMapping("/user/dat-lich/chon-lich")
     public String showScheduleSelectionPage(
             // 1. Nhận vào ID của USER, và phải là kiểu Long
@@ -267,9 +285,7 @@ public class UserController {
         // Trả về tên file HTML của Trang 3
         return "/user/appointmentthree"; // <-- Đảm bảo bạn có file tên là "appointmentthree.html" trong thư mục /templates/user/
     }
-    // TRANG 3: Hiển thị trang xác nhận
-    // CÁCH VIẾT CÓ THỂ GÂY LỖI
-    // CÁCH VIẾT AN TOÀN HƠN
+
     @GetMapping("/user/dat-lich/xac-nhan")
     public String showConfirmationPage(@RequestParam("doctorId") Integer doctorId,
                                        @RequestParam(value = "date", required = false) String date, // Cho phép có thể null để kiểm tra
@@ -357,20 +373,16 @@ public class UserController {
     @GetMapping("/user/lich-su-dat-kham")
     public String showAppointmentHistory(Model model, RedirectAttributes redirectAttributes) {
         try {
-            // 1. Lấy thông tin người dùng đang đăng nhập
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String currentUserEmail = userDetails.getUsername();
 
-            // 2. Tìm tất cả hồ sơ bệnh nhân của người dùng này
             List<PatientProfile> patientProfiles = patientProfileRepository.findAllByUser_Email(currentUserEmail);
 
             if (patientProfiles.isEmpty()) {
-                // Nếu người dùng không có hồ sơ nào, hiển thị danh sách rỗng
                 model.addAttribute("appointments", Collections.emptyList());
                 return "user/appointment_history"; // Tên file view
             }
 
-            // 3. Lấy tất cả các cuộc hẹn từ các hồ sơ đó và sắp xếp
             List<Appointment> appointments = appointmentRepository.findByPatientInOrderByTimeSlot_StartTimeDesc(patientProfiles);
 
             model.addAttribute("appointments", appointments);
@@ -437,6 +449,90 @@ public class UserController {
 
 //        model.addAttribute("uploadPath", uploadPath); // Thêm uploadPath vào model
         return "/user/profile"; // Thymeleaf sẽ render file templates/admin/danhsachtruongdaihoc.html
+    }
+
+    @GetMapping("/user/ket-qua-kham")
+    public String viewMedicalRecordList(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/auth/login";
+        }
+
+        String patientUserEmail = userDetails.getUsername();
+
+        List<MedicalRecord> medicalRecords = patientService.getMedicalRecordsByPatientEmail(patientUserEmail);
+
+        model.addAttribute("medicalRecords", medicalRecords);
+
+        return "user/medical-record-list";
+    }
+
+    @GetMapping("/user/ket-qua-kham/{id}")
+    public String viewMedicalRecordDetails(@PathVariable("id") Long recordId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/auth/login";
+        }
+
+        // 1. Tìm bệnh án bằng ID, sử dụng JOIN FETCH để lấy tất cả dữ liệu liên quan
+        MedicalRecord medicalRecord = medicalRecordRepository.findByIdWithDetail(recordId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy kết quả khám với ID: " + recordId));
+
+        // 2. (Bảo mật) Kiểm tra xem người dùng đang đăng nhập có đúng là chủ của bệnh án này không
+        String currentUserEmail = userDetails.getUsername();
+        if (!medicalRecord.getAppointment().getPatient().getUser().getEmail().equals(currentUserEmail)) {
+            // Nếu không phải, từ chối truy cập
+            return "error/403";
+        }
+
+        // 3. Gửi đối tượng medicalRecord vào model
+        model.addAttribute("medicalRecord", medicalRecord);
+
+        // 4. Trả về tên file view
+        return "user/medical-record-details";
+    }
+
+    @GetMapping("/user/lich-su-dat-kham/{id}")
+    public String viewAppointmentDetails(@PathVariable("id") Long appointmentId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/auth/login";
+        }
+
+
+        Appointment appointment = appointmentRepository.findAppointmentDetailsById(appointmentId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy lịch hẹn với ID: " + appointmentId));
+
+        String currentUserEmail = userDetails.getUsername();
+        if (!appointment.getPatient().getUser().getEmail().equals(currentUserEmail)) {
+            return "error/403"; // Không có quyền
+        }
+
+        // 3. Gửi đối tượng appointment vào model
+        model.addAttribute("appointment", appointment);
+
+        // 4. Trả về tên file view
+        return "user/appointment-details";
+    }
+
+    @PostMapping("/user/lich-su-dat-kham/cancel")
+    public String cancelAppointmentByUser(@RequestParam("appointmentId") Long appointmentId,
+                                          @RequestParam(name = "cancellationReason", required = false) String reason,
+                                          RedirectAttributes redirectAttributes,
+                                          @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/auth/login";
+        }
+
+        try {
+            String currentUserEmail = userDetails.getUsername();
+            // Gọi đến một phương thức trong service để xử lý logic hủy
+            // (Bạn cần tự viết hàm này trong PatientService)
+            patientService.cancelAppointment(appointmentId, currentUserEmail, reason);
+            redirectAttributes.addFlashAttribute("successMessage", "Đã hủy lịch hẹn #" + appointmentId + " thành công.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi hủy lịch hẹn: " + e.getMessage());
+        }
+
+        // Sau khi hủy xong, chuyển hướng về trang lịch sử đặt hẹn
+        return "redirect:/user/lich-su-dat-kham";
     }
     @GetMapping("/user/course")
     public String course() {

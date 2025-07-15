@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<head>
+    <title>Tin tức Y tế</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid blog py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+                <h4 class="text-primary">Tin tức</h4>
+                <h1 class="display-4 mb-4">Tất cả bài viết</h1>
+                <p class="mb-0">Cập nhật những thông tin, kiến thức y khoa và các tin tức mới nhất từ trung tâm của chúng tôi.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Lặp qua danh sách bài viết của trang hiện tại -->
+                <th:block th:each="post : ${postPage.content}">
+                    <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="blog-item h-100 d-flex flex-column">
+                            <div class="blog-img">
+                                <img th:src="@{/uploads/{image}(image=${post.image})}" class="img-fluid rounded-top w-100" alt="Bài đăng" style="height: 250px; object-fit: cover;">
+                            </div>
+                            <div class="blog-content p-4 flex-grow-1 d-flex flex-column">
+                                <div class="blog-comment d-flex justify-content-between mb-3">
+                                    <div class="small"><span class="fa fa-user text-primary"></span> Admin</div>
+                                    <div class="small">
+                                        <span class="fa fa-calendar text-primary"></span>
+                                        <span th:text="${#dates.format(post.postDate, 'dd-MM-yyyy')}"></span>
+                                    </div>
+                                </div>
+                                <a th:href="@{/tin-tuc/{id}(id=${post.id})}" class="h4 d-inline-block mb-3" th:text="${post.title}"></a>
+                                <p class="mb-3 overflow-hidden text-wrap flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">
+                                    <span th:text="${post.description}"></span>
+                                </p>
+                                <div class="mt-auto">
+                                    <a th:href="@{/tin-tuc/{id}(id=${post.id})}" class="btn p-0">Xem chi tiết <i class="fa fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+
+                <!-- Thông báo nếu không có bài viết nào -->
+                <div th:if="${postPage.empty}" class="text-center col-12">
+                    <p class="lead">Chưa có bài viết nào.</p>
+                </div>
+            </div>
+
+            <!-- THANH PHÂN TRANG -->
+            <nav aria-label="Page navigation" th:if="${postPage.totalPages > 1}" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${postPage.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/tin-tuc(page=${postPage.number - 1})}"><span>«</span></a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, postPage.totalPages - 1)}" th:classappend="${pageNumber == postPage.number} ? 'active'">
+                        <a class="page-link" th:href="@{/tin-tuc(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${postPage.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/tin-tuc(page=${postPage.number + 1})}"><span>»</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</main>
+</body>
+</html>

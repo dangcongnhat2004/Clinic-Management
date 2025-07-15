@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <title>Chi tiết lịch hẹn</title>
+    <style>
+        .details-card { background-color: #fff; border-radius: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+        .details-header { padding: 1rem 1.5rem; border-bottom: 1px solid #e9ecef; }
+        .details-body { padding: 1.5rem; }
+        .info-section { margin-bottom: 1.5rem; }
+        .info-label { font-weight: 600; color: #6c757d; }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container py-4">
+        <!-- Đối tượng làm việc chính là "appointment" -->
+        <div class="details-card" th:object="${appointment}">
+
+            <!-- HEADER -->
+            <div class="details-header d-flex justify-content-between align-items-center">
+                <div>
+                    <!-- Sử dụng *{...} vì đã có th:object ở thẻ cha -->
+                    <h4 class="mb-0" th:text="'Chi tiết Lịch hẹn #' + *{id}">Chi tiết lịch hẹn #123</h4>
+                </div>
+                <div>
+                    <a th:href="@{/user/lich-su-dat-kham}" class="btn btn-outline-secondary btn-sm mb-0">
+                        <i class="fas fa-arrow-left"></i>  Quay lại danh sách
+                    </a>
+                </div>
+            </div>
+
+            <div class="details-body">
+                <div class="row">
+                    <!-- CỘT THÔNG TIN BÊN TRÁI -->
+                    <div class="col-md-6">
+                        <div class="info-section">
+                            <h5><i class="fa-regular fa-calendar-check text-primary me-2"></i>Thông tin lịch hẹn</h5>
+                            <hr>
+
+                            <!-- ======================================================= -->
+                            <!-- SỬA LỖI VÀ LÀM AN TOÀN HƠN -->
+                            <!-- ======================================================= -->
+                            <p><strong class="info-label">Ngày khám:</strong>
+                                <span th:if="*{timeSlot != null}" th:text="${#temporals.format(appointment.timeSlot.startTime, 'dd/MM/yyyy')}"></span>
+                            </p>
+                            <p><strong class="info-label">Giờ khám:</strong>
+                                <span th:if="*{timeSlot != null}" th:text="${#temporals.format(appointment.timeSlot.startTime, 'HH:mm') + ' - ' + #temporals.format(appointment.timeSlot.endTime, 'HH:mm')}"></span>
+                            </p>
+                            <p><strong class="info-label">Hình thức:</strong>
+                                <span th:if="*{type.name() == 'ONLINE'}" class="badge text-bg-info">
+        Trực tuyến
+    </span>
+
+                                <!-- Trường hợp 2: Nếu không phải là ONLINE (tức là OFFLINE) -->
+                                <span th:unless="*{type.name() == 'ONLINE'}" class="badge text-bg-primary">
+        Tại phòng khám
+    </span>                            </p>
+                            <p><strong class="info-label">Trạng thái:</strong>
+                                <span th:switch="*{status.name()}" class="badge rounded-pill">
+                    <span th:case="'CONFIRMED'" class="text-bg-success">Đã xác nhận</span>
+                    <span th:case="'COMPLETED'" class="text-bg-primary">Đã hoàn thành</span>
+                    <span th:case="'CANCELLED'" class="text-bg-secondary">Đã hủy</span>
+                    <span th:case="'PENDING_CONFIRMATION'" class="text-bg-warning">Chờ xác nhận</span>
+                                    <!-- Trường hợp mặc định nếu không khớp -->
+                    <span th:case="*" class="text-bg-dark">Trạng thái khác</span>
+                </span>
+                            </p>
+                        </div>
+
+                        <div class="info-section">
+                            <h5><i class="fa-solid fa-credit-card text-primary me-2"></i>Thông tin thanh toán</h5>
+                            <hr>
+                            <p><strong class="info-label">Phí khám:</strong> <span class="fw-bold" th:text="${#numbers.formatDecimal(fee, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span></p>
+                            <p><strong class="info-label">Phương thức:</strong> <span th:text="*{paymentMethod}"></span></p>
+                            <p><strong class="info-label">Trạng thái:</strong>
+                                <!-- Trường hợp 1: Nếu đã thanh toán (PAID) -->
+                                <span th:if="*{paymentStatus.name() == 'PAID'}" class="badge text-bg-success">
+        Đã thanh toán
+    </span>
+
+                                <!-- Trường hợp 2: Nếu chưa thanh toán (UNPAID) hoặc thất bại (FAILED) -->
+                                <span th:unless="*{paymentStatus.name() == 'PAID'}" class="badge text-bg-warning">
+        Chưa thanh toán
+    </span>                            </p>
+                        </div>
+                    </div>
+
+                    <!-- CỘT THÔNG TIN BÊN PHẢI -->
+                    <div class="col-md-6">
+                        <div class="info-section">
+                            <h5><i class="fa-solid fa-user-doctor text-primary me-2"></i>Bác sĩ phụ trách</h5>
+                            <hr>
+                            <div class="d-flex align-items-center" th:if="*{doctor != null}">
+                                <img th:if="*{doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                     th:src="@{/avatars/{fileName}(fileName=*{doctor.avatarUrl})}"
+                                     class="rounded-circle me-3" style="width:60px; height:60px;">
+
+                                <!-- Trường hợp 2: Bác sĩ KHÔNG có ảnh đại diện -->
+                                <img th:unless="*{doctor.avatarUrl != null and !doctor.avatarUrl.isEmpty()}"
+                                     th:src="@{/images/default-avatar.png}"
+                                     class="rounded-circle me-3" style="width:60px; height:60px;">                                <div>
+                                    <h6 class="mb-0" th:text="*{doctor.fullName}"></h6>
+                                    <p class="text-muted small mb-0" th:text="*{doctor.specialization}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <h5><i class="fa-solid fa-notes-medical text-primary me-2"></i>Lý do khám</h5>
+                            <hr>
+                            <p class="text-muted fst-italic" th:text="*{reasonForVisit}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

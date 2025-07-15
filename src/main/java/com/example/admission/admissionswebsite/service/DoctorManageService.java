@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,6 +44,8 @@ public class DoctorManageService {
     private MedicalRecordRepository medicalRecordRepository;
     @Autowired
     private AppointmentRepository appointmentRepository; // Thêm repo này vào
+    @Value("src/main/resources/static/avatars")
+    private String uploadAvatar; // Định nghĩa đường dẫn
 
     @Value("${upload.event}")
     private String uploadPath;
@@ -419,5 +422,68 @@ public UserDto signUp(UserDto registrationRequest) {
 
 
         medicalRecordRepository.save(existingRecord);
+    }
+
+
+    public Doctor findDoctorProfileByEmail(String email) {
+        return ourUserRepo.findByEmail(email)
+                .flatMap(user -> doctorsRepository.findByUserAccount(user))
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy hồ sơ bác sĩ cho email: " + email));
+    }
+
+    // HÀM CẬP NHẬT MỚI
+    @Transactional
+    public void updateDoctorProfile(String currentUserEmail, Doctor updatedDoctorData, MultipartFile avatarFile) throws IOException {
+
+        // 1. Tìm Doctor hiện tại trong CSDL để đảm bảo tính nhất quán và bảo mật
+        Doctor existingDoctor = findDoctorProfileByEmail(currentUserEmail);
+
+        // 2. Xử lý upload file ảnh (nếu có)
+        if (avatarFile != null && !avatarFile.isEmpty()) {
+            // ... (Logic upload file giống như bạn đã viết) ...
+            // Lưu ý: nên tạo một service riêng để xử lý file (FileStorageService)
+            String newFileName = saveAvatar(avatarFile, existingDoctor.getAvatarUrl());
+            existingDoctor.setAvatarUrl(newFileName);
+        }
+
+        // 3. CẬP NHẬT các trường của đối tượng Doctor hiện có
+        existingDoctor.setFullName(updatedDoctorData.getFullName());
+        existingDoctor.setDegree(updatedDoctorData.getDegree());
+        existingDoctor.setSpecialization(updatedDoctorData.getSpecialization());
+        existingDoctor.setExaminationFee(updatedDoctorData.getExaminationFee());
+        existingDoctor.setSpecialty(updatedDoctorData.getSpecialty());
+        existingDoctor.setBiography(updatedDoctorData.getBiography());
+        existingDoctor.setExperience(updatedDoctorData.getExperience());
+
+        // 4. LƯU đối tượng đã được cập nhật vào CSDL
+        doctorsRepository.save(existingDoctor);
+    }
+    private String saveAvatar(MultipartFile file, String oldAvatarFileName) throws IOException {
+        Path uploadPath = Paths.get(uploadAvatar);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        // Xóa file ảnh cũ nếu tồn tại
+        if (oldAvatarFileName != null && !oldAvatarFileName.isEmpty()) {
+            try {
+                Files.deleteIfExists(uploadPath.resolve(oldAvatarFileName));
+            } catch (IOException e) {
+                System.err.println("Không thể xóa ảnh cũ: " + e.getMessage());
+            }
+        }
+
+        // Tạo tên file mới duy nhất
+        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileExtension = "";
+        if (originalFileName.contains(".")) {
+            fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        }
+        String newFileName = UUID.randomUUID().toString() + fileExtension;
+
+        Path filePath = uploadPath.resolve(newFileName);
+        Files.copy(file.getInputStream(), filePath);
+
+        return newFileName;
     }
 }

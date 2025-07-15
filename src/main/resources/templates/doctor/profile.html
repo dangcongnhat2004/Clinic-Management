@@ -2,11 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{doctor/layout}">
+<head>
+    <title>Thông tin cá nhân Bác sĩ</title>
+    <!-- Các style CSS cần thiết -->
+</head>
+<body>
 <main layout:fragment="content">
     <div class="profile-container">
         <div class="profile-header d-flex justify-content-between align-items-center">
-            <a th:href="@{/doctor}" class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
-            <h4 class="mb-0">Thông tin cá nhân</h4>
+            <h4 class="mb-0">Thông tin cá nhân & Chuyên môn</h4>
             <div></div> <!-- Spacer -->
         </div>
         <div class="profile-card">
@@ -20,146 +24,90 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <form th:action="@{/doctor/thong-tin-ca-nhan/cap-nhat}" th:object="${information}" method="post" enctype="multipart/form-data">
-                <!-- Avatar và các trường ẩn giữ nguyên -->
+            <!-- Form sẽ làm việc với đối tượng "doctorProfile" -->
+            <form th:action="@{/doctor/profile/update}" method="post" th:object="${doctorProfile}" enctype="multipart/form-data">
+
+                <!-- ID của Doctor được gửi ẩn đi -->
+                <input type="hidden" th:field="*{id}" />
+
+                <!-- Avatar Upload -->
                 <div class="avatar-upload">
                     <div class="avatar-edit">
                         <input type='file' id="imageUpload" name="avatarFile" accept=".png, .jpg, .jpeg" />
                         <label for="imageUpload"><i class="fa-solid fa-camera"></i></label>
                     </div>
                     <div class="avatar-preview"
-                         th:style="'background-image: url(' + (*{avatarUrl != null ? '/avatars/' + avatarUrl : 'https://i.pravatar.cc/150?img=1'}) + ');'">
+                         th:style="'background-image: url(' + (*{avatarUrl != null ? '/avatars/' + avatarUrl : '/images/default-avatar.png'}) + ');'">
                     </div>
                 </div>
-                <input type="hidden" name="_csrf" th:if="${_csrf}" th:value="${_csrf.token}">
-                <input type="hidden" th:field="*{id}" />
 
                 <div class="row g-3">
-                    <!-- Các trường thông tin cơ bản giữ nguyên -->
+                    <!-- Thông tin cơ bản (lấy từ User liên kết, không cho sửa) -->
                     <div class="col-12">
-                        <label for="fullName" class="form-label required-label">Họ và tên</label>
+                        <label class="form-label">Email đăng nhập</label>
+                        <input type="email" class="form-control" th:value="*{userAccount.email}" readonly disabled>
+                    </div>
+
+                    <!-- THÔNG TIN TRONG BẢNG DOCTOR (CHO PHÉP SỬA) -->
+                    <h5 class="mt-4">Thông tin chuyên môn</h5>
+                    <div class="col-md-6">
+                        <label for="fullName" class="form-label required-label">Họ và tên hiển thị</label>
                         <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="phoneNumber" class="form-label required-label">Số điện thoại</label>
-                        <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" required>
+                        <label for="degree" class="form-label">Bằng cấp, học vị</label>
+                        <input type="text" class="form-control" id="degree" th:field="*{degree}" placeholder="Ví dụ: Ths.BS, BSCKII...">
                     </div>
                     <div class="col-md-6">
-                        <label for="birthDate" class="form-label required-label">Ngày sinh</label>
-                        <input type="date" class="form-control" id="birthDate"  th:field="*{birthDate}" required>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label required-label">Giới tính</label>
-                        <div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{gender}" id="male" value="Nam">
-                                <label class="form-check-label" for="male">Nam</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{gender}" id="female" value="Nữ">
-                                <label class="form-check-label" for="female">Nữ</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:field="*{gender}" id="other" value="Khác">
-                                <label class="form-check-label" for="other">Khác</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" th:field="*{email}">
-                    </div>
-                    <div class="col-12">
-                        <label for="relationship" class="form-label required-label">Đây là hồ sơ của ai?</label>
-                        <select class="form-select" id="relationship" th:field="*{relationship}" required>
-                            <option value="Bản thân">Bản thân</option>
-                            <option value="Cha">Cha</option>
-                            <option value="Mẹ">Mẹ</option>
-                            <option value="Chồng">Chồng</option>
-                            <option value="Vợ">Vợ</option>
-                            <option value="Con">Con</option>
-                            <option value="Anh">Anh</option>
-                            <option value="Chị">Chị</option>
-                            <option value="Em">Em</option>
-                            <option value="Ông">Ông</option>
-                            <option value="Bà">Bà</option>
-                            <option value="Khác">Khác</option>
-                        </select>
-                    </div>
-
-                    <!-- ======================================================= -->
-                    <!-- BẮT ĐẦU: KHỐI CCCD VÀ NGÀY CẤP MỚI -->
-                    <!-- ======================================================= -->
-                    <div class="col-md-6">
-                        <label for="idCard" class="form-label">Số Căn cước / CMND</label>
-                        <input type="text" class="form-control" id="idCard" th:field="*{identityCardNumber}">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="issueDate" class="form-label">Ngày cấp</label>
-                        <input type="date" class="form-control" id="issueDate" th:field="*{issueDate}">
-                    </div>
-                    <!-- ======================================================= -->
-                    <!-- KẾT THÚC: KHỐI CCCD VÀ NGÀY CẤP MỚI -->
-                    <!-- ======================================================= -->
-
-                    <div class="col-md-6">
-                        <label for="healthInsurance" class="form-label">Mã thẻ BHYT</label>
-                        <input type="text" class="form-control" id="healthInsurance" th:field="*{healthInsuranceNumber}">
-                    </div>
-
-                    <!-- Các trường khác giữ nguyên -->
-                    <div class="col-12">
-                        <label for="address" class="form-label">Địa chỉ</label>
-                        <input type="text" class="form-control" id="address" th:field="*{address}">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="ethnicity" class="form-label">Dân tộc</label>
-                        <select class="form-select" id="ethnicity" th:field="*{ethnicity}">
-                            <option value="Kinh">Kinh</option>
-                            <option value="Tày">Tày</option>
-                            <option value="Thái">Thái</option>
-                            <option value="Mường">Mường</option>
+                        <label for="specialty" class="form-label">Chuyên khoa</label>
+                        <!-- Thẻ select để tạo dropdown -->
+                        <select class="form-select" id="specialty" th:field="*{specialty}">
+                            <option value="">-- Vui lòng chọn chuyên khoa --</option>
+                            <option th:each="spec : ${allSpecialties}"
+                                    th:value="${spec.id}"
+                                    th:text="${spec.specialtyName}">
+                                Tim mạch
+                            </option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="nationality" class="form-label">Quốc tịch</label>
-                        <select class="form-select" id="nationality" th:field="*{nationality}">
-                            <option value="Việt Nam">Việt Nam</option>
-                            <option value="Mỹ">Mỹ</option>
-                            <option value="Nhật Bản">Nhật Bản</option>
-                        </select>
+                        <label for="examinationFee" class="form-label">Phí khám (VND)</label>
+                        <input type="number" class="form-control" id="examinationFee" th:field="*{examinationFee}" placeholder="Ví dụ: 300000">
                     </div>
                     <div class="col-12">
-                        <label for="occupation" class="form-label">Nghề nghiệp</label>
-                        <select class="form-select" id="occupation" th:field="*{occupation}">
-                            <option value="Nhân viên văn phòng">Nhân viên văn phòng</option>
-                            <option value="Học sinh / Sinh viên">Học sinh / Sinh viên</option>
-                            <option value="Lao động tự do">Lao động tự do</option>
-                            <option value="Nghỉ hưu">Nghỉ hưu</option>
-                        </select>
+                        <label for="biography" class="form-label">Tiểu sử</label>
+                        <textarea class="form-control" id="biography" th:field="*{biography}" rows="4" placeholder="Giới thiệu ngắn gọn về bản thân, quá trình học tập..."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label for="experience" class="form-label">Kinh nghiệm làm việc</label>
+                        <textarea class="form-control" id="experience" th:field="*{experience}" rows="4" placeholder="Liệt kê các nơi đã công tác và kinh nghiệm chuyên môn..."></textarea>
                     </div>
 
                     <!-- Nút lưu -->
                     <div class="col-12 text-center mt-4">
-                        <button type="submit" class="btn btn-save btn-lg px-5">Lưu thay đổi</button>
+                        <button type="submit" class="btn btn-primary btn-lg px-5">Lưu thông tin</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </main>
+<!-- Script để xem trước ảnh -->
+<th:block layout:fragment="scripts">
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('.avatar-preview').css('background-image', 'url('+e.target.result +')');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imageUpload").change(function() {
+            readURL(this);
+        });
+    </script>
+</th:block>
 </body>
-<script>
-    function handleLogout() {
-        // In ra console để kiểm tra xem hàm có được gọi không
-        console.log("Đang thực hiện xóa token...");
-
-        // Xóa token khỏi Local Storage
-        localStorage.removeItem('jwt_token'); // <-- Thay 'jwt_token' bằng tên key bạn đã dùng để lưu token
-
-        // Bạn không cần gọi event.preventDefault() hay form.submit()
-        // Hàm sẽ chạy xong và form sẽ tiếp tục submit như bình thường.
-        console.log("Đã xóa token. Form sẽ được submit ngay bây giờ.");
-    }
-</script>
 </html>

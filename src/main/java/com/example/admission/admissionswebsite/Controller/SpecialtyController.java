@@ -62,14 +62,14 @@ public class SpecialtyController {
         return "specialty/danhsachchuyenkhoa";
     }
 
-    @GetMapping("/chi-tiet-chuyen-khoa/{id}")
-    public String showSpecialtyDetail(@PathVariable Integer id, Model model) {
-        Specialty specialty = specialtyService.getSpecialById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy chuyên khoa với ID: " + id));
-
-        model.addAttribute("specialty", specialty);
-        return "/user/specialtydetail"; // View hiển thị chi tiết chuyên khoa
-    }
+//    @GetMapping("/chi-tiet-chuyen-khoa/{id}")
+//    public String showSpecialtyDetail(@PathVariable Integer id, Model model) {
+//        Specialty specialty = specialtyService.getSpecialById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy chuyên khoa với ID: " + id));
+//
+//        model.addAttribute("specialty", specialty);
+//        return "/user/specialtydetail"; // View hiển thị chi tiết chuyên khoa
+//    }
 
     @PostMapping("/admin/xoa-chuyen-khoa/{id}")
     public String deleteSpecialty(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
