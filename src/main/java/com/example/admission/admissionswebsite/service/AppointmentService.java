@@ -28,17 +28,21 @@ public class AppointmentService {
     private final TimeSlotRepository timeSlotRepository;
     private final OurUserRepo ourUserRepo; // <-- Repository cho Users
 
+    private final MedicalRecordRepository medicalRecordRepository;
+
     @Autowired
     public AppointmentService(AppointmentRepository appointmentRepository,
                               DoctorsRepository doctorsRepository,
                               PatientProfileRepository patientProfileRepository,
                               TimeSlotRepository timeSlotRepository,
+                              MedicalRecordRepository medicalRecordRepository,
                               OurUserRepo ourUserRepo) { // <-- Thêm vào constructor
         this.appointmentRepository = appointmentRepository;
         this.doctorsRepository = doctorsRepository;
         this.patientProfileRepository = patientProfileRepository;
         this.timeSlotRepository = timeSlotRepository;
         this.ourUserRepo = ourUserRepo; // <-- Gán giá trị
+        this.medicalRecordRepository = medicalRecordRepository;
     }
 
     @Transactional
@@ -113,6 +117,13 @@ public class AppointmentService {
         appointment.setPaymentStatus(Appointment.PaymentStatus.PAID);
         appointment.setStatus(Appointment.AppointmentStatus.CONFIRMED);
         appointment.setPaymentCode(vnpayTransactionId); // Lưu lại mã giao dịch của VNPay
+
+        // 3. TỰ ĐỘNG TẠO MỘT BỆNH ÁN (MEDICAL RECORD) TRỐNG
+        MedicalRecord medicalRecord = new MedicalRecord();
+        medicalRecord.setAppointment(appointment); // Liên kết bệnh án với cuộc hẹn này
+
+        // Lưu bệnh án mới vào CSDL
+        medicalRecordRepository.save(medicalRecord);
 
         appointmentRepository.save(appointment);
     }

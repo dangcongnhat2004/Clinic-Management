@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{doctor/layout}">
+<head>
+    <title>Danh sách Bệnh án</title>
+    <style>
+        .table-hover tbody tr:hover { background-color: #f8f9fa; }
+        .table th { font-weight: 600; }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid py-4">
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Danh sách Bệnh án</h4>
+                    <div class="input-group w-25">
+                        <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" placeholder="Tìm theo tên bệnh nhân...">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID Bệnh án</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Bệnh nhân</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày khám</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Chẩn đoán sơ bộ</th>
+                            <th class="text-secondary opacity-7"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- VÒNG LẶP QUA DANH SÁCH BỆNH ÁN -->
+                        <!-- Giả sử Controller truyền vào một List<MedicalRecord> có tên là "medicalRecords" -->
+                        <tr th:each="record : ${medicalRecords}">
+                            <!-- ID Bệnh án -->
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0" th:text="${'MR-' + record.id}">MR-1</p>
+                            </td>
+                            <!-- Bệnh nhân -->
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm" th:text="${record.appointment.patient.fullName}">Tên Bệnh Nhân</h6>
+                                        <p class="text-xs text-secondary mb-0" th:text="${record.appointment.patient.email}">email@example.com</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- Ngày khám -->
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0" th:text="${#temporals.format(record.appointment.timeSlot.startTime, 'dd/MM/yyyy')}">10/07/2025</p>
+                            </td>
+                            <!-- Chẩn đoán -->
+                            <td class="align-middle text-center text-sm">
+                                <!-- Hiển thị chẩn đoán nếu có, nếu không thì hiển thị "Chưa có" -->
+                                <span class="text-secondary text-xs font-weight-bold"
+                                      th:text="${record.diagnosis != null and !record.diagnosis.isEmpty() ? record.diagnosis : 'Chưa có'}">
+                                          Viêm họng cấp
+                                    </span>
+                            </td>
+                            <!-- Hành động -->
+                            <td class="align-middle text-end">
+                                <!-- Nút xem/chỉnh sửa chi tiết bệnh án này -->
+                                <a th:href="@{/doctor/medical-record/{id}(id=${record.id})}" class="btn btn-sm btn-outline-primary mb-0">
+                                    Xem / Cập nhật
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Trường hợp không có bệnh án nào -->
+                        <tr th:if="${#lists.isEmpty(medicalRecords)}">
+                            <td colspan="5" class="text-center py-4">Chưa có bệnh án nào được tạo.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

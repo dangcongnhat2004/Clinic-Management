@@ -192,7 +192,7 @@ public class UserController {
         model.addAttribute("adminPost", adminPost);
         return "/user/postdetail";
     }
-    @GetMapping("/dat-lich")
+    @GetMapping("/user/dat-lich")
     public String appointments(Model model) {
 //        UserDto response = doctorManageService.getUserIdsByUsersRole();
 //        if (response.getStatusCode() == 200) {
@@ -211,7 +211,7 @@ public class UserController {
         return "/user/appointments";
     }
     // CÁCH VIẾT AN TOÀN HƠN
-    @GetMapping("/dat-lich/chon-lich")
+    @GetMapping("/user/dat-lich/chon-lich")
     public String showScheduleSelectionPage(
             // 1. Nhận vào ID của USER, và phải là kiểu Long
             @RequestParam("doctorId") Long doctorUserId,
@@ -248,7 +248,7 @@ public class UserController {
 
         return "/user/appointmenttwo"; // Trả về trang chọn lịch hẹn
     }
-    @GetMapping("/dat-lich/nhap-thong-tin")
+    @GetMapping("/user/dat-lich/nhap-thong-tin")
     public String showInfoEntryPage(
             @RequestParam("doctorId") Long doctorUserId, // Đây là ID của User
             @RequestParam("date") String date,
@@ -270,7 +270,7 @@ public class UserController {
     // TRANG 3: Hiển thị trang xác nhận
     // CÁCH VIẾT CÓ THỂ GÂY LỖI
     // CÁCH VIẾT AN TOÀN HƠN
-    @GetMapping("/dat-lich/xac-nhan")
+    @GetMapping("/user/dat-lich/xac-nhan")
     public String showConfirmationPage(@RequestParam("doctorId") Integer doctorId,
                                        @RequestParam(value = "date", required = false) String date, // Cho phép có thể null để kiểm tra
                                        @RequestParam(value = "time", required = false) String time, // Cho phép có thể null để kiểm tra
@@ -293,7 +293,7 @@ public class UserController {
         return "/user/appointmentthree"; // Đây là trang để xác nhận lịch hẹn
     }
 
-    @PostMapping("/dat-lich/hoan-tat")
+    @PostMapping("/user/dat-lich/hoan-tat")
     public String completeBooking(@RequestParam("doctorId") Integer doctorId,
                                   @RequestParam("appointmentDate") String date,
                                   @RequestParam("appointmentTime") String time,
@@ -316,10 +316,10 @@ public class UserController {
         redirectAttributes.addFlashAttribute("successMessage", "Bạn đã đặt lịch khám thành công!");
 
         // Chuyển hướng đến trang lịch sử đặt khám hoặc trang chủ
-        return "redirect:/lich-su-dat-kham";
+        return "redirect:/user/lich-su-dat-kham";
     }
     // THÊM MỚI: CONTROLLER CHO BƯỚC 4 (THANH TOÁN)
-    @GetMapping("/dat-lich/thanh-toan")
+    @GetMapping("/user/dat-lich/thanh-toan")
     public String showPaymentPage(
             // Sửa Lỗi 1: Dùng Long cho doctorId
             @RequestParam("doctorId") Long doctorUserId,
@@ -354,7 +354,7 @@ public class UserController {
 
         return "/user/appointmentfour"; // Trả về view của bước 4
     }
-    @GetMapping("/lich-su-dat-kham")
+    @GetMapping("/user/lich-su-dat-kham")
     public String showAppointmentHistory(Model model, RedirectAttributes redirectAttributes) {
         try {
             // 1. Lấy thông tin người dùng đang đăng nhập

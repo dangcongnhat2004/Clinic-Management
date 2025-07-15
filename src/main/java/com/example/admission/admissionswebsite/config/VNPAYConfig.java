@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 public class VNPAYConfig {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Returnurl = "/vnpay-payment-return";
+    public static String vnp_Returnurl = "/user/vnpay-payment-return";
     public static String vnp_TmnCode = "JESS6B9J"; // kiểm tra email sau
 
     public static String vnp_HashSecret = "HNEZXCMK0GYNIGZFU6G4OIBPA5E65YSF"; // khi đăng ký Test

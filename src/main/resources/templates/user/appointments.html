@@ -63,7 +63,7 @@
                                 <p class="card-text text-muted mb-3" th:text="${doctor.specialization}">...</p>
 
                                 <!-- Dùng doctor.userAccount.id (Đúng) -->
-                                <a th:href="@{/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}" class="btn btn-primary w-100 mt-auto">Chọn</a>
+                                <a th:href="@{/user/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}" class="btn btn-primary w-100 mt-auto">Chọn</a>
                             </div>
                         </div>
                     </div>

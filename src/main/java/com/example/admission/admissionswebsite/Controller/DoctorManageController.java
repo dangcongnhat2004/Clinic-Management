@@ -4,6 +4,7 @@ import com.example.admission.admissionswebsite.Dto.UniversityDto;
 import com.example.admission.admissionswebsite.Dto.UserDto;
 import com.example.admission.admissionswebsite.Model.*;
 import com.example.admission.admissionswebsite.repository.AppointmentRepository;
+import com.example.admission.admissionswebsite.repository.MedicalRecordRepository;
 import com.example.admission.admissionswebsite.repository.UserRepository;
 import com.example.admission.admissionswebsite.service.AdminService;
 import com.example.admission.admissionswebsite.service.DoctorManageService;
@@ -40,6 +41,8 @@ public class DoctorManageController {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private UniversityService universityService;
+    @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
     @Autowired
     private AdminService adminService;
     @Value("${upload.path}")
@@ -112,7 +115,46 @@ public class DoctorManageController {
         }
 
     }
+    @GetMapping("/doctor/medical-records")
+    public String viewMedicalRecordList(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        String doctorEmail = userDetails.getUsername();
 
+        List<MedicalRecord> medicalRecords = doctorManageService.getMedicalRecordsByDoctorEmail(doctorEmail);
+
+        model.addAttribute("medicalRecords", medicalRecords);
+
+        return "doctor/medical-record-list";
+    }
+
+    @GetMapping("/doctor/medical-record/{id}")
+    public String viewMedicalRecordDetails(@PathVariable("id") Long recordId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+
+        MedicalRecord medicalRecord = medicalRecordRepository.findByIdWithDetails(recordId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy bệnh án với ID: " + recordId));
+
+        String currentDoctorEmail = userDetails.getUsername();
+        if (medicalRecord.getAppointment() == null || medicalRecord.getAppointment().getDoctor() == null || !medicalRecord.getAppointment().getDoctor().getUserAccount().getEmail().equals(currentDoctorEmail)) {
+            return "error/403";
+        }
+
+        model.addAttribute("medicalRecord", medicalRecord);
+        return "doctor/medical-record-details";
+    }
+    @PostMapping("/doctor/medical-record/update")
+    public String updateMedicalRecord(@ModelAttribute("medicalRecord") MedicalRecord updatedRecord,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            // Gọi service để lưu lại thông tin bệnh án
+            // (Bạn cần tự viết hàm này trong một service phù hợp, ví dụ DoctorService)
+            doctorManageService.updateMedicalRecord(updatedRecord);
+            redirectAttributes.addFlashAttribute("successMessage", "Đã cập nhật bệnh án #" + updatedRecord.getId() + " thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi cập nhật bệnh án: " + e.getMessage());
+        }
+
+        // Sau khi lưu, quay lại chính trang chi tiết đó
+        return "redirect:/doctor/medical-record/" + updatedRecord.getId();
+    }
 //    @GetMapping("/admin/them-truong-dai-hoc")
 //    public String getUserIds(Model model) {
 //
@@ -140,7 +182,7 @@ public class DoctorManageController {
         try {
             // Gọi service để thực hiện việc cập nhật, truyền cả file vào
             doctorManageService.updateUserProfile(updatedUserData, avatarFile);
-
+            redirectAttributes.addFlashAttribute("successMessage", "Đã cập nhật bệnh án thành công!");
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin cá nhân thành công!");
 
         } catch (Exception e) {
@@ -332,4 +374,24 @@ public class DoctorManageController {
         // Quay lại trang giờ làm việc. Thêm return_url nếu muốn quay lại đúng ngày đã lọc
         return "redirect:/doctor/working-hours";
     }
+
+    @GetMapping("/doctor/patients")
+    public String viewPatientList(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        String doctorEmail = userDetails.getUsername();
+
+
+        List<PatientProfile> patients = doctorManageService.getCompletedPatientsByDoctorEmail(doctorEmail);
+
+        model.addAttribute("patients", patients);
+
+        return "doctor/patient-list";
+    }
+
+    // (Tùy chọn) Controller cho trang chi tiết lịch sử khám của một bệnh nhân
+    @GetMapping("/doctor/patient/{id}/history")
+    public String viewPatientHistory(@PathVariable("id") Long patientId, Model model) {
+        // TODO: Lấy thông tin bệnh nhân và tất cả các lịch hẹn của họ để hiển thị
+        return "doctor/patient-history-details";
+    }
+
 }

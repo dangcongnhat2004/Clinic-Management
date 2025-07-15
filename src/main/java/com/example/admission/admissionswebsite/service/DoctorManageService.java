@@ -40,7 +40,10 @@ public class DoctorManageService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private MedicalRecordRepository medicalRecordRepository;
+    @Autowired
     private AppointmentRepository appointmentRepository; // Thêm repo này vào
+
     @Value("${upload.event}")
     private String uploadPath;
     private static final String UPLOAD_DIR = "src/main/resources/static/avatars/";
@@ -357,5 +360,64 @@ public UserDto signUp(UserDto registrationRequest) {
 
         // 3. Xóa khỏi CSDL
         timeSlotRepository.delete(timeSlot);
+    }
+//    public List<PatientProfile> getCompletedPatientsByDoctorEmail(String doctorEmail) {
+//        // 1. Tìm hồ sơ Doctor từ email
+//        Doctor doctor = findDoctorByEmail(doctorEmail); // << Breakpoint ở đây
+//
+//        // 2. Tìm tất cả các cuộc hẹn đã HOÀN THÀNH của bác sĩ này
+//        List<Appointment> completedAppointments = appointmentRepository.findByDoctorAndStatus(
+//                doctor,
+//                Appointment.AppointmentStatus.COMPLETED // << Kiểm tra điểm này
+//        );
+//
+//        // 3. Từ danh sách cuộc hẹn, trích xuất ra danh sách các bệnh nhân duy nhất
+//        List<PatientProfile> uniquePatients = completedAppointments.stream()
+//                .map(Appointment::getPatient)
+//                .distinct()
+//                .collect(Collectors.toList());
+//
+//        return uniquePatients;
+//    }
+
+    @Transactional
+    public List<PatientProfile> getCompletedPatientsByDoctorEmail(String doctorEmail) {
+        Doctor doctor = findDoctorByEmail(doctorEmail);
+        if (doctor == null) {
+            return Collections.emptyList();
+        }
+
+        List<PatientProfile> patients = appointmentRepository.findDistinctPatientsByDoctorAndStatus(
+                doctor,
+                Appointment.AppointmentStatus.COMPLETED
+        );
+
+        return patients;
+    }
+
+    @Transactional
+    public List<MedicalRecord> getMedicalRecordsByDoctorEmail(String doctorEmail) {
+        // 1. Tìm hồ sơ Doctor từ email
+        Doctor doctor = findDoctorByEmail(doctorEmail);
+        if (doctor == null) {
+            return Collections.emptyList();
+        }
+
+
+        return medicalRecordRepository.findByAppointment_DoctorOrderByIdDesc(doctor);
+    }
+
+    // Hàm tiện ích đã có
+    @Transactional
+    public void updateMedicalRecord(MedicalRecord updatedRecordData) {
+        MedicalRecord existingRecord = medicalRecordRepository.findById(updatedRecordData.getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy bệnh án để cập nhật."));
+
+        existingRecord.setDiagnosis(updatedRecordData.getDiagnosis());
+        existingRecord.setConclusion(updatedRecordData.getConclusion());
+        existingRecord.setDoctorNotes(updatedRecordData.getDoctorNotes());
+
+
+        medicalRecordRepository.save(existingRecord);
     }
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{doctor/layout}">
+<head>
+    <title>Danh sách bệnh nhân</title>
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .table th {
+            font-weight: 600;
+        }
+        .patient-avatar {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid py-4">
+        <div class="card">
+            <div class="card-header pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Hồ sơ bệnh nhân</h4>
+                    <!-- Có thể thêm ô tìm kiếm bệnh nhân ở đây -->
+                    <div class="input-group w-25">
+                        <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" placeholder="Tìm kiếm bệnh nhân...">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Bệnh nhân</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Thông tin liên hệ</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày sinh</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Giới tính</th>
+                            <th class="text-secondary opacity-7"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- VÒNG LẶP QUA DANH SÁCH BỆNH NHÂN -->
+                        <!-- Giả sử Controller truyền vào một List<PatientProfile> có tên là "patients" -->
+                        <tr th:each="patient : ${patients}">
+                            <!-- Thông tin bệnh nhân -->
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div>
+                                        <img th:src="${patient.avatarUrl != null ? patient.avatarUrl : '/images/default-avatar.png'}"
+                                             class="patient-avatar me-3" alt="Avatar">
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm" th:text="${patient.fullName}">Tên Bệnh Nhân</h6>
+                                        <p class="text-xs text-secondary mb-0" th:text="${patient.address}">Địa chỉ</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- Thông tin liên hệ -->
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0" th:text="${patient.email}">email@example.com</p>
+                                <p class="text-xs text-secondary mb-0" th:text="${patient.phoneNumber}">0901234567</p>
+                            </td>
+                            <!-- Ngày sinh -->
+                            <td class="align-middle text-center text-sm">
+                                <span class="text-secondary text-xs font-weight-bold" th:text="${#temporals.format(patient.dateOfBirth, 'dd/MM/yyyy')}">01/01/1990</span>
+                            </td>
+                            <!-- Giới tính -->
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold" th:text="${patient.gender}">Nam</span>
+                            </td>
+                            <!-- Hành động -->
+                            <td class="align-middle">
+                                <!-- Nút xem chi tiết lịch sử khám của bệnh nhân này -->
+                                <a th:href="@{/doctor/patient/{id}/history(id=${patient.id})}" class="btn btn-sm btn-outline-primary mb-0">
+                                    Xem chi tiết
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Trường hợp không có bệnh nhân nào -->
+                        <tr th:if="${#lists.isEmpty(patients)}">
+                            <td colspan="5" class="text-center py-4">Chưa có hồ sơ bệnh nhân nào.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

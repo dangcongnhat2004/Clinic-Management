@@ -34,24 +34,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/auth/**") // Chỉ tắt CSRF cho các API xác thực
                 )
-                // PHÂN QUYỀN TẬP TRUNG TẠI ĐÂY
                 .authorizeHttpRequests(request -> request
-                        // Các URL công khai, bất kỳ ai cũng có thể truy cập
                         .requestMatchers("/", "/signup", "/auth/**", "/public/**", "/favicon.ico").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**","/manage/**","/enduser/**").permitAll()
 
-                        // Các URL yêu cầu quyền cụ thể
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN") // Chỉ ADMIN được vào
-                        .requestMatchers("/user/**").hasAuthority("USER") // Cả hai đều được vào
-                        .requestMatchers("/staff/**").hasAnyAuthority("STAFF") // Cả hai đều được vào
-                        .requestMatchers("/nurse/**").hasAnyAuthority("NURSE") // Cả hai đều được vào
-                        .requestMatchers("/doctor/**").hasAuthority("DOCTOR") // Cả hai đều được vào
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/user/**").hasAuthority("USER")
+                        .requestMatchers("/staff/**").hasAnyAuthority("STAFF")
+                        .requestMatchers("/nurse/**").hasAnyAuthority("NURSE")
+                        .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
 
-                        // Tất cả các request còn lại đều cần phải xác thực (đăng nhập)
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        // Vẫn giữ IF_REQUIRED để logout hoạt động đúng
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .invalidSessionUrl("/auth/login?expired=true")
                 )
@@ -61,10 +56,9 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        // SỬ DỤNG GIẢI PHÁP "Bất khả chiến bại" để đảm bảo xóa token
                         .logoutSuccessUrl("/auth/logout-handler")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "jwtToken") // <-- Xóa cả cookie JWT
+                        .deleteCookies("JSESSIONID", "jwtToken")
                         .permitAll()
                 )
                 .exceptionHandling(exception -> exception

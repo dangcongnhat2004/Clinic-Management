@@ -29,7 +29,7 @@ public class BookingController {
         this.appointmentService = appointmentService;
     }
 
-    @PostMapping("/dat-lich/tao-thanh-toan-vnpay")
+    @PostMapping("/user/dat-lich/tao-thanh-toan-vnpay")
     public String createVnpayPayment(HttpServletRequest request,
                                      // ===========================================
                                      // SỬA ĐỔI QUAN TRỌNG: Đổi Integer -> Long
@@ -57,7 +57,7 @@ public class BookingController {
         return "redirect:" + vnpayUrl;
     }
 
-    @GetMapping("/vnpay-payment-return")
+    @GetMapping("/user/vnpay-payment-return")
     public String handleVnpayReturn(HttpServletRequest request, Model model) {
         int paymentStatus = vnpayService.orderReturn(request);
 

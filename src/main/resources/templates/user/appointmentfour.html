@@ -61,7 +61,7 @@
     <div class="confirmation-header d-flex align-items-center">
       <!-- Nút "Quay lại" Trang 3 (Nhập thông tin) -->
       <!-- Đảm bảo truyền đủ và đúng các tham số mà Trang 3 yêu cầu -->
-      <a th:href="@{/dat-lich/nhap-thong-tin(doctorId=${doctor.userAccount.id}, date=${appointmentDate}, time=${appointmentTime})}"
+      <a th:href="@{/user/dat-lich/nhap-thong-tin(doctorId=${doctor.userAccount.id}, date=${appointmentDate}, time=${appointmentTime})}"
          class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
       <h4 class="mb-0">Xác nhận & Thanh toán</h4>
     </div>
@@ -77,7 +77,7 @@
       </div>
 
       <!-- Form cuối cùng để tạo cuộc hẹn và chuyển đến VNPay -->
-      <form th:action="@{/dat-lich/tao-thanh-toan-vnpay}" method="post">
+      <form th:action="@{/user/dat-lich/tao-thanh-toan-vnpay}" method="post">
         <!-- Gửi tất cả thông tin đã thu thập được đi ẩn -->
         <input type="hidden" name="doctorId" th:value="${doctor.userAccount.id}" />
         <input type="hidden" name="appointmentDate" th:value="${appointmentDate}" />

@@ -12,7 +12,7 @@
             <!-- ======================================================= -->
             <!-- SỬA LỖI 1: Nút "Quay lại" phải truyền đúng ID của User -->
             <!-- ======================================================= -->
-            <a th:href="@{/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}" class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
+            <a th:href="@{/user/dat-lich/chon-lich(doctorId=${doctor.userAccount.id})}" class="text-white me-3 fs-5"><i class="fa-solid fa-arrow-left"></i></a>
             <h4 class="mb-0">Đặt lịch khám</h4>
         </div>
 
@@ -26,7 +26,7 @@
             </div>
 
             <!-- Form gửi đến trang thanh toán -->
-            <form th:action="@{/dat-lich/thanh-toan}" method="get">
+            <form th:action="@{/user/dat-lich/thanh-toan}" method="get">
                 <!-- Các giá trị đã chọn được gửi ẩn đi -->
                 <!-- ======================================================= -->
                 <!-- SỬA LỖI 2: Truyền đi đúng ID của User -->

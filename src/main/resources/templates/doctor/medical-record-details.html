@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{doctor/layout}">
+<head>
+    <title>Chi tiết Bệnh án</title>
+    <style>
+        .info-label { font-weight: 600; color: #6c757d; }
+        .form-label { font-weight: 600; }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container-fluid py-4">
+
+        <!-- ======================================================= -->
+        <!-- BẮT ĐẦU: THÊM KHỐI HIỂN THỊ THÔNG BÁO -->
+        <!-- ======================================================= -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <!-- ======================================================= -->
+        <!-- KẾT THÚC: THÊM KHỐI HIỂN THỊ THÔNG BÁO -->
+        <!-- ======================================================= -->
+
+        <!-- HEADER CỦA TRANG -->
+        <div class="card mb-4">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <a th:href="@{/doctor/medical-records}" class="btn btn-outline-primary btn-sm mb-0 me-3">
+                            <i class="fas fa-arrow-left"></i>  Quay lại danh sách
+                        </a>
+                        <h4 class="mb-0 d-inline-block align-middle" th:text="'Bệnh án #' + ${medicalRecord.id}">Bệnh án #1</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM ĐỂ CẬP NHẬT BỆNH ÁN -->
+        <form th:action="@{/doctor/medical-record/update}" method="post" th:object="${medicalRecord}">
+            <!-- Input ẩn sử dụng th:field và *{...} -->
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{appointment.id}" />
+
+            <div class="row">
+                <!-- CỘT BÊN TRÁI: THÔNG TIN THAM KHẢO -->
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <div class="card">
+                        <div class="card-header"><h6 class="mb-0">Thông tin cuộc hẹn</h6></div>
+                        <div class="card-body">
+                            <!-- Thông tin bệnh nhân -->
+                            <div class="mb-3">
+                                <p class="info-label mb-1">Bệnh nhân</p>
+                                <div class="ps-3 border-start">
+                                    <p class="mb-0"><strong>Họ tên:</strong> <span th:text="*{appointment.patient.fullName}"></span></p>
+                                    <p class="mb-0"><strong>Ngày sinh:</strong>
+                                        <span th:if="*{appointment.patient.dateOfBirth != null}"
+                                              th:text="${#temporals.format(medicalRecord.appointment.patient.dateOfBirth, 'dd/MM/yyyy')}"></span>
+                                    </p>
+                                    <p class="mb-0"><strong>Giới tính:</strong> <span th:text="*{appointment.patient.gender}"></span></p>
+                                </div>
+                            </div>
+                            <!-- Thông tin lịch hẹn -->
+                            <div class="mb-3">
+                                <p class="info-label mb-1">Lịch hẹn</p>
+                                <div class="ps-3 border-start">
+                                    <p class="mb-0"><strong>Ngày khám:</strong>
+                                        <span th:if="*{appointment.timeSlot != null}"
+                                              th:text="${#temporals.format(medicalRecord.appointment.timeSlot.startTime, 'dd/MM/yyyy')}"></span>
+                                    </p>
+                                    <p class="mb-0"><strong>Giờ khám:</strong>
+                                        <span th:if="*{appointment.timeSlot != null}"
+                                              th:text="${#temporals.format(medicalRecord.appointment.timeSlot.startTime, 'HH:mm')}"></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Lý do khám -->
+                            <div>
+                                <p class="info-label mb-1">Lý do khám ban đầu</p>
+                                <div class="ps-3 border-start">
+                                    <p class="text-muted mb-0" th:text="*{appointment.reasonForVisit}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CỘT BÊN PHẢI: THÔNG TIN CẦN NHẬP -->
+                <div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-header"><h6 class="mb-0">Nội dung bệnh án</h6></div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="diagnosis" class="form-label">Chẩn đoán</label>
+                                <textarea class="form-control" id="diagnosis" rows="4" th:field="*{diagnosis}" placeholder="Nhập chẩn đoán của bác sĩ..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="conclusion" class="form-label">Kết luận & Hướng điều trị</label>
+                                <textarea class="form-control" id="conclusion" rows="4" th:field="*{conclusion}" placeholder="Ví dụ: Kê đơn thuốc, hẹn tái khám sau 7 ngày..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="doctorNotes" class="form-label">Ghi chú nội bộ (nếu có)</label>
+                                <textarea class="form-control" id="doctorNotes" rows="3" th:field="*{doctorNotes}" placeholder="Các ghi chú riêng của bác sĩ..."></textarea>
+                            </div>
+                            <!-- Nút Lưu -->
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Lưu Bệnh án</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
