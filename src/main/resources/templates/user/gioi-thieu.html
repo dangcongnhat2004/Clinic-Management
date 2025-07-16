@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout}">
+<head>
+    <title>Giới thiệu về ClinicPlus</title>
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0.7)), url('/images/clinic-background.jpg'); /* Thay bằng ảnh nền của bạn */
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+        .team-card {
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .team-card img {
+            height: 280px;
+            object-fit: cover;
+        }
+        .value-icon {
+            font-size: 2.5rem;
+            color: #0d6efd;
+        }
+        .gallery-img {
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<main layout:fragment="content">
+
+    <!-- 1. HERO SECTION -->
+    <section class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Về ClinicPlus</h1>
+            <p class="lead col-lg-8 mx-auto">Sứ mệnh của chúng tôi là mang đến dịch vụ chăm sóc sức khỏe tận tâm, chuyên nghiệp và hiện đại, đặt lợi ích và sự an toàn của bệnh nhân lên hàng đầu.</p>
+            <a th:href="@{/user/dat-lich/chon-bac-si}" class="btn btn-light btn-lg mt-3">Đặt lịch ngay</a>
+        </div>
+    </section>
+
+    <!-- 2. OUR STORY SECTION -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <img src="https://images.pexels.com/photos/3992933/pexels-photo-3992933.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="img-fluid rounded shadow-sm" alt="Our Clinic">
+                </div>
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <h2 class="fw-bold">Câu chuyện của chúng tôi</h2>
+                    <p class="text-muted">Được thành lập vào năm 2024 với mong muốn tạo ra một môi trường y tế thân thiện và đáng tin cậy, ClinicPlus là tâm huyết của đội ngũ y bác sĩ giàu kinh nghiệm. Chúng tôi tin rằng công nghệ hiện đại kết hợp với sự chăm sóc tận tình từ trái tim là chìa khóa để mang lại sức khỏe toàn diện cho cộng đồng.</p>
+                    <p class="text-muted">Từ những ngày đầu tiên, chúng tôi không ngừng nỗ lực cải tiến chất lượng dịch vụ, đầu tư vào trang thiết bị tiên tiến và xây dựng một đội ngũ luôn lắng nghe và thấu hiểu bệnh nhân.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. CORE VALUES SECTION -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Giá trị cốt lõi</h2>
+                <p class="text-muted">Những nguyên tắc định hướng mọi hoạt động của chúng tôi.</p>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <i class="fa-solid fa-heart-pulse value-icon mb-3"></i>
+                    <h5 class="fw-bold">Tận tâm</h5>
+                    <p class="text-muted small">Luôn đặt bệnh nhân làm trung tâm, chăm sóc bằng cả trái tim và sự thấu cảm.</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="fa-solid fa-user-doctor value-icon mb-3"></i>
+                    <h5 class="fw-bold">Chuyên nghiệp</h5>
+                    <p class="text-muted small">Đội ngũ y bác sĩ có chuyên môn cao, tuân thủ nghiêm ngặt các quy trình y khoa.</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="fa-solid fa-shield-halved value-icon mb-3"></i>
+                    <h5 class="fw-bold">An toàn</h5>
+                    <p class="text-muted small">An toàn của bệnh nhân là ưu tiên tuyệt đối trong mọi quy trình chẩn đoán và điều trị.</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="fa-solid fa-microscope value-icon mb-3"></i>
+                    <h5 class="fw-bold">Hiện đại</h5>
+                    <p class="text-muted small">Luôn cập nhật và ứng dụng các công nghệ, phương pháp điều trị tiên tiến nhất.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. MEET THE TEAM SECTION -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Đội ngũ Bác sĩ của chúng tôi</h2>
+                <p class="text-muted">Những chuyên gia đầu ngành luôn sẵn sàng lắng nghe bạn.</p>
+            </div>
+            <div class="row">
+                <!-- Vòng lặp th:each="doctor : ${doctors}" sẽ đặt ở đây -->
+                <!-- Ví dụ 1 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card team-card text-center">
+                        <img src="https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Doctor">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">BS. Trần Minh Anh</h5>
+                            <p class="card-text text-primary">Chuyên khoa Tim mạch</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ví dụ 2 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card team-card text-center">
+                        <img src="https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Doctor">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">ThS.BS. Lê Thu Hà</h5>
+                            <p class="card-text text-primary">Chuyên khoa Nhi</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ví dụ 3 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card team-card text-center">
+                        <img src="https://images.pexels.com/photos/6749779/pexels-photo-6749779.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Doctor">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">BS. Hoàng Quốc Việt</h5>
+                            <p class="card-text text-primary">Chuyên khoa Da liễu</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ví dụ 4 -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card team-card text-center">
+                        <img src="https://images.pexels.com/photos/8460157/pexels-photo-8460157.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Doctor">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">BS.CKII. Phạm Thị Lan</h5>
+                            <p class="card-text text-primary">Chuyên khoa Sản</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. FACILITIES SECTION -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Cơ sở vật chất</h2>
+                <p class="text-muted">Không gian khám chữa bệnh sạch sẽ, hiện đại và thoải mái.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4"><img src="https://images.pexels.com/photos/263177/pexels-photo-263177.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="img-fluid rounded shadow-sm gallery-img" alt="Facility"></div>
+                <div class="col-md-4 mb-4"><img src="https://images.pexels.com/photos/3279197/pexels-photo-3279197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="img-fluid rounded shadow-sm gallery-img" alt="Facility"></div>
+                <div class="col-md-4 mb-4"><img src="https://images.pexels.com/photos/236380/pexels-photo-236380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="img-fluid rounded shadow-sm gallery-img" alt="Facility"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. CALL TO ACTION SECTION -->
+    <section class="py-5">
+        <div class="container text-center">
+            <h2 class="fw-bold">Sẵn sàng chăm sóc sức khỏe của bạn?</h2>
+            <p class="lead text-muted col-lg-8 mx-auto">Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ. Đặt lịch hẹn ngay hôm nay để nhận được sự tư vấn tốt nhất.</p>
+            <a th:href="@{/user/dat-lich/chon-bac-si}" class="btn btn-primary btn-lg mt-3">
+                <i class="fa-solid fa-calendar-check me-2"></i>Đặt lịch ngay
+            </a>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

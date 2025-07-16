@@ -580,5 +580,13 @@ public class UserController {
     public String mapService() {
         return "user/mapservice";
     }
+    @GetMapping("/chi-tiet/gioi-thieu")
+    public String showAboutUsPage(Model model) {
+        // (Tùy chọn) Bạn có thể lấy danh sách các bác sĩ tiêu biểu ở đây
+        // List<Doctor> featuredDoctors = doctorService.getFeaturedDoctors();
+        // model.addAttribute("doctors", featuredDoctors);
 
+        // Trả về tên file view đã tạo
+        return "user/gioi-thieu";
+    }
 }
